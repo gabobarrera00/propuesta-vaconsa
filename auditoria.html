@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auditoría del sitio de Vaconsa | Nexo Web</title>
+<meta name="description" content="Diez hallazgos de una revisión completa de vaconsa.com.mx: SEO, conversión, contenido desactualizado y presencia en redes.">
+<meta name="robots" content="noindex, nofollow">
+<style>
+  :root{
+    --bg:#EEF1F2;
+    --surface:#FFFFFF;
+    --surface-2:#F6F8F8;
+    --ink:#171A1C;
+    --muted:#5B6368;
+    --line:#D7DBDD;
+    --accent:#2D5E7A;
+    --accent-ink:#FFFFFF;
+    --crit:#C81E2C;
+    --crit-bg:#FBE8E9;
+    --warn:#B0640F;
+    --warn-bg:#FBEEDD;
+    --good:#2F7A52;
+    --good-bg:#E7F3EC;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12161A;
+      --surface:#1A1F24;
+      --surface-2:#1F252A;
+      --ink:#E7EBED;
+      --muted:#8B959B;
+      --line:#2A3136;
+      --accent:#7FB2CE;
+      --accent-ink:#0E1418;
+      --crit:#FF5A64;
+      --crit-bg:#3A1418;
+      --warn:#E3A44B;
+      --warn-bg:#3A2A10;
+      --good:#5FBE86;
+      --good-bg:#123321;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12161A;
+    --surface:#1A1F24;
+    --surface-2:#1F252A;
+    --ink:#E7EBED;
+    --muted:#8B959B;
+    --line:#2A3136;
+    --accent:#7FB2CE;
+    --accent-ink:#0E1418;
+    --crit:#FF5A64;
+    --crit-bg:#3A1418;
+    --warn:#E3A44B;
+    --warn-bg:#3A2A10;
+    --good:#5FBE86;
+    --good-bg:#123321;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Segoe UI","Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent);color:var(--accent-ink);}
+
+  .display{
+    font-family:"Arial Narrow","Segoe UI Semibold","Helvetica Neue Condensed","Helvetica Neue",Arial,sans-serif;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  .mono{
+    font-family:Consolas,"SF Mono","Cascadia Mono",Menlo,monospace;
+    font-variant-numeric:tabular-nums;
+  }
+
+  .page{
+    max-width:800px;
+    margin:0 auto;
+    padding:0 24px 96px;
+  }
+
+  /* ---- Masthead ---- */
+  header.masthead{
+    padding:56px 0 32px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:40px;
+  }
+  .kicker{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .kicker .bar{
+    width:34px;height:5px;background:var(--crit);
+  }
+  .kicker span{
+    font-size:12px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--muted);
+    font-weight:600;
+  }
+  h1.display{
+    font-size:clamp(32px,5vw,46px);
+    margin:0 0 14px;
+    text-wrap:balance;
+    line-height:1.05;
+  }
+  .lede{
+    max-width:62ch;
+    color:var(--muted);
+    font-size:16px;
+    margin:0 0 22px;
+  }
+  .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 28px;
+    font-size:13px;
+  }
+  .meta-row div{display:flex;flex-direction:column;gap:2px;}
+  .meta-row .k{color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;font-size:11px;}
+  .meta-row .v{font-weight:600;}
+  .meta-row .v.mono{font-weight:500;}
+
+  /* ---- Summary strip ---- */
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-bottom:48px;
+  }
+  .stat{
+    background:var(--surface);
+    padding:20px 18px;
+  }
+  .stat .n{
+    font-family:Consolas,"SF Mono",monospace;
+    font-variant-numeric:tabular-nums;
+    font-size:32px;
+    font-weight:700;
+    line-height:1;
+  }
+  .stat .n.crit{color:var(--crit);}
+  .stat .n.warn{color:var(--warn);}
+  .stat .n.good{color:var(--good);}
+  .stat .l{
+    margin-top:8px;
+    font-size:12px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+
+  /* ---- Sections ---- */
+  section.cat{margin-bottom:52px;}
+  .cat-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:22px;
+    padding-bottom:10px;
+    border-bottom:2px solid var(--accent);
+  }
+  .cat-head .idx{
+    font-family:Consolas,"SF Mono",monospace;
+    color:var(--accent);
+    font-weight:700;
+    font-size:14px;
+  }
+  .cat-head h2{
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    margin:0;
+    color:var(--ink);
+  }
+
+  .finding{
+    background:var(--surface);
+    border:1px solid var(--line);
+    padding:22px 24px;
+    margin-bottom:14px;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:4px 18px;
+  }
+  .finding .num{
+    grid-row:1 / span 3;
+    font-family:Consolas,"SF Mono",monospace;
+    font-size:13px;
+    color:var(--muted);
+    padding-top:3px;
+  }
+  .finding .top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .finding h3{
+    font-size:16.5px;
+    margin:0;
+    font-weight:700;
+  }
+  .pill{
+    flex:none;
+    font-size:10.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    padding:4px 9px;
+    white-space:nowrap;
+  }
+  .pill.crit{color:var(--crit);background:var(--crit-bg);}
+  .pill.warn{color:var(--warn);background:var(--warn-bg);}
+  .pill.good{color:var(--good);background:var(--good-bg);}
+
+  .finding p{margin:8px 0 0;color:var(--ink);font-size:14.5px;}
+  .finding .evidence{
+    margin-top:10px;
+    font-size:13px;
+    color:var(--muted);
+    padding-left:14px;
+    border-left:2px solid var(--line);
+  }
+  .finding .evidence b{color:var(--ink);font-weight:600;}
+  .finding .fix{
+    margin-top:10px;
+    font-size:13.5px;
+    display:flex;
+    gap:8px;
+  }
+  .finding .fix .tag{
+    flex:none;
+    font-weight:700;
+    color:var(--accent);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    padding-top:1.5px;
+  }
+
+  /* ---- Positives ---- */
+  .positives{
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    padding:22px 24px;
+    margin-bottom:52px;
+  }
+  .positives h2{
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    margin:0 0 14px;
+    color:var(--good);
+  }
+  .positives ul{margin:0;padding-left:18px;}
+  .positives li{margin-bottom:8px;font-size:14px;}
+  .positives li:last-child{margin-bottom:0;}
+
+  .next-step{
+    display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between;
+    background:var(--ink);color:var(--bg);
+    padding:30px 32px;margin-bottom:44px;
+  }
+  .next-step .ns-copy{max-width:56ch;}
+  .next-step .ns-kicker{
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--crit);font-weight:700;margin-bottom:9px;
+  }
+  .next-step h2{
+    font-family:"Arial Narrow","Segoe UI Semibold","Helvetica Neue",Arial,sans-serif;
+    text-transform:uppercase;letter-spacing:.03em;font-weight:800;
+    font-size:23px;margin:0 0 9px;line-height:1.1;
+  }
+  .next-step p{margin:0;font-size:14px;opacity:.82;}
+  .next-step .ns-btn{
+    flex:none;background:var(--crit);color:#fff;text-decoration:none;
+    padding:14px 22px;font-size:12.5px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.08em;
+    font-family:"Arial Narrow","Segoe UI Semibold","Helvetica Neue",Arial,sans-serif;
+  }
+  .next-step .ns-btn:hover{filter:brightness(1.12);}
+
+  footer{
+    border-top:1px solid var(--line);
+    padding-top:24px;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+
+  @media (max-width:640px){
+    .stats{grid-template-columns:repeat(2,1fr);}
+    .finding{grid-template-columns:1fr;}
+    .finding .num{grid-row:auto;padding-top:0;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div class="kicker"><div class="bar"></div><span>Auditoría de sitio web</span></div>
+    <h1 class="display">vaconsa.com.mx</h1>
+    <p class="lede">Recorrido completo del sitio — Nosotros, Productos, Contacto, Responsabilidad Social y portal de Usuarios — con foco en qué le impide convertir mejor a un comprador industrial.</p>
+    <div class="meta-row">
+      <div><span class="k">Sitio</span><span class="v mono">vaconsa.com.mx</span></div>
+      <div><span class="k">Fecha</span><span class="v">16 agosto 2026</span></div>
+      <div><span class="k">Páginas revisadas</span><span class="v">7</span></div>
+      <div><span class="k">Método</span><span class="v">Navegación real + inspección de código</span></div>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="n crit">4</div><div class="l">Hallazgos alta prioridad</div></div>
+    <div class="stat"><div class="n warn">4</div><div class="l">Hallazgos media prioridad</div></div>
+    <div class="stat"><div class="n good">2</div><div class="l">Hallazgos baja prioridad</div></div>
+    <div class="stat"><div class="n">2017</div><div class="l">Año del último © y catálogos</div></div>
+  </div>
+
+  <section class="cat">
+    <div class="cat-head"><span class="idx">01</span><h2>SEO y metadatos</h2></div>
+
+    <div class="finding">
+      <div class="num">1.1</div>
+      <div class="top"><h3>La meta descripción es el texto por defecto de WordPress</h3><span class="pill crit">Alta</span></div>
+      <p>El fragmento que Google muestra debajo del título en resultados de búsqueda nunca se configuró.</p>
+      <div class="evidence"><b>Evidencia —</b> <span class="mono">&lt;meta name="description"&gt;</span> = <i>"Otro sitio realizado con WordPress"</i> en la home.</div>
+      <div class="fix"><span class="tag">Acción</span><span>Escribir una meta descripción por página (140–160 caracteres) con lo que realmente busca el comprador: "tubería, válvulas y conexiones API/ASTM en Monterrey".</span></div>
+    </div>
+
+    <div class="finding">
+      <div class="num">1.2</div>
+      <div class="top"><h3>El título de página es idéntico en todo el sitio</h3><span class="pill crit">Alta</span></div>
+      <p>Nosotros, Productos, Válvulas, Contacto, RSE y Usuarios muestran el mismo título de pestaña: "Vaconsa". Sin palabra clave ni ciudad, Google no puede diferenciar qué página responde a qué búsqueda.</p>
+      <div class="evidence"><b>Evidencia —</b> título de pestaña idéntico observado en las 6 páginas navegadas.</div>
+      <div class="fix"><span class="tag">Acción</span><span>Título único por página, ej. "Válvulas industriales API 600 | Vaconsa Monterrey".</span></div>
+    </div>
+
+    <div class="finding">
+      <div class="num">1.3</div>
+      <div class="top"><h3>Sin imagen de vista previa al compartir el enlace</h3><span class="pill warn">Media</span></div>
+      <p>No existe etiqueta <span class="mono">og:image</span>. Al pegar el link en WhatsApp, LinkedIn o Facebook, la tarjeta de previsualización aparece sin imagen — restando profesionalismo justo en el canal (WhatsApp) que el propio sitio promueve como contacto principal.</p>
+      <div class="fix"><span class="tag">Acción</span><span>Definir una imagen og:image de 1200×630 con logo + una tubería/válvula representativa.</span></div>
+    </div>
+
+    <div class="finding">
+      <div class="num">1.4</div>
+      <div class="top"><h3>La portada no tiene encabezado H1</h3><span class="pill warn">Media</span></div>
+      <p>El texto del slider principal no está marcado como H1, la etiqueta que buscadores usan para entender el tema central de la página.</p>
+      <div class="fix"><span class="tag">Acción</span><span>Convertir la frase del hero ("Vaconsa, más de 40 años...") en un H1 real.</span></div>
+    </div>
+  </section>
+
+  <section class="cat">
+    <div class="cat-head"><span class="idx">02</span><h2>Conversión y cotización</h2></div>
+
+    <div class="finding">
+      <div class="num">2.1</div>
+      <div class="top"><h3>"Solicitar Cotización" — el botón más visible del sitio — solo abre un correo en blanco</h3><span class="pill crit">Alta</span></div>
+      <p>Aparece en rojo, en el header, en cada una de las páginas. Pero es un enlace <span class="mono">mailto:</span> simple: no pide producto, cantidad, norma/diámetro ni empresa, no confirma el envío, y en móviles o navegadores sin cliente de correo configurado (muy común en Gmail web) simplemente no pasa nada visible.</p>
+      <div class="evidence"><b>Evidencia —</b> href real del botón: <span class="mono">mailto:asistentecomercial@vaconsa.com.mx</span>, sin asunto ni cuerpo prellenado.</div>
+      <div class="fix"><span class="tag">Acción</span><span>Convertirlo en un formulario de cotización (producto, cantidad, norma, empresa, adjuntar archivo) — el sitio ya tiene esa tecnología, se usa en Contacto pero no en el CTA principal.</span></div>
+    </div>
+
+    <div class="finding">
+      <div class="num">2.2</div>
+      <div class="top"><h3>Las fichas de producto no tienen ruta de conversión propia</h3><span class="pill warn">Media</span></div>
+      <p>Válvulas, Conexiones, Bridas, etc. tienen buen detalle técnico (normas ASTM/API, clases, diámetros) pero cada ficha es de solo lectura: no hay botón "cotizar esta pieza", ni buscador o filtro por norma/diámetro/material.</p>
+      <div class="fix"><span class="tag">Acción</span><span>Añadir un botón de cotización contextual en cada ficha, que precargue el producto en el formulario.</span></div>
+    </div>
+  </section>
+
+  <section class="cat">
+    <div class="cat-head"><span class="idx">03</span><h2>Contenido desactualizado</h2></div>
+
+    <div class="finding">
+      <div class="num">3.1</div>
+      <div class="top"><h3>El pie de página dice "© 2017 Vaconsa"</h3><span class="pill crit">Alta</span></div>
+      <p>Un visitante que llega hasta el footer ve un copyright de hace nueve años — señal de abandono para una empresa que se presenta como en "constante búsqueda de crecimiento".</p>
+      <div class="fix"><span class="tag">Acción</span><span>Automatizar el año del footer (o al menos actualizarlo) y revisar el resto del sitio en busca de fechas fósiles.</span></div>
+    </div>
+
+    <div class="finding">
+      <div class="num">3.2</div>
+      <div class="top"><h3>Todos los catálogos descargables son de octubre 2017</h3><span class="pill warn">Media</span></div>
+      <p>Proval, Walworth, DuoCheck, Worcester — los seis PDFs de la sección Válvulas comparten la misma fecha en la URL de subida. Además apuntan a <span class="mono">http://</span> en un sitio <span class="mono">https://</span> (funciona por upgrade automático del navegador, pero es una práctica frágil).</p>
+      <div class="fix"><span class="tag">Acción</span><span>Confirmar vigencia con proveedores y resubir en https:// directo; si siguen vigentes, decirlo ("catálogo 2024") da más confianza que el silencio.</span></div>
+    </div>
+  </section>
+
+  <section class="cat">
+    <div class="cat-head"><span class="idx">04</span><h2>Marca y redes sociales</h2></div>
+
+    <div class="finding">
+      <div class="num">4.1</div>
+      <div class="top"><h3>Cero enlaces a redes sociales en todo el sitio</h3><span class="pill warn">Media</span></div>
+      <p>Ni en el header ni en el footer de ninguna de las 7 páginas revisadas hay un ícono o link a Facebook, LinkedIn, Instagram o YouTube.</p>
+      <div class="fix"><span class="tag">Acción</span><span>Añadir los perfiles activos al footer — o crear/activar uno antes, ver siguiente punto.</span></div>
+    </div>
+
+    <div class="finding">
+      <div class="num">4.2</div>
+      <div class="top"><h3>Su página de Facebook existe pero está prácticamente abandonada</h3><span class="pill warn">Media</span></div>
+      <p>21 seguidores, 0 reseñas, última publicación con actividad visible en marzo de 2023. No está enlazada desde la web — un comprador que la busque por su cuenta se encuentra una marca que parece inactiva.</p>
+      <div class="evidence"><b>Evidencia —</b> facebook.com/p/Vaconsa-100088571340050.</div>
+      <div class="fix"><span class="tag">Acción</span><span>Para una industrial B2B de 40+ años, LinkedIn corporativo suele rendir más que Facebook (compradores, licitaciones, contratistas) — vale priorizarlo sobre reactivar Facebook.</span></div>
+    </div>
+  </section>
+
+  <section class="cat">
+    <div class="cat-head"><span class="idx">05</span><h2>Portal de usuarios y confianza</h2></div>
+
+    <div class="finding">
+      <div class="num">5.1</div>
+      <div class="top"><h3>El login de clientes no explica cómo obtener una cuenta</h3><span class="pill good">Baja</span></div>
+      <p>"Iniciar Sesión" lleva a un formulario de usuario/contraseña sin enlace de "¿olvidaste tu contraseña?" ni "solicitar acceso" — si es un portal real de seguimiento de pedidos, no es descubrible cómo entrar por primera vez.</p>
+      <div class="fix"><span class="tag">Acción</span><span>Agregar ambos enlaces, o texto breve explicando que el acceso lo asigna un ejecutivo de ventas.</span></div>
+    </div>
+
+    <div class="finding">
+      <div class="num">5.2</div>
+      <div class="top"><h3>Sin testimonios ni casos de éxito</h3><span class="pill good">Baja</span></div>
+      <p>Las certificaciones (ASTM, ASME, NACE, API) y las marcas representadas dan credibilidad técnica, pero no hay una sola cita de cliente, caso de uso por industria, ni cifra de proyectos atendidos.</p>
+      <div class="fix"><span class="tag">Acción</span><span>Sumar 2–3 testimonios reales o casos por sector (energética, siderúrgica, alimenticia) refuerza justo la etapa donde el comprador industrial decide a quién llamar.</span></div>
+    </div>
+  </section>
+
+  <div class="positives">
+    <h2>Lo que ya funciona bien</h2>
+    <ul>
+      <li><b>Contenido técnico sólido por categoría</b> — normas ASTM/API, clases de presión y diámetros están bien documentados en Válvulas y el resto del catálogo.</li>
+      <li><b>Historia y posicionamiento claros</b> — la página Nosotros comunica bien 40+ años de trayectoria, certificaciones y responsabilidad social.</li>
+      <li><b>Formulario de contacto funcional</b> — con validación visible y separación clara entre contacto comercial y bolsa de trabajo.</li>
+      <li><b>Sin errores de consola ni enlaces internos rotos</b> detectados durante el recorrido; HTTPS activo en todo el sitio.</li>
+      <li><b>Botón de WhatsApp flotante</b> — canal de contacto rápido bien resuelto para el comprador mexicano.</li>
+    </ul>
+  </div>
+
+  <div class="next-step">
+    <div class="ns-copy">
+      <div class="ns-kicker">Siguiente paso</div>
+      <h2>Ya construimos cómo se vería resuelto</h2>
+      <p>Una propuesta funcional que ataca el hallazgo más caro de esta lista: buscador por norma sobre su catálogo real y cotización en un clic desde cada ficha.</p>
+    </div>
+    <a class="ns-btn" href="index.html">Ver la propuesta →</a>
+  </div>
+
+  <footer>
+    Recorrido realizado navegando en vivo vaconsa.com.mx/, /nosotros/, /productos/, /valvulas/, /contacto/, /rse/ y /usuarios/, más inspección de metadatos, consola y enlaces. No se evaluó velocidad de carga ni comportamiento responsive en dispositivo móvil real.
+  </footer>
+
+</div>
+</body>
+</html>
