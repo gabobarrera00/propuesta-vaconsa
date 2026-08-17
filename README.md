@@ -20,10 +20,22 @@ Esta propuesta ataca el más caro: **convertir la cotización en un flujo real**
 
 ## Qué demuestra
 
+La propuesta es un **superconjunto** del sitio actual: conserva todo lo que Vaconsa ya ofrece y agrega la capa comercial que le falta. Eso es deliberado — un rediseño que borra contenido no se puede defender en una junta.
+
+**Lo que agrega**
+
 - **Buscador de especificaciones** — 25 familias de producto con sus normas reales (ASTM A106, A312 TP316L, API 600, API 6D, API 7K, ASME B16.5…), filtrables por texto y por familia. Escribir `a106` encuentra la ficha correcta.
-- **Cotización en un clic** — cada ficha prellena material y norma en el formulario y salta a él.
+- **Cotización en un clic** — cada resultado prellena material y norma en el formulario y salta a él.
 - **Servicios en planta** — corte, roscado, galvanizado, calibración y marcado, hoy enterrados al fondo de una página.
 - **Dibujo técnico en SVG** — brida acotada con línea de eje y cuadro de rótulo, en vez de foto de stock.
+
+**Lo que conserva del sitio actual**
+
+- Los **15 catálogos y tablas dimensionales** en PDF, enlazados a los archivos reales de su servidor — y además adjuntos a cada resultado de búsqueda, no solo listados aparte.
+- **Historia** (fundación 1978, razón social original) y las **certificaciones** ASTM · ASME · API · NACE.
+- **Responsabilidad social** — las cuatro iniciativas: terremoto, Día del Niño, regreso a clases y peregrinación.
+- **Bolsa de trabajo** con área de interés y carga de CV.
+- **Portal de clientes**, ambas ubicaciones con enlace a mapa, y el aviso de privacidad.
 
 El contenido técnico es real, extraído de las propias páginas de producto de Vaconsa.
 

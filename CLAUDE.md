@@ -23,6 +23,14 @@ Single file, no dependencies, no build step: `index.html` holds structure, `<sty
 
 There is a **twin copy** at `vault/03 - export/paginas-web/vaconsa-propuesta.html` — the Artifact-published variant. It is byte-identical except that it omits `<!doctype>`, `<html>`, `<head>` and `<body>` (the Artifact publisher injects those) and therefore also omits the `<meta viewport>` and SEO/OG tags that only the hosted version needs. **Edit both or they drift.** The hosted copy needs the doctype (without it browsers fall into quirks mode) and the viewport meta (without it mobile renders at desktop width).
 
+## The page must stay a superset of vaconsa.com.mx
+
+The pitch is *"todo lo que ya tienen, más lo que no tienen"* — that only survives contact with the client if it is literally true. A prospect who asks *"¿y dónde están nuestros catálogos?"* or *"¿y responsabilidad social?"* and finds them missing has just won the argument.
+
+So the page deliberately carries everything their current site carries — the 15 PDF catalogs (linked to the real files on their server), the 1978 history, certifications, the four social-responsibility initiatives, the jobs form with CV upload, the client portal, both locations, the privacy notice — plus the search and quote flow they lack. **Do not trim a section to tidy up the page.** If their site gains something, add it here too.
+
+The social-responsibility section matters more than its size suggests: a company that puts earthquake relief and a pilgrimage in its main nav is signalling what its owners care about. Dropping it reads as not having understood them.
+
 ## Content is real — keep it that way
 
 Every norm, class and diameter in the `CATALOG` array in `index.html` was taken from Vaconsa's own product pages (`/valvulas/`, `/tuberia-de-acero-al-carbon/`, `/conexiones/`, `/bridas/`, `/inoxidable/`, `/equipo-de-control-de-presion/`, `/instrumentacion/`, `/pvc/`). The credibility of the pitch rests on a buying engineer recognizing their own specs. Never invent a norm or a pressure class to fill a gap — if something is unknown, the field says "Consultar".

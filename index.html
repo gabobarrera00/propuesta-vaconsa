@@ -110,7 +110,14 @@
   .brand .mark{width:34px;height:34px;flex:none;}
   .brand .name{font-size:19px;letter-spacing:.14em;}
   .brand .name em{font-style:normal;color:var(--red);}
-  nav.main{display:flex;gap:26px;margin-left:auto;font-size:13px;}
+  nav.main{display:flex;gap:22px;margin-left:auto;font-size:13px;}
+  .portal{
+    display:flex;align-items:center;gap:7px;flex:none;
+    font-size:12.5px;color:var(--muted);text-decoration:none;
+    border:1px solid var(--line);padding:9px 13px;transition:.15s;
+  }
+  .portal:hover{color:var(--ink);border-color:var(--steel);}
+  @media(max-width:1000px){.portal span{display:none;}}
   nav.main a{text-decoration:none;color:var(--muted);padding:4px 0;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;}
   nav.main a:hover{color:var(--ink);border-bottom-color:var(--red);}
   .btn{
@@ -215,11 +222,45 @@
   .spec dd{margin:0;font-family:Consolas,monospace;font-variant-numeric:tabular-nums;}
   .card .foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto;padding-top:6px;border-top:1px solid var(--line-soft);}
   .card .foot .norm{font-size:11px;color:var(--muted);font-family:Consolas,monospace;}
+  .doc-link{color:var(--steel);text-decoration:none;border-bottom:1px solid var(--line);}
+  .doc-link:hover{color:var(--red);border-bottom-color:var(--red);}
   .empty{
     grid-column:1/-1;text-align:center;padding:44px 20px;
     border:1px dashed var(--line);color:var(--muted);font-size:14px;
   }
   .empty b{display:block;color:var(--ink);margin-bottom:6px;font-size:15px;}
+
+  /* ---------- docs ---------- */
+  .docs{padding:52px 0;border-bottom:1px solid var(--line);}
+  .doc-group{margin-bottom:26px;}
+  .doc-group:last-child{margin-bottom:0;}
+  .doc-group-t{
+    font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;
+    color:var(--steel);font-weight:700;margin-bottom:9px;
+  }
+  .doc-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  @media(max-width:720px){.doc-list{grid-template-columns:1fr;}}
+  .doc-list li{background:var(--surface);}
+  .doc-list a{
+    display:flex;align-items:center;gap:13px;
+    padding:13px 16px;text-decoration:none;transition:background .15s;
+  }
+  .doc-list a:hover{background:var(--surface-2);}
+  .doc-list a:hover .dl-n{color:var(--red);}
+  .dl-ico{
+    flex:none;font-family:Consolas,monospace;font-size:9.5px;font-weight:700;
+    letter-spacing:.06em;color:var(--red);
+    border:1px solid var(--red);padding:3px 5px;
+  }
+  .dl-n{font-size:13.5px;font-weight:600;flex:1;min-width:0;}
+  .dl-m{
+    flex:none;font-family:Consolas,monospace;font-size:11px;color:var(--muted);
+    text-align:right;
+  }
+  @media(max-width:480px){
+    .doc-list a{flex-wrap:wrap;}
+    .dl-m{text-align:left;width:100%;padding-left:41px;}
+  }
 
   /* ---------- services ---------- */
   .services{padding:52px 0;border-bottom:1px solid var(--line);background:var(--surface-2);}
@@ -243,6 +284,30 @@
   .badge span{color:var(--muted);font-weight:400;font-size:11px;margin-left:6px;}
   .brands{display:flex;flex-wrap:wrap;gap:8px;}
   .brandtag{border:1px solid var(--line);background:var(--surface);padding:9px 14px;font-size:12.5px;}
+
+  /* ---------- about ---------- */
+  .about{padding:52px 0;border-bottom:1px solid var(--line);background:var(--surface-2);}
+  .about-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:44px;align-items:start;}
+  @media(max-width:820px){.about-grid{grid-template-columns:1fr;gap:30px;}}
+  .about-copy p{margin:0 0 14px;font-size:14.5px;}
+  .about-copy p:last-child{margin-bottom:0;}
+  .about-copy em{color:var(--steel);}
+  .timeline{list-style:none;margin:0;padding:0;border-left:2px solid var(--red);}
+  .timeline li{display:flex;flex-direction:column;gap:3px;padding:0 0 20px 18px;}
+  .timeline li:last-child{padding-bottom:0;}
+  .tl-y{font-family:Consolas,monospace;font-variant-numeric:tabular-nums;font-size:19px;font-weight:700;line-height:1;}
+  .tl-t{font-size:12.5px;color:var(--muted);}
+
+  /* ---------- responsabilidad social ---------- */
+  .social{padding:52px 0;border-bottom:1px solid var(--line);}
+  .rse-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  @media(max-width:820px){.rse-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:480px){.rse-grid{grid-template-columns:1fr;}}
+  .rse{background:var(--surface);padding:22px 18px;display:flex;flex-direction:column;gap:10px;}
+  .rse-ico{color:var(--red);}
+  .rse-ico svg{width:26px;height:26px;display:block;}
+  .rse h3{margin:0;font-size:14.5px;font-weight:700;}
+  .rse p{margin:0;font-size:12.5px;color:var(--muted);}
 
   /* ---------- quote ---------- */
   .quote{padding:56px 0;border-bottom:1px solid var(--line);background:var(--surface-2);}
@@ -280,6 +345,33 @@
   .loc p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.6;}
   .loc a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);}
   .loc a:hover{border-bottom-color:var(--red);}
+
+  .maplink{
+    display:inline-block;margin-top:11px;font-size:12px;
+    color:var(--red);text-decoration:none;border-bottom:1px solid transparent;
+  }
+  .maplink:hover{border-bottom-color:var(--red);}
+
+  /* ---------- bolsa de trabajo ---------- */
+  .jobs{
+    margin-top:32px;border:1px solid var(--line);background:var(--surface);
+    display:grid;grid-template-columns:.8fr 1.2fr;gap:36px;padding:28px 30px;
+  }
+  @media(max-width:820px){.jobs{grid-template-columns:1fr;gap:24px;}}
+  .jobs-copy h3{margin:0 0 8px;font-size:18px;font-weight:700;}
+  .jobs-copy p{margin:0;font-size:13.5px;color:var(--muted);}
+  .jfields{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .jfields .jfull{grid-column:1/-1;}
+  @media(max-width:560px){.jfields{grid-template-columns:1fr;}}
+  .jobs-form .btn{margin-top:16px;width:100%;justify-content:center;padding:13px;}
+  input[type=file]{
+    width:100%;background:var(--surface);color:var(--ink);
+    border:1px solid var(--line);padding:10px 12px;font-size:13px;font-family:inherit;
+  }
+  input[type=file]::file-selector-button{
+    background:var(--surface-2);color:var(--ink);border:1px solid var(--line);
+    padding:5px 10px;margin-right:10px;font-family:inherit;font-size:12px;cursor:pointer;
+  }
 
   footer.site{border-top:1px solid var(--line);background:var(--surface);padding:26px 0;}
   footer.site .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);}
@@ -320,10 +412,18 @@
     </a>
     <nav class="main">
       <a href="#catalogo">Catálogo</a>
+      <a href="#documentos">Fichas técnicas</a>
       <a href="#servicios">Servicios</a>
-      <a href="#respaldo">Respaldo</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#social">Responsabilidad</a>
       <a href="#contacto">Contacto</a>
     </nav>
+    <a class="portal" href="https://www.vaconsa.com.mx/usuarios/" target="_blank" rel="noopener" title="Portal de clientes">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <circle cx="8" cy="5.2" r="2.8"/><path d="M2.6 14c0-2.8 2.4-4.6 5.4-4.6s5.4 1.8 5.4 4.6"/>
+      </svg>
+      <span>Clientes</span>
+    </a>
     <a class="btn" href="#cotizar">Solicitar cotización</a>
   </div>
 </header>
@@ -397,7 +497,7 @@
 <section class="finder" id="catalogo">
   <div class="wrap">
     <div class="sec-head"><span class="idx">01</span><h2>Buscador de material</h2></div>
-    <p class="sec-sub">Escriba una norma, un material o un diámetro — por ejemplo <span class="mono">A106</span>, <span class="mono">316L</span>, <span class="mono">API 6A</span> o <span class="mono">inoxidable</span>.</p>
+    <p class="sec-sub">Escriba una norma, un material o un diámetro — por ejemplo <span class="mono">A106</span>, <span class="mono">316L</span>, <span class="mono">API 6A</span> o <span class="mono">inoxidable</span>. Cada resultado trae su ficha técnica descargable y cotiza en un clic.</p>
 
     <div class="search-row">
       <div class="search-field">
@@ -413,9 +513,61 @@
   </div>
 </section>
 
+<section class="docs" id="documentos">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">02</span><h2>Catálogos y fichas técnicas</h2></div>
+    <p class="sec-sub">Las tablas dimensionales y los catálogos de fábrica que su ingeniería necesita antes de emitir una orden.</p>
+
+    <div class="doc-group">
+      <div class="doc-group-t">Tubería y conexiones</div>
+      <ul class="doc-list">
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2017/10/espesorestuberia.pdf" target="_blank" rel="noopener"><span class="dl-ico">PDF</span><span class="dl-n">Espesores de tubería de acero</span><span class="dl-m">Tabla dimensional</span></a></li>
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2017/10/espesores_conexion_soldable.pdf" target="_blank" rel="noopener"><span class="dl-ico">PDF</span><span class="dl-n">Espesores de conexión soldable a tope</span><span class="dl-m">ASTM A234 WPB</span></a></li>
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2017/10/pesosconexionforjadantp.pdf" target="_blank" rel="noopener"><span class="dl-ico">PDF</span><span class="dl-n">Pesos de conexión forjada NPT</span><span class="dl-m">ASTM A105</span></a></li>
+      </ul>
+    </div>
+
+    <div class="doc-group">
+      <div class="doc-group-t">Bridas — dimensiones por clase</div>
+      <ul class="doc-list">
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2017/10/tabla_bridas_150.pdf" target="_blank" rel="noopener"><span class="dl-ico">PDF</span><span class="dl-n">Dimensiones de bridas</span><span class="dl-m">Clase 150#</span></a></li>
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2017/10/tabla_bridas_300.pdf" target="_blank" rel="noopener"><span class="dl-ico">PDF</span><span class="dl-n">Dimensiones de bridas</span><span class="dl-m">Clase 300#</span></a></li>
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2017/10/tabla_bridas_600.pdf" target="_blank" rel="noopener"><span class="dl-ico">PDF</span><span class="dl-n">Dimensiones de bridas</span><span class="dl-m">Clase 600#</span></a></li>
+      </ul>
+    </div>
+
+    <div class="doc-group">
+      <div class="doc-group-t">Acero inoxidable</div>
+      <ul class="doc-list">
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2017/10/tuberia-sin-costura.pdf" target="_blank" rel="noopener"><span class="dl-ico">PDF</span><span class="dl-n">Tubería inoxidable sin costura</span><span class="dl-m">A312 TP304/316</span></a></li>
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2017/10/tuberia-con-costura.pdf" target="_blank" rel="noopener"><span class="dl-ico">PDF</span><span class="dl-n">Tubería inoxidable con costura</span><span class="dl-m">A312 TP304/304L</span></a></li>
+      </ul>
+    </div>
+
+    <div class="doc-group">
+      <div class="doc-group-t">Válvulas — catálogos de fábrica</div>
+      <ul class="doc-list">
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2017/10/Catalogo-Proval.pdf" target="_blank" rel="noopener"><span class="dl-ico">PDF</span><span class="dl-n">Proval — válvulas de mariposa</span><span class="dl-m">Wafer · Lug · Bridada</span></a></li>
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2017/10/Walworth.pdf" target="_blank" rel="noopener"><span class="dl-ico">PDF</span><span class="dl-n">Walworth — acero fundido</span><span class="dl-m">API 600</span></a></li>
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2017/10/Walworth-Forjado.pdf" target="_blank" rel="noopener"><span class="dl-ico">PDF</span><span class="dl-n">Walworth — acero forjado</span><span class="dl-m">API 602</span></a></li>
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2017/10/ES-Duocheck-PROVAL.pdf" target="_blank" rel="noopener"><span class="dl-ico">PDF</span><span class="dl-n">Proval — DUO Check</span><span class="dl-m">Retención de doble clapeta</span></a></li>
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2017/10/CATALOGO-Worcester.pdf" target="_blank" rel="noopener"><span class="dl-ico">PDF</span><span class="dl-n">Worcester — válvulas de esfera</span><span class="dl-m">API 6D</span></a></li>
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2017/10/WM-Cond-Catalog-Spanish.pdf" target="_blank" rel="noopener"><span class="dl-ico">PDF</span><span class="dl-n">Condensado y vapor</span><span class="dl-m">Trampas · reguladoras · alivio</span></a></li>
+      </ul>
+    </div>
+
+    <div class="doc-group">
+      <div class="doc-group-t">Instrumentación</div>
+      <ul class="doc-list">
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2017/10/Catalogo_De_Wit_Completo.pdf" target="_blank" rel="noopener"><span class="dl-ico">PDF</span><span class="dl-n">De Wit — catálogo completo</span><span class="dl-m">Manómetros y termómetros</span></a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <section class="services" id="servicios">
   <div class="wrap">
-    <div class="sec-head"><span class="idx">02</span><h2>Servicios en planta</h2></div>
+    <div class="sec-head"><span class="idx">03</span><h2>Servicios en planta</h2></div>
     <p class="sec-sub">Además de surtir el material, lo preparamos listo para instalar — evitando que su cuadrilla lo haga en obra.</p>
     <div class="svc-grid">
       <div class="svc"><div class="n">S-01</div><h3>Corte, roscado y biselado</h3><p>Tubería de acero a la medida y preparación de junta lista para soldar.</p></div>
@@ -427,9 +579,29 @@
   </div>
 </section>
 
+<section class="about" id="nosotros">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">04</span><h2>Nosotros</h2></div>
+    <p class="sec-sub">Cuatro décadas surtiendo a la industria energética, siderúrgica, química, alimenticia, farmacéutica, manufacturera y OEM.</p>
+
+    <div class="about-grid">
+      <div class="about-copy">
+        <p><strong>Vaconsa Productos Industriales</strong> inició operaciones el <strong>17 de febrero de 1978</strong> bajo la razón social <em>Válvulas y Conexiones del Norte, S.A. de C.V.</em>, distribuyendo válvulas, tubería y conexiones de acero al carbón, acero inoxidable y especialidades.</p>
+        <p>Con el tiempo se construyeron relaciones sólidas con clientes y proveedores, lo que nos permite sostener un inventario amplio y responder a las exigencias reales del mercado industrial del noreste.</p>
+        <p>Comercializamos producto de alta calidad con soporte directo de fábrica, y entregamos cada embarque con su certificado correspondiente.</p>
+      </div>
+      <ol class="timeline">
+        <li><span class="tl-y">1978</span><span class="tl-t">Fundación como Válvulas y Conexiones del Norte, S.A. de C.V.</span></li>
+        <li><span class="tl-y">Hoy</span><span class="tl-t">Corporativo en San Pedro y centro de distribución en Santa Catarina</span></li>
+        <li><span class="tl-y">48</span><span class="tl-t">Años de operación continua respaldando proyectos industriales</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
 <section class="trust" id="respaldo">
   <div class="wrap">
-    <div class="sec-head"><span class="idx">03</span><h2>Respaldo técnico</h2></div>
+    <div class="sec-head"><span class="idx">05</span><h2>Respaldo técnico</h2></div>
     <p class="sec-sub">Material certificado y marcas representadas con soporte directo de fábrica.</p>
     <div class="trust-grid">
       <div>
@@ -458,9 +630,47 @@
   </div>
 </section>
 
+<section class="social" id="social">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">06</span><h2>Responsabilidad social</h2></div>
+    <p class="sec-sub">Entendemos la responsabilidad social como una forma de gestión: que nuestra actividad sea sustentable en lo comercial, lo económico, lo social y lo ambiental, y que mejore el entorno para las generaciones que siguen.</p>
+
+    <div class="rse-grid">
+      <article class="rse">
+        <div class="rse-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10h18M5 10V6h14v4M7 21v-6h4v6M14 15h3v6"/><path d="M2 21h20"/></svg>
+        </div>
+        <h3>Apoyo en terremoto</h3>
+        <p>Acopio y entrega de víveres y materiales con nuestro propio personal y transporte.</p>
+      </article>
+      <article class="rse">
+        <div class="rse-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="3.2"/><path d="M5 21c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg>
+        </div>
+        <h3>Día del Niño</h3>
+        <p>Convivencia anual con las familias de quienes trabajan en la empresa.</p>
+      </article>
+      <article class="rse">
+        <div class="rse-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6.5h7a2 2 0 0 1 2 2V20a2.5 2.5 0 0 0-2.5-2.5H3z"/><path d="M21 6.5h-7a2 2 0 0 0-2 2V20a2.5 2.5 0 0 1 2.5-2.5H21z"/></svg>
+        </div>
+        <h3>Regreso a clases</h3>
+        <p>Entrega de útiles escolares para los hijos de nuestros colaboradores.</p>
+      </article>
+      <article class="rse">
+        <div class="rse-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v18M12 3c2.5 1.4 4.6 1.4 7 0v8c-2.4 1.4-4.5 1.4-7 0"/><path d="M8 21h8"/></svg>
+        </div>
+        <h3>Peregrinación</h3>
+        <p>Tradición anual que sostenemos junto con nuestra gente.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
 <section class="quote" id="cotizar">
   <div class="wrap">
-    <div class="sec-head"><span class="idx">04</span><h2>Solicitar cotización</h2></div>
+    <div class="sec-head"><span class="idx">07</span><h2>Solicitar cotización</h2></div>
     <p class="sec-sub">Dígannos qué necesita y con qué norma. Entre más específico, más rápido le respondemos.</p>
     <div class="quote-grid">
       <aside>
@@ -518,16 +728,18 @@
 
 <section class="contact" id="contacto">
   <div class="wrap">
-    <div class="sec-head"><span class="idx">05</span><h2>Dónde estamos</h2></div>
+    <div class="sec-head"><span class="idx">08</span><h2>Dónde estamos</h2></div>
     <p class="sec-sub">Corporativo en San Pedro y centro de distribución en Santa Catarina.</p>
     <div class="loc-grid">
       <div class="loc">
         <div class="k">Corporativo</div>
         <p>Frida Kahlo 195, Col. Valle Oriente<br>Torre Vértice, piso 14, suite 1410<br>San Pedro Garza García, N.L. CP 66269</p>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=Frida+Kahlo+195+Torre+Vertice+Valle+Oriente+San+Pedro+Garza+Garcia" target="_blank" rel="noopener">Cómo llegar →</a>
       </div>
       <div class="loc">
         <div class="k">Centro de distribución</div>
         <p>Hernán Santos Cantú #231<br>Desarrollo Industrial Monterrey<br>Santa Catarina, N.L. CP 66390</p>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&amp;query=Hernan+Santos+Cantu+231+Desarrollo+Industrial+Monterrey+Santa+Catarina" target="_blank" rel="noopener">Cómo llegar →</a>
       </div>
       <div class="loc">
         <div class="k">Contacto directo</div>
@@ -538,12 +750,50 @@
         </p>
       </div>
     </div>
+
+    <div class="jobs" id="empleo">
+      <div class="jobs-copy">
+        <div class="eyebrow"><div class="rule"></div><span>Únete a nuestro equipo</span></div>
+        <h3>¿Quiere trabajar con nosotros?</h3>
+        <p>Déjenos su currículum y el área que le interesa. Nos interesa saber de su experiencia aunque no haya una vacante abierta hoy.</p>
+      </div>
+      <form class="jobs-form" id="jobsForm" novalidate>
+        <div class="jfields">
+          <div>
+            <label for="j-nom">Nombre <span class="req">*</span></label>
+            <input type="text" id="j-nom" placeholder="Nombre completo" required>
+          </div>
+          <div>
+            <label for="j-mail">Correo <span class="req">*</span></label>
+            <input type="email" id="j-mail" placeholder="correo@ejemplo.com" required>
+          </div>
+          <div>
+            <label for="j-tel">Teléfono</label>
+            <input type="tel" id="j-tel" placeholder="Con clave lada">
+          </div>
+          <div>
+            <label for="j-area">Área de interés</label>
+            <select id="j-area">
+              <option>Comercial</option>
+              <option>Almacén</option>
+              <option>Administración</option>
+            </select>
+          </div>
+          <div class="jfull">
+            <label for="j-cv">Adjuntar CV</label>
+            <input type="file" id="j-cv" accept=".pdf,.doc,.docx">
+          </div>
+        </div>
+        <button class="btn" type="submit">Enviar solicitud</button>
+        <p class="form-note">Demostración — el formulario no envía información real.</p>
+      </form>
+    </div>
   </div>
 </section>
 
 <footer class="site">
   <div class="wrap">
-    <span>© <span id="year"></span> Vaconsa Productos Industriales · Válvulas y Conexiones del Norte, S.A. de C.V.</span>
+    <span>© <span id="year"></span> Vaconsa Productos Industriales · Válvulas y Conexiones del Norte, S.A. de C.V. · <a href="https://www.vaconsa.com.mx/wp-content/uploads/2019/02/avisodeprivacidad.pdf" target="_blank" rel="noopener">Aviso de privacidad</a></span>
     <span>Propuesta visual sin afiliación oficial · <strong>Nexo Web</strong></span>
   </div>
 </footer>
@@ -558,28 +808,28 @@
 document.getElementById('year').textContent = new Date().getFullYear();
 
 const CATALOG = [
-  { fam:'Tubería', name:'Tubería de acero al carbón sin costura',
+  { fam:'Tubería', name:'Tubería de acero al carbón sin costura', docLabel:'Espesores de tubería', docUrl:'https://www.vaconsa.com.mx/wp-content/uploads/2017/10/espesorestuberia.pdf',
     norma:'ASTM A106 · A53-B · API 5L (PSL 1 / PSL 2)', diam:'½" – 24"', mat:'Acero al carbón',
     tags:'a106 a53 api5l psl1 psl2 sin costura seamless carbon tuberia pipe' },
-  { fam:'Tubería', name:'Tubería de acero al carbón con costura',
+  { fam:'Tubería', name:'Tubería de acero al carbón con costura', docLabel:'Espesores de tubería', docUrl:'https://www.vaconsa.com.mx/wp-content/uploads/2017/10/espesorestuberia.pdf',
     norma:'ASTM A53 Gr.A / Gr.B · ERW · DSAW · SSAW', diam:'½" – 60"', mat:'Acero al carbón',
     tags:'a53 erw dsaw ssaw con costura soldada tuberia pipe carbon' },
   { fam:'Tubería', name:'Tubería aleada para alta temperatura',
     norma:'ASTM A333 Gr.1/3/6 · A213 · SA210', diam:'Consultar', mat:'Acero aleado',
     tags:'a333 a213 sa210 aleada baja temperatura caldera aleado' },
-  { fam:'Conexiones', name:'Conexión soldable a tope',
+  { fam:'Conexiones', name:'Conexión soldable a tope', docLabel:'Espesores de conexión soldable', docUrl:'https://www.vaconsa.com.mx/wp-content/uploads/2017/10/espesores_conexion_soldable.pdf',
     norma:'ASTM A234 WPB', diam:'½" – 48"', mat:'Acero al carbón',
     tags:'a234 wpb soldable tope codo tee reduccion buttweld conexion' },
-  { fam:'Conexiones', name:'Conexión forjada roscada y socket',
+  { fam:'Conexiones', name:'Conexión forjada roscada y socket', docLabel:'Pesos de conexión forjada', docUrl:'https://www.vaconsa.com.mx/wp-content/uploads/2017/10/pesosconexionforjadantp.pdf',
     norma:'ASTM A105 · clases 3000# y 6000#', diam:'⅛" – 4"', mat:'Acero forjado',
     tags:'a105 forjada roscada npt socket weld sw 3000 6000 conexion' },
   { fam:'Conexiones', name:'Conexión bridada de fierro fundido',
     norma:'Para agua potable', diam:'Consultar', mat:'Fierro fundido',
     tags:'fierro fundido agua potable bridada conexion' },
-  { fam:'Bridas', name:'Brida forjada de acero al carbón',
+  { fam:'Bridas', name:'Brida forjada de acero al carbón', docLabel:'Dimensiones clase 150#', docUrl:'https://www.vaconsa.com.mx/wp-content/uploads/2017/10/tabla_bridas_150.pdf',
     norma:'ASTM A105 · ASME B16.5 / B16.20', diam:'½" – 48"', mat:'Acero forjado',
     tags:'a105 b16.5 brida slip on wn cuello roscada ciega blind sw rf ff rtj 150 300 600 900 1500' },
-  { fam:'Inoxidable', name:'Tubería de acero inoxidable',
+  { fam:'Inoxidable', name:'Tubería de acero inoxidable', docLabel:'Ficha técnica sin costura', docUrl:'https://www.vaconsa.com.mx/wp-content/uploads/2017/10/tuberia-sin-costura.pdf',
     norma:'ASTM A312 TP304/304L · TP316/316L', diam:'Con y sin costura', mat:'Inoxidable',
     tags:'a312 304 304l 316 316l inoxidable stainless tuberia' },
   { fam:'Inoxidable', name:'Conexiones y bridas inoxidables',
@@ -588,22 +838,22 @@ const CATALOG = [
   { fam:'Inoxidable', name:'Tubing inoxidable y aleaciones',
     norma:'304/304L · 316/316L · Hastelloy C-22', diam:'Instrumentación', mat:'Inoxidable / aleación',
     tags:'tubing hastelloy c22 304 316 instrumentacion aleacion' },
-  { fam:'Válvulas', name:'Válvula de compuerta, globo y check',
+  { fam:'Válvulas', name:'Válvula de compuerta, globo y check', docLabel:'Catálogo Walworth', docUrl:'https://www.vaconsa.com.mx/wp-content/uploads/2017/10/Walworth.pdf',
     norma:'API 600 · ASTM A216 · 125# a 1500#', diam:'Fundida', mat:'Acero al carbón',
     tags:'api600 a216 compuerta globo check gate globe fundida valvula 150 300 600 900 1500' },
-  { fam:'Válvulas', name:'Válvula forjada compuerta, globo y check',
+  { fam:'Válvulas', name:'Válvula forjada compuerta, globo y check', docLabel:'Catálogo Walworth forjado', docUrl:'https://www.vaconsa.com.mx/wp-content/uploads/2017/10/Walworth-Forjado.pdf',
     norma:'API 602 · ASTM A105 · 150# a 2500#', diam:'½" – 2"', mat:'Acero forjado',
     tags:'api602 a105 forjada compuerta globo check valvula 800 1500 2500' },
-  { fam:'Válvulas', name:'Válvula de esfera flotante y muñón',
+  { fam:'Válvulas', name:'Válvula de esfera flotante y muñón', docLabel:'Catálogo Worcester', docUrl:'https://www.vaconsa.com.mx/wp-content/uploads/2017/10/CATALOGO-Worcester.pdf',
     norma:'API 6D', diam:'½" – 48"', mat:'Carbón · inox · bronce · latón',
     tags:'api6d esfera bola ball flotante munon trunnion valvula bronce laton' },
-  { fam:'Válvulas', name:'Válvula mariposa wafer, lug y bridada',
+  { fam:'Válvulas', name:'Válvula mariposa wafer, lug y bridada', docLabel:'Catálogo Proval', docUrl:'https://www.vaconsa.com.mx/wp-content/uploads/2017/10/Catalogo-Proval.pdf',
     norma:'Disco DI o inoxidable', diam:'Palanca o actuador', mat:'Hierro dúctil / inox',
     tags:'mariposa butterfly wafer lug bridada actuador neumatico electrico valvula' },
-  { fam:'Válvulas', name:'Válvula de retención DUO Check',
+  { fam:'Válvulas', name:'Válvula de retención DUO Check', docLabel:'Catálogo DUO Check', docUrl:'https://www.vaconsa.com.mx/wp-content/uploads/2017/10/ES-Duocheck-PROVAL.pdf',
     norma:'Clases 125# · 150# · 300# · 600# · 900#', diam:'Consultar', mat:'Hierro y acero fundido',
     tags:'duo check retencion doble clapeta valvula' },
-  { fam:'Vapor', name:'Trampas de vapor y reguladoras',
+  { fam:'Vapor', name:'Trampas de vapor y reguladoras', docLabel:'Catálogo de condensado', docUrl:'https://www.vaconsa.com.mx/wp-content/uploads/2017/10/WM-Cond-Catalog-Spanish.pdf',
     norma:'Termodinámicas · termostáticas · alivio', diam:'Consultar', mat:'Servicio de vapor',
     tags:'vapor steam trampa termodinamica termostatica reguladora presion alivio eliminador aire' },
   { fam:'Vapor', name:'Filtros Y para retención de partículas',
@@ -618,10 +868,10 @@ const CATALOG = [
   { fam:'Petrolero', name:'Uniones de golpe y juntas giratorias',
     norma:'ASTM A105 · AISI 4130 · hasta 15,000 psi', diam:'1" – 12"', mat:'Acero forjado',
     tags:'union golpe hammer union junta giratoria swivel 4130 a105 15000 psi petrolero' },
-  { fam:'Instrumentación', name:'Manómetros industriales y patrón',
+  { fam:'Instrumentación', name:'Manómetros industriales y patrón', docLabel:'Catálogo De Wit', docUrl:'https://www.vaconsa.com.mx/wp-content/uploads/2017/10/Catalogo_De_Wit_Completo.pdf',
     norma:'Bourdon de bronce o inoxidable', diam:'Diafragma · dúplex · seguridad', mat:'Instrumentación',
     tags:'manometro presion bourdon bronce inoxidable diafragma duplex patron seguridad' },
-  { fam:'Instrumentación', name:'Termómetros bimetálicos y de bulbo',
+  { fam:'Instrumentación', name:'Termómetros bimetálicos y de bulbo', docLabel:'Catálogo De Wit', docUrl:'https://www.vaconsa.com.mx/wp-content/uploads/2017/10/Catalogo_De_Wit_Completo.pdf',
     norma:'AISI 316', diam:'Bulbo rígido · capilar', mat:'Instrumentación',
     tags:'termometro bimetalico bulbo rigido capilar 316 temperatura' },
   { fam:'Instrumentación', name:'Válvula de aguja alta presión',
@@ -698,12 +948,25 @@ function render(){
         '<div class="spec"><dt>Medida</dt><dd class="v-diam"></dd></div>' +
         '<div class="spec"><dt>Material</dt><dd class="v-mat"></dd></div>' +
       '</dl>' +
-      '<div class="foot"><span class="norm">Certificado incluido</span></div>';
+      '<div class="foot"><span class="norm"></span></div>';
     card.querySelector('h3').textContent = item.name;
     card.querySelector('.cat').textContent = item.fam;
     card.querySelector('.v-norma').textContent = item.norma;
     card.querySelector('.v-diam').textContent = item.diam;
     card.querySelector('.v-mat').textContent = item.mat;
+
+    const norm = card.querySelector('.norm');
+    if (item.docUrl){
+      const a = document.createElement('a');
+      a.href = item.docUrl;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.className = 'doc-link';
+      a.textContent = '↓ ' + item.docLabel;
+      norm.appendChild(a);
+    } else {
+      norm.textContent = 'Certificado incluido';
+    }
 
     const b = document.createElement('button');
     b.className = 'btn sm';
@@ -731,6 +994,27 @@ function prefill(prod, norma){
 qEl.addEventListener('input', render);
 buildChips();
 render();
+
+document.getElementById('jobsForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const form = e.target;
+  for (const id of ['j-nom','j-mail']){
+    const el = form.querySelector('#' + id);
+    if (!el.value.trim()){ el.focus(); el.style.borderColor = 'var(--red)'; return; }
+  }
+  const nombre = form.querySelector('#j-nom').value.trim();
+  const area = form.querySelector('#j-area').value;
+  const done = document.createElement('div');
+  done.className = 'sent';
+  done.innerHTML =
+    '<div class="big">Solicitud recibida</div>' +
+    '<p>Gracias, <span class="r-nom"></span>. Guardamos su currículum para el área de <span class="r-area"></span> y le avisaremos cuando haya una vacante que corresponda.</p>' +
+    '<p style="font-size:11.5px;">(Demostración — no se envió información real.)</p>';
+  done.querySelector('.r-nom').textContent = nombre;
+  done.querySelector('.r-area').textContent = area;
+  form.replaceWith(done);
+  done.scrollIntoView({behavior:'smooth', block:'center'});
+});
 
 document.getElementById('quoteForm').addEventListener('submit', function(e){
   e.preventDefault();
