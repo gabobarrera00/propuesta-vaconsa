@@ -1,3 +1,4 @@
+// Portal de clientes — prototipo visual, sin backend. Datos de ejemplo fijos
 // en el navegador; no representan clientes reales de Vaconsa.
 const PORTAL_CLIENTS = [
   { name:'Construcciones Industriales Ferrand, S.A. de C.V.', invoices:[
