@@ -1,0 +1,70 @@
+<!--
+title: Solicitar cotización — Vaconsa | Nexo Web
+description: Solicite cotización de tubería, válvulas o conexiones — respuesta el mismo día hábil.
+nav: cotizar
+script: <script src="/cotizar.js"></script>
+-->
+
+<section class="quote" id="cotizar">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">08</span><h2>Solicitar cotización</h2></div>
+    <p class="sec-sub">Dígannos qué necesita y con qué norma. Entre más específico, más rápido le respondemos.</p>
+    <div class="quote-grid">
+      <aside>
+        <p>Nuestro equipo comercial revisa cada solicitud contra inventario real antes de responder — no enviamos listas de precio genéricas.</p>
+        <ul>
+          <li><span class="tick">→</span><span>Respuesta el mismo día hábil si se recibe antes de las 15:00 h.</span></li>
+          <li><span class="tick">→</span><span>Si no lo tenemos en piso, le decimos el tiempo real de entrega.</span></li>
+          <li><span class="tick">→</span><span>¿Prefiere hablarlo? <strong>+52 (81) 81 00 65 00</strong></span></li>
+        </ul>
+      </aside>
+
+      <div id="formSlot">
+        <!-- Sin novalidate, a propósito: el marcado de abajo ya trae type="email" y
+             required, y el navegador los valida gratis, en el idioma del usuario, con
+             el teclado correcto en móvil. La validación a mano que había aquí solo
+             revisaba que el campo no estuviera vacío, así que "asdf" pasaba como
+             correo. El formulario de bolsa de trabajo (más abajo) tenía el mismo
+             problema — arreglado igual, ver AUDITORIA.md #1. -->
+        <form class="quote-form" id="quoteForm">
+          <div class="fields">
+            <div class="full">
+              <label for="f-prod">Material que necesita <span class="req">*</span></label>
+              <input type="text" id="f-prod" name="prod" required placeholder="Ej. Tubería A106 Gr.B sin costura 6&quot;">
+            </div>
+            <div>
+              <label for="f-norma">Norma o especificación</label>
+              <input type="text" id="f-norma" name="norma" placeholder="ASTM A106 / API 5L">
+            </div>
+            <div>
+              <label for="f-cant">Cantidad</label>
+              <input type="text" id="f-cant" name="cant" placeholder="Ej. 120 m / 40 pzas">
+            </div>
+            <div>
+              <label for="f-emp">Empresa <span class="req">*</span></label>
+              <input type="text" id="f-emp" name="empresa" required placeholder="Razón social">
+            </div>
+            <div>
+              <label for="f-nom">Nombre <span class="req">*</span></label>
+              <input type="text" id="f-nom" name="nombre" required placeholder="Quién solicita">
+            </div>
+            <div>
+              <label for="f-mail">Correo <span class="req">*</span></label>
+              <input type="email" id="f-mail" name="correo" required placeholder="compras@empresa.com">
+            </div>
+            <div>
+              <label for="f-tel">Teléfono</label>
+              <input type="tel" id="f-tel" name="tel" placeholder="Con clave lada">
+            </div>
+            <div class="full">
+              <label for="f-msg">Detalles del proyecto</label>
+              <textarea id="f-msg" name="msg" rows="3" placeholder="Servicio, presión de trabajo, fecha requerida en obra…"></textarea>
+            </div>
+          </div>
+          <button class="btn" type="submit">Enviar solicitud</button>
+          <p class="form-note">Demostración — el formulario no envía información real.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
