@@ -19,9 +19,15 @@ Do not remove any of these, and do not wire the form to a real endpoint while th
 
 ## Architecture
 
-Single file, no dependencies, no build step: `index.html` holds structure, `<style>` and `<script>`.
+Multi-page site generated from a shared template, with a small build step:
 
-There is a **twin copy** at `vault/03 - export/paginas-web/vaconsa-propuesta.html` — the Artifact-published variant. It is byte-identical except that it omits `<!doctype>`, `<html>`, `<head>` and `<body>` (the Artifact publisher injects those) and therefore also omits the `<meta viewport>` and SEO/OG tags that only the hosted version needs. **Edit both or they drift.** The hosted copy needs the doctype (without it browsers fall into quirks mode) and the viewport meta (without it mobile renders at desktop width).
+- `_layout.html` — header, nav, footer and the common `<head>` block, with placeholders (`{{TITLE}}`, `{{DESCRIPTION}}`, `{{CANONICAL}}`, `{{CONTENT}}`, `{{PAGE_SCRIPT}}`) that `build.py` fills in
+- `pages/*.html` — one page per section (inicio, catálogo, fichas técnicas, servicios, desarrolladores, nosotros, respaldo técnico, responsabilidad, cotizar, dónde estamos, portal de clientes), each with its own front-matter (`title`, `description`, `nav`, optional `script`) and content
+- `build.py` — combines `_layout.html` + each `pages/*.html` into the static output: `pages/inicio.html` becomes root `index.html`, the rest become `<seccion>/index.html`, so every section lives at its own URL (`/catalogo/`, `/cotizar/`, etc.)
+
+`python build.py` (or `npm run build`) regenerates the whole static site from source. The generated output (root `index.html` + the section folders) is gitignored — it's produced on every build, local or on Railway.
+
+There is a **twin copy** at `vault/03 - export/paginas-web/vaconsa-propuesta.html` — the Artifact-published variant, generated from the built home page only (`python sync-vault-copy.py`, run after `python build.py`). It omits `<!doctype>`, `<html>`, `<head>` and `<body>` (the Artifact publisher injects those) and therefore also omits the `<meta viewport>` and SEO/OG tags that only the hosted version needs, and it absolutizes internal links/images to `vaconsa.up.railway.app` since the Artifact has no sibling pages or `img/` folder next to it. **It covers the home page only, not the whole site** — regenerate it after any `pages/inicio.html` or shared `_layout.html` change, or it drifts.
 
 ## The page must stay a superset of vaconsa.com.mx
 
@@ -33,7 +39,7 @@ The social-responsibility section matters more than its size suggests: a company
 
 ## Content is real — keep it that way
 
-Every norm, class and diameter in the `CATALOG` array in `index.html` was taken from Vaconsa's own product pages (`/valvulas/`, `/tuberia-de-acero-al-carbon/`, `/conexiones/`, `/bridas/`, `/inoxidable/`, `/equipo-de-control-de-presion/`, `/instrumentacion/`, `/pvc/`). The credibility of the pitch rests on a buying engineer recognizing their own specs. Never invent a norm or a pressure class to fill a gap — if something is unknown, the field says "Consultar".
+Every norm, class and diameter in the `CATALOG` array in `catalogo.js` was taken from Vaconsa's own product pages (`/valvulas/`, `/tuberia-de-acero-al-carbon/`, `/conexiones/`, `/bridas/`, `/inoxidable/`, `/equipo-de-control-de-presion/`, `/instrumentacion/`, `/pvc/`). The credibility of the pitch rests on a buying engineer recognizing their own specs. Never invent a norm or a pressure class to fill a gap — if something is unknown, the field says "Consultar".
 
 ## Design intent
 
@@ -47,7 +53,7 @@ Descendant selectors on wrapper classes hit nested elements too. `.hero-facts di
 
 There is no test suite; verify in a browser and actually measure rather than eyeballing:
 
-- Serve locally (`python -m http.server`) — opening via `file://` is fine too since there are no fetches.
+- Build then serve locally (`python build.py && python -m http.server`) — opening via `file://` no longer works: links are root-absolute (`/catalogo/`, etc.) and pages load external scripts like `/catalogo.js`, both of which need an actual origin to resolve.
 - Check horizontal overflow at a narrow width: `document.documentElement.scrollWidth` must equal `clientWidth`. Window resizing is unreliable on Gabo's machine, so test mobile by loading the page inside a 390px-wide `<iframe>` — media queries respond to the iframe viewport.
 - Exercise the flow end to end: search a norm → *Cotizar* → confirm the form prefilled → submit → confirmation panel.
 - Check both themes; the page is token-driven with `prefers-color-scheme` plus `[data-theme]` overrides.
