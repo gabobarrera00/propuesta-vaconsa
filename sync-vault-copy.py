@@ -12,7 +12,9 @@ Diferencias que aplica, y por que:
   - quita el envoltorio del documento (lo pone el publicador)
   - quita viewport/OG/robots (solo le sirven a la version hospedada)
   - convierte los enlaces relativos entre paginas en absolutos, porque
-    dentro del Artifact no existe `auditoria.html` al lado
+    dentro del Artifact no existe `auditoria.html` ni `/catalogo/` al lado
+    (desde el split multi-pagina los enlaces internos son root-relative,
+    p. ej. `/catalogo/`, no `catalogo.html`)
 """
 import io
 import os
@@ -28,6 +30,13 @@ DEST = os.path.join(
 )
 
 
+def absolutize(path):
+    """BASE ya termina en '/': quita cualquier '/' inicial de path antes de
+    concatenar, o un href/src root-relative (p. ej. '/catalogo/') produce
+    un doble slash ('...mx//catalogo/')."""
+    return BASE + path.lstrip("/")
+
+
 def build(src_html):
     style_start = src_html.index("<style>")
     body_start = src_html.index("<body>") + len("<body>")
@@ -36,13 +45,17 @@ def build(src_html):
     style = src_html[style_start:src_html.index("</style>") + len("</style>")]
     body = src_html[body_start:body_end].strip()
 
-    # dentro del Artifact no hay paginas hermanas: absolutiza los enlaces
-    body = re.sub(r'href="(?!https?:|mailto:|tel:|#)([^"]+\.html)"',
-                  lambda m: 'href="%s%s"' % (BASE, m.group(1)), body)
+    # dentro del Artifact no hay paginas hermanas: absolutiza los enlaces.
+    # Cubre tanto el estilo viejo relativo (`auditoria.html`) como el
+    # root-relative que usan todas las paginas desde el split
+    # (`/catalogo/`, `/`, `/cotizar/`) - pero no protocol-relative (`//host`).
+    body = re.sub(r'href="(?!https?:|mailto:|tel:|#|//)(/[^"]*|[^"]+\.html)"',
+                  lambda m: 'href="%s"' % absolutize(m.group(1)), body)
 
-    # tampoco hay carpeta img/ junto al Artifact: absolutiza las imagenes
-    body = re.sub(r'src="(?!https?:|data:)([^"]+)"',
-                  lambda m: 'src="%s%s"' % (BASE, m.group(1)), body)
+    # tampoco hay carpeta img/ (ni catalogo.js, etc.) junto al Artifact:
+    # absolutiza cualquier src relativo o root-relative
+    body = re.sub(r'src="(?!https?:|data:|//)([^"]+)"',
+                  lambda m: 'src="%s"' % absolutize(m.group(1)), body)
 
     return '<meta charset="utf-8">\n<title>Propuesta Vaconsa</title>\n%s\n\n%s\n' % (style, body)
 
