@@ -1,7 +1,7 @@
 # Propuesta de rediseño — Vaconsa
 
-**Live (oficial, el link que se manda):** https://propuesta-vaconsa.vercel.app
-**Live (Railway, espejo):** https://vaconsa.up.railway.app _(mismo commit, deploy automático en cada push a `main` — Vercel sigue siendo la fuente de verdad hasta que se decida lo contrario)_
+**Live (oficial, el link que se manda):** https://vaconsa.up.railway.app _(2026-08-20: Railway pasa a ser el link oficial — deploy automático en cada push a `main`, siempre al día)_
+**Live (Vercel, respaldo):** https://propuesta-vaconsa.vercel.app _(deploy manual vía CLI — desactualizado desde que se fusionó el PR de auditoría; no compartir hasta volver a publicar con `vercel login` + `npx vercel deploy --prod`)_
 
 Propuesta de rediseño (no solicitada) del sitio de **Vaconsa Productos Industriales**, distribuidora de tubería, válvulas y conexiones en Monterrey, N.L. — construida como pieza de prospección de **Nexo Web**, el servicio de páginas web de Gabo.
 
@@ -58,7 +58,7 @@ Abre `index.html` en el navegador. No requiere servidor.
 
 ## Deploy
 
-Vercel (oficial) vía CLI manual: `npx vercel deploy --prod`. Railway (espejo) conectado directo al repo — auto-deploy en cada push a `main`, sirviendo los archivos estáticos tal cual con `serve` (`package.json` mínimo, sin build step real).
+Railway (oficial) conectado directo al repo — auto-deploy en cada push a `main`, sirviendo los archivos estáticos tal cual con `serve` (`package.json` mínimo, sin build step real). Vercel (respaldo) vía CLI manual: `npx vercel deploy --prod` — requiere `vercel login` la primera vez, por eso quedó desactualizado.
 
 ## Estado
 
