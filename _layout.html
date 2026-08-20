@@ -124,9 +124,11 @@
     border:1px solid var(--line);padding:9px 13px;transition:.15s;
   }
   .portal:hover{color:var(--ink);border-color:var(--steel);}
+  .portal[aria-current="page"]{color:var(--ink);border-color:var(--red);}
   @media(max-width:1000px){.portal span{display:none;}}
   nav.main a{text-decoration:none;color:var(--muted);padding:4px 0;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;}
   nav.main a:hover{color:var(--ink);border-bottom-color:var(--red);}
+  nav.main a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--red);}
   .btn{
     display:inline-flex;align-items:center;gap:8px;
     background:var(--red);color:var(--red-ink);
@@ -141,6 +143,7 @@
   .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);}
   .btn.ghost:hover{border-color:var(--red);color:var(--red);filter:none;}
   .btn.sm{padding:7px 12px;font-size:11px;}
+  .btn[aria-current="page"]{background:var(--surface-2);color:var(--red);border:1px solid var(--red);}
   @media(max-width:860px){nav.main{display:none;}}
 
   /* ---------- hero ---------- */
