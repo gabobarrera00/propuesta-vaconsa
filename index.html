@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-MX">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,6 +11,11 @@
 <meta property="og:title" content="Propuesta de rediseño — Vaconsa | Nexo Web">
 <meta property="og:description" content="Cómo podría funcionar el sitio de Vaconsa: búsqueda por norma y cotización en un clic. Demostración, no es el sitio oficial.">
 <meta name="twitter:card" content="summary_large_image">
+<!-- FALTA og:image y esta tarjeta la está prometiendo: "summary_large_image" sin
+     imagen sale roto, que es peor que no pedir tarjeta. Produce un JPG de 1200x630
+     (el corte de la brida sobre el fondo de papel + logo Nexo Web) y enlázalo con
+     URL absoluta, o baja a content="summary" mientras. Ver AUDITORIA.md #2. -->
+<link rel="canonical" href="https://propuesta-vaconsa.vercel.app/">
 <style>
   :root{
     --paper:#EDF1F3;
@@ -55,7 +60,10 @@
   }
 
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  /* El header es sticky: sin scroll-padding-top todo salto de ancla — incluidos
+     los scrollIntoView de prefill() — deja el título tapado debajo del header.
+     Una línea arregla todos los saltos de la página. Ver AUDITORIA.md #4a. */
+  html{scroll-behavior:smooth; scroll-padding-top:88px;}
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto;}
     *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
@@ -194,6 +202,30 @@
   input[type=search]{padding-left:42px;}
   input::placeholder,textarea::placeholder{color:var(--muted);}
   input:focus,select:focus,textarea:focus{outline:none;border-color:var(--red);}
+
+  /* :user-invalid marca el campo mal llenado SOLO después de que la persona lo
+     tocó o intentó enviar. Con :invalid a secas el formulario aparecería todo rojo
+     al cargar la página — es el error clásico. Y a diferencia del borde que se
+     pintaba a mano con el.style.borderColor, esto se quita solo cuando el campo se
+     corrige, porque el selector deja de coincidir. Ver AUDITORIA.md #1. */
+  input:user-invalid,textarea:user-invalid{
+    border-color:var(--red);
+    outline:2px solid var(--red);
+    outline-offset:1px;
+  }
+
+  /* Visible solo para lectores de pantalla. Ojo: NO se hace con display:none ni
+     visibility:hidden — eso lo esconde también del lector, que es justo a quien va
+     dirigido. Se saca de la vista sin sacarlo del árbol de accesibilidad. */
+  .sr-only{
+    position:absolute;
+    width:1px;height:1px;
+    padding:0;margin:-1px;
+    overflow:hidden;
+    clip-path:inset(50%);
+    white-space:nowrap;
+    border:0;
+  }
 
   .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:26px;}
   .chip{
@@ -509,6 +541,12 @@
     </div>
 
     <div class="chips" id="chips" role="group" aria-label="Filtrar por familia de producto"></div>
+    <!-- Región de anuncio: sin esto, quien usa lector de pantalla escribe "a106",
+         la lista pasa de 25 tarjetas a 1, y nadie le dice nada. El buscador es el
+         argumento central de la propuesta y era inusable a ciegas.
+         "polite" espera a que termine de escribir en lugar de interrumpir cada
+         tecla, que es lo correcto al filtrar en vivo. Ver AUDITORIA.md #3. -->
+    <p class="sr-only" id="resultsCount" role="status" aria-live="polite"></p>
     <div class="results" id="results"></div>
   </div>
 </section>
@@ -683,7 +721,13 @@
       </aside>
 
       <div id="formSlot">
-        <form class="quote-form" id="quoteForm" novalidate>
+        <!-- Sin novalidate, a propósito: el marcado de abajo ya trae type="email" y
+             required, y el navegador los valida gratis, en el idioma del usuario, con
+             el teclado correcto en móvil. La validación a mano que había aquí solo
+             revisaba que el campo no estuviera vacío, así que "asdf" pasaba como
+             correo. El formulario de bolsa de trabajo sigue con novalidate para que
+             compares los dos. Ver AUDITORIA.md #1. -->
+        <form class="quote-form" id="quoteForm">
           <div class="fields">
             <div class="full">
               <label for="f-prod">Material que necesita <span class="req">*</span></label>
@@ -891,6 +935,7 @@ let activeFam = null;
 const chipsEl = document.getElementById('chips');
 const resultsEl = document.getElementById('results');
 const qEl = document.getElementById('q');
+const countEl = document.getElementById('resultsCount');
 
 function buildChips(){
   chipsEl.innerHTML = '';
@@ -922,6 +967,10 @@ function render(){
   });
 
   resultsEl.innerHTML = '';
+
+  // Anuncia el conteo en la región aria-live para quien no ve la pantalla.
+  countEl.textContent = hits.length === 1 ? '1 resultado' : hits.length + ' resultados';
+
   if (!hits.length){
     const d = document.createElement('div');
     d.className = 'empty';
@@ -1019,11 +1068,9 @@ document.getElementById('jobsForm').addEventListener('submit', function(e){
 document.getElementById('quoteForm').addEventListener('submit', function(e){
   e.preventDefault();
   const form = e.target;
-  const required = ['f-prod','f-emp','f-nom','f-mail'];
-  for (const id of required){
-    const el = form.querySelector('#' + id);
-    if (!el.value.trim()){ el.focus(); el.style.borderColor = 'var(--red)'; return; }
-  }
+  // Ya no hay bucle de validación a mano: sin novalidate el navegador no llega
+  // aquí hasta que required y type="email" estén satisfechos, y él mismo pone el
+  // foco y el mensaje en el campo que falta. Menos código y más funcionalidad.
   const prod = form.querySelector('#f-prod').value.trim();
   const norma = form.querySelector('#f-norma').value.trim();
   const cant = form.querySelector('#f-cant').value.trim();
