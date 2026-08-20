@@ -6,7 +6,7 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "build": "python build.py",
+    "build": "python3 build.py || python build.py",
     "start": "npm run build && serve ."
   },
   "dependencies": {
