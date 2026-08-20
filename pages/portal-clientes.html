@@ -1,0 +1,36 @@
+<!--
+title: Portal de clientes — Vaconsa | Nexo Web
+description: Prototipo de portal donde los clientes de Vaconsa verían sus facturas directamente, sin llamar a pedir un estado de cuenta.
+nav: portal-clientes
+script: <script src="/portal-clientes.js"></script>
+-->
+
+<section class="portal-demo" id="portal-clientes">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">10</span><h2>Portal de clientes</h2></div>
+    <p class="sec-sub">Así se vería un portal donde sus clientes entran directo a ver sus facturas, sin llamar a pedir un estado de cuenta. <strong>Prototipo</strong> — datos de ejemplo, no son clientes reales de Vaconsa.</p>
+
+    <div id="portalLogin" class="portal-card">
+      <form id="portalLoginForm" class="portal-login">
+        <div class="portal-field">
+          <label for="p-user">Usuario</label>
+          <input type="text" id="p-user" placeholder="cliente@empresa.com">
+        </div>
+        <div class="portal-field">
+          <label for="p-pass">Contraseña</label>
+          <input type="password" id="p-pass" placeholder="••••••••">
+        </div>
+        <button class="btn" type="submit">Entrar</button>
+        <p class="form-note">Prototipo — cualquier usuario y contraseña lo dejan pasar. No hay acceso real.</p>
+      </form>
+    </div>
+
+    <div id="portalApp" class="portal-app" hidden>
+      <div class="portal-toolbar">
+        <span class="portal-demo-tag">Datos de ejemplo — así se vería con su información real</span>
+        <button class="btn ghost sm" id="portalLogout" type="button">Salir</button>
+      </div>
+      <div id="clientList" class="client-list"></div>
+    </div>
+  </div>
+</section>
