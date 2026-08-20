@@ -19,7 +19,7 @@ import os
 import re
 import sys
 
-BASE = "https://propuesta-vaconsa.vercel.app/"
+BASE = "https://vaconsa.up.railway.app/"
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, "index.html")
 DEST = os.path.join(
@@ -39,6 +39,10 @@ def build(src_html):
     # dentro del Artifact no hay paginas hermanas: absolutiza los enlaces
     body = re.sub(r'href="(?!https?:|mailto:|tel:|#)([^"]+\.html)"',
                   lambda m: 'href="%s%s"' % (BASE, m.group(1)), body)
+
+    # tampoco hay carpeta img/ junto al Artifact: absolutiza las imagenes
+    body = re.sub(r'src="(?!https?:|data:)([^"]+)"',
+                  lambda m: 'src="%s%s"' % (BASE, m.group(1)), body)
 
     return '<meta charset="utf-8">\n<title>Propuesta Vaconsa</title>\n%s\n\n%s\n' % (style, body)
 

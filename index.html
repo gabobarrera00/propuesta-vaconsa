@@ -303,6 +303,30 @@
   .svc h3{margin:0;font-size:14px;font-weight:700;line-height:1.3;}
   .svc p{margin:0;font-size:12.5px;color:var(--muted);}
 
+  /* ---------- desarrolladores ---------- */
+  .dev{padding:52px 0;border-bottom:1px solid var(--line);background:var(--surface-2);}
+  .dev-intro{max-width:62ch;margin:0 0 30px;color:var(--muted);font-size:14px;}
+  .dev-group{margin-bottom:34px;}
+  .dev-group:last-of-type{margin-bottom:0;}
+  .dev-group-t{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .dev-group-t .rule{height:1px;width:22px;background:var(--red);flex:none;}
+  .dev-group-t h3{margin:0;font-size:12.5px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--ink);}
+  .dev-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  @media(max-width:760px){.dev-grid{grid-template-columns:1fr;}}
+  .dev-item{background:var(--surface);padding:18px 20px;display:flex;flex-direction:column;gap:8px;}
+  .dev-item.wide{grid-column:1 / -1;}
+  .dev-item h4{margin:0;font-size:13.5px;font-weight:700;}
+  .dev-item p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.5;}
+  .dev-item .photo{width:100%;aspect-ratio:16/10;object-fit:cover;border:1px solid var(--line-soft);margin-bottom:2px;}
+  .dev-stats{display:flex;gap:22px;flex-wrap:wrap;margin-top:2px;}
+  .dev-stats div{min-width:78px;}
+  .dev-stats .v{font-family:Consolas,monospace;color:var(--red);font-weight:700;font-size:13px;}
+  .dev-stats .l{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+  .dev-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px;}
+  .dev-table th,.dev-table td{padding:6px 8px;border-bottom:1px solid var(--line-soft);text-align:left;}
+  .dev-table th{color:var(--muted);font-weight:600;text-transform:uppercase;font-size:10.5px;letter-spacing:.05em;}
+  .dev-close{margin-top:30px;padding-top:26px;border-top:1px solid var(--line);font-size:13.5px;color:var(--steel);max-width:60ch;}
+
   /* ---------- trust ---------- */
   .trust{padding:52px 0;border-bottom:1px solid var(--line);}
   .trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;}
@@ -484,6 +508,7 @@
       <a href="#catalogo">Catálogo</a>
       <a href="#documentos">Fichas técnicas</a>
       <a href="#servicios">Servicios</a>
+      <a href="#desarrolladores">Desarrolladores</a>
       <a href="#nosotros">Nosotros</a>
       <a href="#social">Responsabilidad</a>
       <a href="#contacto">Contacto</a>
@@ -655,9 +680,93 @@
   </div>
 </section>
 
+<section class="dev" id="desarrolladores">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">04</span><h2>Desarrolladores y constructores</h2></div>
+    <p class="dev-intro">Una segunda línea de negocio, en paralelo a la industrial de siempre: tubería, conexiones y válvulas para redes de urbanización, sistemas hidrosanitarios y contra incendio en desarrollos habitacionales horizontales y verticales.</p>
+
+    <div class="dev-group">
+      <div class="dev-group-t"><div class="rule"></div><h3>Urbanización</h3></div>
+      <div class="dev-grid">
+        <div class="dev-item wide">
+          <img class="photo" src="img/desarrolladores-hero.jpg" alt="Skyline de Monterrey al atardecer">
+          <h4>Sistema de urbanización</h4>
+          <p>Todo lo necesario para llevar infraestructura de conducción de agua y drenaje a un desarrollo, desde la red primaria hasta cada lote: drenaje sanitario (descargas domiciliarias, pozos, brocales), agua potable (sistemas Inglés, Métrico y C900) y pluviales (tubería de polietileno corrugado, rejillas de captación).</p>
+        </div>
+        <div class="dev-item">
+          <h4>Tubería para alcantarillado</h4>
+          <p>Conforme a NMX-E-215 y NOM-001-CONAGUA-2011 de hermeticidad. Tres series de rigidez según la carga muerta de la instalación.</p>
+          <div class="dev-stats">
+            <div><div class="v">1.0</div><div class="l">Serie-25 kgf/cm²</div></div>
+            <div><div class="v">1.9</div><div class="l">Serie-20 kgf/cm²</div></div>
+            <div><div class="v">3.0</div><div class="l">Serie-16.5 kgf/cm²</div></div>
+          </div>
+        </div>
+        <div class="dev-item">
+          <h4>Conexión de alcantarillado</h4>
+          <p>Inyectadas en una sola pieza conforme a NMX-E-215/2, anillo elastomérico integrado. Inmunes a los gases del alcantarillado sanitario, incluido el ácido sulfúrico, y a suelos agresivos ácidos o alcalinos.</p>
+        </div>
+        <div class="dev-item">
+          <h4>Sistema pluvial</h4>
+          <p>Tubería de polietileno de alta densidad, pared corrugada exterior y lisa interior. Gama completa de 4" a 60", con hasta 345 kPa de rigidez mínima en los diámetros menores.</p>
+        </div>
+        <div class="dev-item">
+          <h4>Accesorios de urbanización</h4>
+          <p>Brocales y tapas de hierro dúctil para pozos de visita, con distintas cargas de tránsito y alta resistencia a carga vehicular.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-group">
+      <div class="dev-group-t"><div class="rule"></div><h3>Agua potable</h3></div>
+      <div class="dev-grid">
+        <div class="dev-item wide">
+          <img class="photo" src="img/desarrolladores-c900.jpg" alt="Tubería C900 apilada">
+          <h4>Tubería C900</h4>
+          <p>Clase 165 (DR-25) y Clase 235 (DR-18), aceptada para líneas principales de abastecimiento, fabricada en color azul conforme a AWWA C900-07. Empaque conforme a ASTM F477, uniones conforme a ASTM D3139.</p>
+          <div class="dev-stats">
+            <div><div class="v">C=150</div><div class="l">Hazen-Williams</div></div>
+            <div><div class="v">n=0.009</div><div class="l">Manning</div></div>
+            <div><div class="v">6.10 m</div><div class="l">Longitud estándar</div></div>
+          </div>
+        </div>
+        <div class="dev-item">
+          <h4>Sistema de agua potable</h4>
+          <p>De la planta potabilizadora hasta cada vivienda: red primaria, estación elevadora y red secundaria. Familias PVC disponibles en Sistema Inglés (RD26 · RD32.5) y Sistema Métrico (Clase 7 · Clase 10).</p>
+        </div>
+        <div class="dev-item">
+          <h4>Conexiones y válvulas</h4>
+          <p>Conexiones bridadas de hierro dúctil y FoFo, válvulas eliminadoras de aire, válvulas compuerta de control de flujo, válvulas de retención (check) y reguladoras de caudal.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-group">
+      <div class="dev-group-t"><div class="rule"></div><h3>Edificación</h3></div>
+      <div class="dev-grid">
+        <div class="dev-item">
+          <h4>Tubería PEX / CPVC — interior</h4>
+          <p>Agua fría y caliente dentro de la edificación. PEX se sectoriza por áreas con manifolds o manabloques; CPVC CTS resiste la corrosión por cloro, fácil de instalar.</p>
+        </div>
+        <div class="dev-item wide">
+          <img class="photo" src="img/desarrolladores-contraincendio.jpg" alt="Tubería roja de sistema contra incendio">
+          <h4>Sistema contra incendio</h4>
+          <p>Red de tubería de acero con extremos ranurados UL/FM y conexiones para sujeción ranurada, instrumentación y monitoreo (manómetros), válvulas de control y sección, suministro y bombeo, y puntos de descarga: gabinetes con mangueras, rociadores automáticos y tomas para bomberos.</p>
+        </div>
+        <div class="dev-item">
+          <h4>Acero estructural</h4>
+          <p>Varilla corrugada G-56 y G-42, tubería HSS, tubería estructural y mecánica, ángulo ASTM A36 y A572, polín C/Z/Montén Gr33 y Gr50, PTR.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="dev-close">Somos su socio estratégico: no solo suministramos material. Acompañamos cada proyecto con asesoría técnica, selección adecuada de materiales y logística eficiente para cumplir tiempos de obra — en desarrollos habitacionales horizontales y verticales.</p>
+  </div>
+</section>
+
 <section class="about" id="nosotros">
   <div class="wrap">
-    <div class="sec-head"><span class="idx">04</span><h2>Nosotros</h2></div>
+    <div class="sec-head"><span class="idx">05</span><h2>Nosotros</h2></div>
     <p class="sec-sub">Cuatro décadas surtiendo a la industria energética, siderúrgica, química, alimenticia, farmacéutica, manufacturera y OEM.</p>
 
     <div class="about-grid">
@@ -677,7 +786,7 @@
 
 <section class="trust" id="respaldo">
   <div class="wrap">
-    <div class="sec-head"><span class="idx">05</span><h2>Respaldo técnico</h2></div>
+    <div class="sec-head"><span class="idx">06</span><h2>Respaldo técnico</h2></div>
     <p class="sec-sub">Material certificado y marcas representadas con soporte directo de fábrica.</p>
     <div class="trust-grid">
       <div>
@@ -708,7 +817,7 @@
 
 <section class="social" id="social">
   <div class="wrap">
-    <div class="sec-head"><span class="idx">06</span><h2>Responsabilidad social</h2></div>
+    <div class="sec-head"><span class="idx">07</span><h2>Responsabilidad social</h2></div>
     <p class="sec-sub">Entendemos la responsabilidad social como una forma de gestión: que nuestra actividad sea sustentable en lo comercial, lo económico, lo social y lo ambiental, y que mejore el entorno para las generaciones que siguen.</p>
 
     <div class="rse-grid">
@@ -746,7 +855,7 @@
 
 <section class="quote" id="cotizar">
   <div class="wrap">
-    <div class="sec-head"><span class="idx">07</span><h2>Solicitar cotización</h2></div>
+    <div class="sec-head"><span class="idx">08</span><h2>Solicitar cotización</h2></div>
     <p class="sec-sub">Dígannos qué necesita y con qué norma. Entre más específico, más rápido le respondemos.</p>
     <div class="quote-grid">
       <aside>
@@ -810,7 +919,7 @@
 
 <section class="contact" id="contacto">
   <div class="wrap">
-    <div class="sec-head"><span class="idx">08</span><h2>Dónde estamos</h2></div>
+    <div class="sec-head"><span class="idx">09</span><h2>Dónde estamos</h2></div>
     <p class="sec-sub">Oficinas y centro de distribución en Santa Catarina.</p>
     <div class="loc-grid">
       <div class="loc">
@@ -870,7 +979,7 @@
 
 <section class="portal-demo" id="portal-clientes">
   <div class="wrap">
-    <div class="sec-head"><span class="idx">09</span><h2>Portal de clientes</h2></div>
+    <div class="sec-head"><span class="idx">10</span><h2>Portal de clientes</h2></div>
     <p class="sec-sub">Así se vería un portal donde sus clientes entran directo a ver sus facturas, sin llamar a pedir un estado de cuenta. <strong>Prototipo</strong> — datos de ejemplo, no son clientes reales de Vaconsa.</p>
 
     <div id="portalLogin" class="portal-card">
