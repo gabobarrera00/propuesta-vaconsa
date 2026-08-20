@@ -763,8 +763,8 @@
              required, y el navegador los valida gratis, en el idioma del usuario, con
              el teclado correcto en móvil. La validación a mano que había aquí solo
              revisaba que el campo no estuviera vacío, así que "asdf" pasaba como
-             correo. El formulario de bolsa de trabajo sigue con novalidate para que
-             compares los dos. Ver AUDITORIA.md #1. -->
+             correo. El formulario de bolsa de trabajo (más abajo) tenía el mismo
+             problema — arreglado igual, ver AUDITORIA.md #1. -->
         <form class="quote-form" id="quoteForm">
           <div class="fields">
             <div class="full">
@@ -834,7 +834,7 @@
         <h3>¿Quiere trabajar con nosotros?</h3>
         <p>Déjenos su currículum y el área que le interesa. Nos interesa saber de su experiencia aunque no haya una vacante abierta hoy.</p>
       </div>
-      <form class="jobs-form" id="jobsForm" novalidate>
+      <form class="jobs-form" id="jobsForm">
         <div class="jfields">
           <div>
             <label for="j-nom">Nombre <span class="req">*</span></label>
@@ -1110,10 +1110,9 @@ render();
 document.getElementById('jobsForm').addEventListener('submit', function(e){
   e.preventDefault();
   const form = e.target;
-  for (const id of ['j-nom','j-mail']){
-    const el = form.querySelector('#' + id);
-    if (!el.value.trim()){ el.focus(); el.style.borderColor = 'var(--red)'; return; }
-  }
+  // Sin novalidate el navegador ya no llega aquí hasta que required y
+  // type="email" estén satisfechos — mismo arreglo que el formulario de
+  // cotización. Ver AUDITORIA.md #1.
   const nombre = form.querySelector('#j-nom').value.trim();
   const area = form.querySelector('#j-area').value;
   const done = document.createElement('div');

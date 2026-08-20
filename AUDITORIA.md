@@ -183,8 +183,8 @@ Y el detalle que más va a pesar: **lleva impreso el dibujo de la brida.** Es lo
 
 ## Qué te queda
 
-- [ ] Producir el `og:image` de 1200×630 (o bajar a `summary` mientras)
-- [ ] `novalidate` fuera del formulario de bolsa de trabajo también
+- [x] Producir el `og:image` de 1200×630 (o bajar a `summary` mientras) — 2026-08-20
+- [x] `novalidate` fuera del formulario de bolsa de trabajo también — 2026-08-20
 - [ ] `scrollend` en lugar del `setTimeout(500)`
 - [ ] `CATALOG` → `catalogo.json` (paso 1 de la tabla)
 - [ ] `<style>` y `<script>` a archivos propios (paso 2)
