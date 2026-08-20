@@ -404,6 +404,45 @@
     padding:5px 10px;margin-right:10px;font-family:inherit;font-size:12px;cursor:pointer;
   }
 
+  /* ---------- portal de clientes (mockup) ---------- */
+  .portal-demo{padding:52px 0;border-bottom:1px solid var(--line);background:var(--surface-2);}
+  .portal-card{max-width:420px;margin:0 auto;}
+  .portal-login{background:var(--surface);border:1px solid var(--line);padding:26px;}
+  .portal-field{margin-bottom:14px;}
+  .portal-login .btn{width:100%;justify-content:center;margin-top:6px;padding:13px;}
+  .portal-toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:18px;}
+  .portal-demo-tag{
+    font-size:11px;letter-spacing:.04em;color:var(--red);
+    border:1px solid var(--red);padding:5px 10px;
+  }
+  .client-list{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);}
+  .client{background:var(--surface);}
+  .client-head{
+    width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;
+    background:none;border:none;padding:16px 18px;cursor:pointer;font-family:inherit;text-align:left;color:inherit;
+  }
+  .client-head:hover{background:var(--surface-2);}
+  .client-head h3{margin:0;font-size:14.5px;font-weight:700;}
+  .client-head .meta{font-size:12px;color:var(--muted);margin-top:3px;}
+  .client-head .chev{flex:none;color:var(--muted);transition:transform .15s;}
+  .client[data-open="true"] .chev{transform:rotate(180deg);}
+  .client-body{display:none;padding:0 18px 18px;}
+  .client[data-open="true"] .client-body{display:block;}
+  table.invoices{width:100%;border-collapse:collapse;font-size:12.5px;}
+  table.invoices th{
+    text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
+    font-weight:600;padding:0 10px 8px;border-bottom:1px solid var(--line-soft);
+  }
+  table.invoices td{padding:9px 10px;border-bottom:1px solid var(--line-soft);font-family:Consolas,monospace;}
+  table.invoices tr:last-child td{border-bottom:none;}
+  .inv-status{
+    font-family:inherit;font-size:11px;text-transform:uppercase;letter-spacing:.04em;
+    padding:3px 8px;border:1px solid var(--line);display:inline-block;
+  }
+  .inv-status.pagada{color:var(--steel);border-color:var(--steel);}
+  .inv-status.pendiente{color:var(--ink);border-color:var(--line);}
+  .inv-status.vencida{color:var(--red);border-color:var(--red);}
+
   footer.site{border-top:1px solid var(--line);background:var(--surface);padding:26px 0;}
   footer.site .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);}
 
@@ -449,7 +488,7 @@
       <a href="#social">Responsabilidad</a>
       <a href="#contacto">Contacto</a>
     </nav>
-    <a class="portal" href="https://www.vaconsa.com.mx/usuarios/" target="_blank" rel="noopener" title="Portal de clientes">
+    <a class="portal" href="#portal-clientes" title="Portal de clientes">
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
         <circle cx="8" cy="5.2" r="2.8"/><path d="M2.6 14c0-2.8 2.4-4.6 5.4-4.6s5.4 1.8 5.4 4.6"/>
       </svg>
@@ -834,6 +873,36 @@
   </div>
 </section>
 
+<section class="portal-demo" id="portal-clientes">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">09</span><h2>Portal de clientes</h2></div>
+    <p class="sec-sub">Así se vería un portal donde sus clientes entran directo a ver sus facturas, sin llamar a pedir un estado de cuenta. <strong>Prototipo</strong> — datos de ejemplo, no son clientes reales de Vaconsa.</p>
+
+    <div id="portalLogin" class="portal-card">
+      <form id="portalLoginForm" class="portal-login">
+        <div class="portal-field">
+          <label for="p-user">Usuario</label>
+          <input type="text" id="p-user" placeholder="cliente@empresa.com">
+        </div>
+        <div class="portal-field">
+          <label for="p-pass">Contraseña</label>
+          <input type="password" id="p-pass" placeholder="••••••••">
+        </div>
+        <button class="btn" type="submit">Entrar</button>
+        <p class="form-note">Prototipo — cualquier usuario y contraseña lo dejan pasar. No hay acceso real.</p>
+      </form>
+    </div>
+
+    <div id="portalApp" class="portal-app" hidden>
+      <div class="portal-toolbar">
+        <span class="portal-demo-tag">Datos de ejemplo — así se vería con su información real</span>
+        <button class="btn ghost sm" id="portalLogout" type="button">Salir</button>
+      </div>
+      <div id="clientList" class="client-list"></div>
+    </div>
+  </div>
+</section>
+
 <footer class="site">
   <div class="wrap">
     <span>© <span id="year"></span> Vaconsa Productos Industriales · Válvulas y Conexiones del Norte, S.A. de C.V. · <a href="https://www.vaconsa.com.mx/wp-content/uploads/2019/02/avisodeprivacidad.pdf" target="_blank" rel="noopener">Aviso de privacidad</a></span>
@@ -1095,6 +1164,98 @@ document.getElementById('quoteForm').addEventListener('submit', function(e){
   slot.innerHTML = '';
   slot.appendChild(done);
   done.scrollIntoView({behavior:'smooth', block:'center'});
+});
+
+// Portal de clientes — prototipo visual, sin backend. Datos de ejemplo fijos
+// en el navegador; no representan clientes reales de Vaconsa.
+const PORTAL_CLIENTS = [
+  { name:'Construcciones Industriales Ferrand, S.A. de C.V.', invoices:[
+    {folio:'FAC-10432', fecha:'2026-06-02', monto:184320, estatus:'Pagada'},
+    {folio:'FAC-10501', fecha:'2026-07-14', monto:92150, estatus:'Pagada'},
+    {folio:'FAC-10556', fecha:'2026-08-05', monto:47800, estatus:'Pendiente'}
+  ]},
+  { name:'Grupo Metalúrgico Bernal', invoices:[
+    {folio:'FAC-10299', fecha:'2026-05-20', monto:312900, estatus:'Pagada'},
+    {folio:'FAC-10388', fecha:'2026-06-30', monto:156400, estatus:'Vencida'}
+  ]},
+  { name:'Procesos Térmicos del Norte, S.A. de C.V.', invoices:[
+    {folio:'FAC-10410', fecha:'2026-06-11', monto:58300, estatus:'Pagada'},
+    {folio:'FAC-10475', fecha:'2026-07-22', monto:73900, estatus:'Pagada'},
+    {folio:'FAC-10520', fecha:'2026-08-01', monto:121050, estatus:'Pendiente'}
+  ]},
+  { name:'Petroquímica Sierra Alta', invoices:[
+    {folio:'FAC-10201', fecha:'2026-04-18', monto:445600, estatus:'Pagada'},
+    {folio:'FAC-10360', fecha:'2026-06-25', monto:198200, estatus:'Pagada'}
+  ]},
+  { name:'Manufacturas Industriales Coyame', invoices:[
+    {folio:'FAC-10333', fecha:'2026-05-30', monto:34750, estatus:'Pendiente'},
+    {folio:'FAC-10402', fecha:'2026-06-28', monto:61200, estatus:'Pagada'}
+  ]}
+];
+
+function mxn(n){
+  return '$' + n.toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+function renderClients(){
+  const list = document.getElementById('clientList');
+  list.innerHTML = '';
+  PORTAL_CLIENTS.forEach(c => {
+    const pend = c.invoices.filter(f => f.estatus !== 'Pagada').length;
+
+    const row = document.createElement('div');
+    row.className = 'client';
+    row.dataset.open = 'false';
+
+    const head = document.createElement('button');
+    head.type = 'button';
+    head.className = 'client-head';
+    head.innerHTML =
+      '<div><h3></h3><div class="meta"></div></div>' +
+      '<svg class="chev" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>';
+    head.querySelector('h3').textContent = c.name;
+    head.querySelector('.meta').textContent =
+      c.invoices.length + (c.invoices.length === 1 ? ' factura' : ' facturas') +
+      (pend ? ' · ' + pend + (pend === 1 ? ' pendiente' : ' pendientes') : ' · al corriente');
+    head.addEventListener('click', () => {
+      row.dataset.open = row.dataset.open === 'true' ? 'false' : 'true';
+    });
+
+    const body = document.createElement('div');
+    body.className = 'client-body';
+    const table = document.createElement('table');
+    table.className = 'invoices';
+    table.innerHTML = '<thead><tr><th>Folio</th><th>Fecha</th><th>Monto</th><th>Estatus</th></tr></thead>';
+    const tbody = document.createElement('tbody');
+    c.invoices.forEach(f => {
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + f.folio + '</td>' +
+        '<td>' + f.fecha + '</td>' +
+        '<td>' + mxn(f.monto) + '</td>' +
+        '<td><span class="inv-status ' + f.estatus.toLowerCase() + '">' + f.estatus + '</span></td>';
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    body.appendChild(table);
+
+    row.appendChild(head);
+    row.appendChild(body);
+    list.appendChild(row);
+  });
+}
+
+document.getElementById('portalLoginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  document.getElementById('portalLogin').hidden = true;
+  document.getElementById('portalApp').hidden = false;
+  renderClients();
+});
+
+document.getElementById('portalLogout').addEventListener('click', function(){
+  document.getElementById('portalApp').hidden = true;
+  document.getElementById('portalLogin').hidden = false;
+  document.getElementById('portalLoginForm').reset();
 });
 </script>
 </body>
