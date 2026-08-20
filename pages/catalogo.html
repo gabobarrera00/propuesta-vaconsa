@@ -1,0 +1,31 @@
+<!--
+title: Buscador de material — Vaconsa | Nexo Web
+description: Busque tubería, conexiones y válvulas por norma, material o medida — ASTM, API, ASME, PVC. Cada resultado trae su ficha técnica y cotiza en un clic.
+nav: catalogo
+script: <script src="/catalogo.js"></script>
+-->
+
+<section class="finder" id="catalogo">
+  <div class="wrap">
+    <div class="sec-head"><span class="idx">01</span><h2>Buscador de material</h2></div>
+    <p class="sec-sub">Escriba una norma, un material o un diámetro — por ejemplo <span class="mono">A106</span>, <span class="mono">316L</span>, <span class="mono">API 6A</span> o <span class="mono">inoxidable</span>. Cada resultado trae su ficha técnica descargable y cotiza en un clic.</p>
+
+    <div class="search-row">
+      <div class="search-field">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+          <circle cx="7" cy="7" r="5"/><line x1="11" y1="11" x2="15" y2="15"/>
+        </svg>
+        <input type="search" id="q" placeholder="Buscar por norma, material o medida…" aria-label="Buscar material por norma, material o medida">
+      </div>
+    </div>
+
+    <div class="chips" id="chips" role="group" aria-label="Filtrar por familia de producto"></div>
+    <!-- Región de anuncio: sin esto, quien usa lector de pantalla escribe "a106",
+         la lista pasa de 25 tarjetas a 1, y nadie le dice nada. El buscador es el
+         argumento central de la propuesta y era inusable a ciegas.
+         "polite" espera a que termine de escribir en lugar de interrumpir cada
+         tecla, que es lo correcto al filtrar en vivo. Ver AUDITORIA.md #3. -->
+    <p class="sr-only" id="resultsCount" role="status" aria-live="polite"></p>
+    <div class="results" id="results"></div>
+  </div>
+</section>
