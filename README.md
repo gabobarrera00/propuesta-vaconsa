@@ -1,5 +1,8 @@
 # Propuesta de rediseño — Vaconsa
 
+**Live (oficial, el link que se manda):** https://propuesta-vaconsa.vercel.app
+**Live (Railway, espejo):** https://vaconsa.up.railway.app _(mismo commit, deploy automático en cada push a `main` — Vercel sigue siendo la fuente de verdad hasta que se decida lo contrario)_
+
 Propuesta de rediseño (no solicitada) del sitio de **Vaconsa Productos Industriales**, distribuidora de tubería, válvulas y conexiones en Monterrey, N.L. — construida como pieza de prospección de **Nexo Web**, el servicio de páginas web de Gabo.
 
 **No es el sitio oficial de Vaconsa.** La página lo declara de forma visible arriba y en el pie, y está marcada `noindex` para que no aparezca en buscadores ni compita con su sitio real.
@@ -52,6 +55,10 @@ Es una demo de una página: separar en `style.css`/`script.js` (como en `regios-
 ## Cómo verlo
 
 Abre `index.html` en el navegador. No requiere servidor.
+
+## Deploy
+
+Vercel (oficial) vía CLI manual: `npx vercel deploy --prod`. Railway (espejo) conectado directo al repo — auto-deploy en cada push a `main`, sirviendo los archivos estáticos tal cual con `serve` (`package.json` mínimo, sin build step real).
 
 ## Estado
 
