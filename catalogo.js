@@ -121,7 +121,7 @@ function render(){
   if (!hits.length){
     const d = document.createElement('div');
     d.className = 'empty';
-    d.innerHTML = '<b>Sin coincidencias para "' + escapeHtml(qEl.value.trim()) + '"</b>Manejamos material fuera de catálogo por pedido especial. Pregúntenos directamente y le confirmamos disponibilidad.';
+    d.innerHTML = '<b>Sin coincidencias para “' + escapeHtml(qEl.value.trim()) + '”</b>Manejamos material fuera de catálogo por pedido especial. Pregúntenos directamente y le confirmamos disponibilidad.';
     const btn = document.createElement('button');
     btn.className = 'btn sm';
     btn.type = 'button';
