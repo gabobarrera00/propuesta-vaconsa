@@ -46,18 +46,18 @@ El contenido técnico es real, extraído de las propias páginas de producto de 
 
 Sitio multi-página generado a partir de una plantilla compartida, con un build step chico:
 
-- `_layout.html` — cabecera, nav, footer y bloque `<head>` comunes a toda página, con marcadores (`{{TITLE}}`, `{{DESCRIPTION}}`, `{{CANONICAL}}`, `{{CONTENT}}`, `{{PAGE_SCRIPT}}`) que `build.py` reemplaza
+- `_layout.html` — cabecera, nav, footer y bloque `<head>` comunes a toda página, con marcadores (`{{TITLE}}`, `{{DESCRIPTION}}`, `{{CANONICAL}}`, `{{CONTENT}}`, `{{PAGE_SCRIPT}}`) que `build.js` reemplaza
 - `pages/*.html` — una página por sección (inicio, catálogo, fichas técnicas, servicios, desarrolladores, nosotros, respaldo técnico, responsabilidad, cotizar, dónde estamos, portal de clientes), cada una con su propio front-matter (`title`, `description`, `nav`, `script` opcional) y su contenido
-- `build.py` — combina `_layout.html` + cada `pages/*.html` y escribe la salida estática: `pages/inicio.html` se convierte en `index.html` (raíz), el resto en `<seccion>/index.html`, así que cada sección vive en su propia URL (`/catalogo/`, `/cotizar/`, etc.)
+- `build.js` — combina `_layout.html` + cada `pages/*.html` y escribe la salida estática: `pages/inicio.html` se convierte en `index.html` (raíz), el resto en `<seccion>/index.html`, así que cada sección vive en su propia URL (`/catalogo/`, `/cotizar/`, etc.). Es Node plano (sin dependencias), no Python — la imagen de build de Railway no trae ni `python` ni `python3`, y Node es la única runtime que el deploy garantiza (ver `engines` en `package.json`).
 
-`python build.py` (o `npm run build`) regenera todo el sitio estático a partir de las fuentes. La salida generada (`index.html` en la raíz + las carpetas de sección) no se versiona — ver `.gitignore` — se produce en cada build, local o en Railway.
+`node build.js` (o `npm run build`) regenera todo el sitio estático a partir de las fuentes. La salida generada (`index.html` en la raíz + las carpetas de sección) no se versiona — ver `.gitignore` — se produce en cada build, local o en Railway.
 
-**Copia gemela en el vault:** `vault/03 - export/paginas-web/vaconsa-propuesta.html`. Ahora mirror solo de la página de inicio (`index.html` generado, no el sitio completo) — es la variante publicada como Artifact, idéntica salvo que no lleva `<!doctype>`, `<html>`, `<head>` ni `<body>` (el publicador los inyecta) y sus enlaces/imágenes están absolutizados a `vaconsa.up.railway.app`. `python sync-vault-copy.py` la regenera después de `python build.py`.
+**Copia gemela en el vault:** `vault/03 - export/paginas-web/vaconsa-propuesta.html`. Ahora mirror solo de la página de inicio (`index.html` generado, no el sitio completo) — es la variante publicada como Artifact, idéntica salvo que no lleva `<!doctype>`, `<html>`, `<head>` ni `<body>` (el publicador los inyecta) y sus enlaces/imágenes están absolutizados a `vaconsa.up.railway.app`. `python sync-vault-copy.py` la regenera después de `node build.js` — este script sí sigue en Python porque solo corre localmente (nunca en Railway), donde Python está disponible.
 
 ## Cómo verlo
 
 ```
-python build.py
+node build.js
 python -m http.server 8940
 ```
 
@@ -65,7 +65,7 @@ Abre `http://localhost:8940/`. Cada sección vive en su propia URL (`/catalogo/`
 
 ## Deploy
 
-Railway (oficial) conectado directo al repo — auto-deploy en cada push a `main`. `npm run start` corre `npm run build` (`python build.py`, regenera todas las páginas) antes de levantar `serve .`, así que el build corre como parte del arranque en vez de depender de una fase de build separada de Railway — funciona sin importar si la imagen de build de Railway trae Python instalado. Vercel (respaldo) vía CLI manual: `npx vercel deploy --prod` — requiere `vercel login` la primera vez, por eso quedó desactualizado.
+Railway (oficial) conectado directo al repo — auto-deploy en cada push a `main`. `npm run start` corre `npm run build` (`node build.js`, regenera todas las páginas) antes de levantar `serve .`, así que el build corre como parte del arranque en vez de depender de una fase de build separada de Railway. **Nota histórica:** la primera versión de este build step usaba `python build.py` con un *fallback* a `python3` — se rompió en producción el 2026-08-20 porque la imagen de build de Railway no trae ninguno de los dos instalados (crash-loop, sitio caído ~15 min hasta el fix). Se reescribió en Node (`build.js`, salida idéntica byte a byte, verificado) precisamente para no depender de un binario que Railway no garantiza. Vercel (respaldo) vía CLI manual: `npx vercel deploy --prod` — requiere `vercel login` la primera vez, por eso quedó desactualizado.
 
 ## Estado
 
