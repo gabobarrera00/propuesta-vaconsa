@@ -74,7 +74,7 @@ function escapeRegExp(s) {
 function markActiveNav(layoutHtml, navId) {
   if (!navId) return layoutHtml;
   const pattern = new RegExp(`(<a\\b[^>]*\\bdata-nav="${escapeRegExp(navId)}"[^>]*)(>)`);
-  return layoutHtml.replace(pattern, (_match, p1, p2) => `${p1} aria-current="page"${p2}`);
+  return layoutHtml.replace(pattern, (_match, p1, p2) => `${p1} aria-current="page" tabindex="-1"${p2}`);
 }
 
 function buildPage(layoutHtml, name) {
