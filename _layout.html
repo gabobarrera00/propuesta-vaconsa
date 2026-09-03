@@ -16,49 +16,60 @@
 <meta property="og:image:height" content="630">
 <link rel="canonical" href="{{CANONICAL}}">
 <style>
+  /* Paleta Vaconsa: rojo carmín profundo (#C20E23 — el #E21212 literal del sitio
+     oficial se leía anaranjado en superficies grandes; este baja luminosidad y
+     mete un punto de azul, hue ~353°, para que lea rojo inequívoco), negro y
+     grises neutros. Contraste verificado AA: rojo sobre blanco 6.2:1, blanco
+     sobre rojo 6.2:1; en oscuro el rojo sube de tono y el texto encima va oscuro. */
   :root{
-    --paper:#EDF1F3;
+    --paper:#F1F1F1;
     --surface:#FFFFFF;
-    --surface-2:#F5F8F9;
-    --ink:#0F1518;
-    --steel:#47606E;
-    --muted:#697C87;
-    --line:#C9D2D7;
-    --line-soft:#DFE6E9;
-    --red:#C8102E;
+    --surface-2:#F6F6F6;
+    --ink:#17181A;
+    --steel:#5A5A5A;
+    --muted:#707070;
+    --line:#D6D6D6;
+    --line-soft:#E7E7E7;
+    --red:#C20E23;
     --red-ink:#FFFFFF;
-    --grid:rgba(71,96,110,0.07);
+    --grid:rgba(90,90,90,0.06);
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --paper:#0E1215;
-      --surface:#151B20;
-      --surface-2:#1A2228;
-      --ink:#E6EBEE;
-      --steel:#8AA5B4;
-      --muted:#7E929E;
-      --line:#28323A;
-      --line-soft:#1F272D;
-      --red:#FF4258;
-      --red-ink:#12070A;
-      --grid:rgba(138,165,180,0.07);
+      --paper:#101112;
+      --surface:#18191B;
+      --surface-2:#1E1F21;
+      --ink:#EDEDED;
+      --steel:#A8A8A8;
+      --muted:#9A9A9A;
+      --line:#303133;
+      --line-soft:#262729;
+      --red:#F5304C;
+      --red-ink:#1A0308;
+      --grid:rgba(168,168,168,0.06);
     }
   }
   :root[data-theme="dark"]{
-    --paper:#0E1215;
-    --surface:#151B20;
-    --surface-2:#1A2228;
-    --ink:#E6EBEE;
-    --steel:#8AA5B4;
-    --muted:#7E929E;
-    --line:#28323A;
-    --line-soft:#1F272D;
-    --red:#FF4258;
-    --red-ink:#12070A;
-    --grid:rgba(138,165,180,0.07);
+    --paper:#101112;
+    --surface:#18191B;
+    --surface-2:#1E1F21;
+    --ink:#EDEDED;
+    --steel:#A8A8A8;
+    --muted:#9A9A9A;
+    --line:#303133;
+    --line-soft:#262729;
+    --red:#F5304C;
+    --red-ink:#1A0308;
+    --grid:rgba(168,168,168,0.06);
   }
 
   *{box-sizing:border-box;}
+  /* Un item de grid/flex tiene min-width:auto — no encoge por debajo del ancho
+     de su contenido, así que una columna 1fr con texto largo desborda el
+     contenedor (se veía en la 3ª tarjeta de familias y la 4ª de servicios,
+     cortadas por la derecha). min-width:0 lo corrige en todas las rejillas de
+     tarjetas de una sola vez, sin tener que parchar cada grid-template. */
+  .svc,.cat,.dev-item,.rse,.loc,.card,.valuebar .v,.foot-col,.doc-list li,.lines-strip figure{min-width:0;}
   /* El header es sticky: sin scroll-padding-top todo salto de ancla — incluidos
      los scrollIntoView de prefill() — deja el título tapado debajo del header.
      Una línea arregla todos los saltos de la página. Ver AUDITORIA.md #4a. */
@@ -109,19 +120,23 @@
     background:var(--surface);
     border-bottom:1px solid var(--line);
   }
-  header.site .wrap{
-    display:flex;align-items:center;gap:24px;
-    height:72px;
+  .header-top{
+    display:flex;align-items:center;gap:20px;
+    height:68px;
   }
   .brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex:none;}
   .brand .mark{width:34px;height:34px;flex:none;}
   .brand .name{font-size:19px;letter-spacing:.14em;}
   .brand .name em{font-style:normal;color:var(--red);}
-  nav.main{display:flex;gap:22px;margin-left:auto;font-size:13px;}
+  .header-search.search-field{flex:1;max-width:440px;min-width:90px;}
+  .header-search input{padding:9px 14px 9px 38px;font-size:13.5px;border-radius:4px;}
+  .nav-row{background:var(--surface-2);border-top:1px solid var(--line);}
+  .nav-row .wrap{height:42px;display:flex;align-items:center;}
+  nav.main{display:flex;gap:20px;font-size:13px;}
   .portal{
     display:flex;align-items:center;gap:7px;flex:none;
     font-size:12.5px;color:var(--muted);text-decoration:none;
-    border:1px solid var(--line);padding:9px 13px;transition:.15s;
+    border:1px solid var(--line);padding:9px 13px;border-radius:4px;transition:.15s;
   }
   .portal:hover{color:var(--ink);border-color:var(--steel);}
   .portal[aria-current="page"]{color:var(--ink);border-color:var(--red);pointer-events:none;}
@@ -132,27 +147,24 @@
   .btn{
     display:inline-flex;align-items:center;gap:8px;
     background:var(--red);color:var(--red-ink);
-    border:none;padding:11px 18px;
-    font-size:12.5px;cursor:pointer;
+    border:none;padding:11px 18px;border-radius:4px;
+    font-size:13px;cursor:pointer;
     text-decoration:none;
-    font-family:"Arial Narrow","Helvetica Neue",Arial,sans-serif;
-    text-transform:uppercase;letter-spacing:.08em;font-weight:700;
+    font-family:inherit;font-weight:700;
     transition:filter .15s;
   }
   .btn:hover{filter:brightness(1.12);}
   .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);}
   .btn.ghost:hover{border-color:var(--red);color:var(--red);filter:none;}
-  .btn.sm{padding:7px 12px;font-size:11px;}
+  .btn.sm{padding:7px 12px;font-size:12px;}
   .btn[aria-current="page"]{background:var(--surface-2);color:var(--red);border:1px solid var(--red);pointer-events:none;}
-  @media(max-width:860px){nav.main{display:none;}}
+  @media(max-width:860px){.nav-row{display:none;}}
+  @media(max-width:640px){.header-search{display:none;}}
 
   /* ---------- hero ---------- */
   .hero{
     border-bottom:1px solid var(--line);
-    background:
-      linear-gradient(var(--grid) 1px,transparent 1px) 0 0/100% 28px,
-      linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/28px 100%,
-      var(--surface-2);
+    background:var(--surface-2);
   }
   .hero .wrap{
     display:grid;grid-template-columns:1.15fr .85fr;gap:48px;
@@ -162,19 +174,18 @@
   .eyebrow .rule{height:1px;width:34px;background:var(--red);}
   .eyebrow span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--steel);font-weight:600;}
   h1{
-    font-family:"Arial Narrow","Helvetica Neue",Arial,sans-serif;
-    text-transform:uppercase;letter-spacing:.02em;font-weight:700;
-    font-size:clamp(34px,5.2vw,54px);
-    line-height:1.02;margin:0 0 18px;text-wrap:balance;
+    font-weight:800;letter-spacing:-.01em;
+    font-size:clamp(32px,4.8vw,50px);
+    line-height:1.1;margin:0 0 18px;text-wrap:balance;
   }
   h1 em{font-style:normal;color:var(--red);}
   .hero p.lede{margin:0 0 26px;color:var(--muted);font-size:16px;max-width:46ch;}
-  .hero-facts{display:flex;gap:0;border:1px solid var(--line);background:var(--surface);}
+  .hero-facts{display:flex;gap:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface);}
   .hero-facts > div{flex:1;padding:13px 15px;border-right:1px solid var(--line);}
   .hero-facts > div:last-child{border-right:none;}
   .hero-facts .n{font-family:Consolas,monospace;font-variant-numeric:tabular-nums;font-size:21px;font-weight:700;line-height:1;}
   .hero-facts .l{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:6px;}
-  .hero-art{width:100%;height:auto;}
+  .hero-art{width:100%;aspect-ratio:4/3;display:block;border-radius:8px;object-fit:cover;}
   .hero .wrap > *{min-width:0;}
   @media(max-width:900px){
     .hero .wrap{grid-template-columns:1fr;gap:34px;}
@@ -190,7 +201,7 @@
   .finder{padding:52px 0 60px;border-bottom:1px solid var(--line);}
   .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px;}
   .sec-head .idx{font-family:Consolas,monospace;color:var(--red);font-size:12px;font-weight:700;}
-  .sec-head h2{font-family:"Arial Narrow","Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:.1em;font-weight:700;font-size:15px;margin:0;}
+  .sec-head h2{font-weight:800;font-size:21px;margin:0;}
   .sec-sub{color:var(--muted);font-size:14px;margin:0 0 26px;max-width:60ch;}
 
   .search-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
@@ -298,13 +309,14 @@
 
   /* ---------- services ---------- */
   .services{padding:52px 0;border-bottom:1px solid var(--line);background:var(--surface-2);}
-  .svc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  .svc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
   .svc-grid--preview{grid-template-columns:repeat(4,1fr);}
   @media(max-width:880px){.svc-grid{grid-template-columns:repeat(2,1fr);}}
   @media(max-width:480px){.svc-grid{grid-template-columns:1fr;}}
-  .svc{background:var(--surface);padding:20px 18px;display:flex;flex-direction:column;gap:9px;}
+  .svc{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px 20px;display:flex;flex-direction:column;gap:9px;transition:border-color .15s,box-shadow .15s;}
+  a.svc:hover{border-color:var(--red);box-shadow:0 4px 14px rgba(0,0,0,.08);}
   .svc .n{font-family:Consolas,monospace;font-size:11px;color:var(--red);font-weight:700;}
-  .svc h3{margin:0;font-size:14px;font-weight:700;line-height:1.3;}
+  .svc h3{margin:0;font-size:14.5px;font-weight:700;line-height:1.3;}
   .svc p{margin:0;font-size:12.5px;color:var(--muted);}
   a.svc{text-decoration:none;color:inherit;cursor:pointer;}
 
@@ -325,9 +337,9 @@
   .dev-group-t{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
   .dev-group-t .rule{height:1px;width:22px;background:var(--red);flex:none;}
   .dev-group-t h3{margin:0;font-size:12.5px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--ink);}
-  .dev-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  .dev-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
   @media(max-width:760px){.dev-grid{grid-template-columns:1fr;}}
-  .dev-item{background:var(--surface);padding:18px 20px;display:flex;flex-direction:column;gap:8px;}
+  .dev-item{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px 22px;display:flex;flex-direction:column;gap:8px;}
   .dev-item.wide{grid-column:1 / -1;}
   .dev-item h4{margin:0;font-size:13.5px;font-weight:700;}
   .dev-item p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.5;}
@@ -370,10 +382,10 @@
 
   /* ---------- responsabilidad social ---------- */
   .social{padding:52px 0;border-bottom:1px solid var(--line);}
-  .rse-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  .rse-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
   @media(max-width:820px){.rse-grid{grid-template-columns:repeat(2,1fr);}}
   @media(max-width:480px){.rse-grid{grid-template-columns:1fr;}}
-  .rse{background:var(--surface);padding:22px 18px;display:flex;flex-direction:column;gap:10px;}
+  .rse{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px 18px;display:flex;flex-direction:column;gap:10px;}
   .rse-ico{color:var(--red);}
   .rse-ico svg{width:26px;height:26px;display:block;}
   .rse h3{margin:0;font-size:14.5px;font-weight:700;}
@@ -398,7 +410,7 @@
   .sent{
     border:1px solid var(--red);background:var(--surface);padding:30px 26px;text-align:center;
   }
-  .sent .big{font-family:"Arial Narrow","Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-weight:700;font-size:20px;margin-bottom:10px;}
+  .sent .big{font-weight:800;font-size:22px;margin-bottom:10px;}
   .sent p{color:var(--muted);font-size:13.5px;margin:0 0 6px;}
   .sent .recap{
     margin-top:18px;text-align:left;border-top:1px solid var(--line-soft);padding-top:16px;
@@ -408,9 +420,9 @@
 
   /* ---------- contact ---------- */
   .contact{padding:52px 0;}
-  .loc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  .loc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
   @media(max-width:820px){.loc-grid{grid-template-columns:1fr;}}
-  .loc{background:var(--surface);padding:22px 20px;}
+  .loc{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px 20px;}
   .loc .k{font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--red);font-weight:700;margin-bottom:9px;}
   .loc p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.6;}
   .loc a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);}
@@ -482,8 +494,89 @@
   .inv-status.pendiente{color:var(--ink);border-color:var(--line);}
   .inv-status.vencida{color:var(--red);border-color:var(--red);}
 
-  footer.site{border-top:1px solid var(--line);background:var(--surface);padding:26px 0;}
-  footer.site .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);}
+  /* ---------- breadcrumb ---------- */
+  .breadcrumb{background:var(--surface-2);border-bottom:1px solid var(--line);}
+  .breadcrumb .wrap{display:flex;align-items:center;gap:8px;height:40px;font-size:12px;color:var(--muted);}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--red);}
+  .breadcrumb span[aria-hidden]{color:var(--line);}
+  .breadcrumb span[aria-current]{color:var(--ink);font-weight:600;}
+
+  /* ---------- tarjetas de categoría con ícono (svc) ---------- */
+  .svc-ico{
+    width:44px;height:44px;flex:none;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--surface-2);border:1px solid var(--line);color:var(--red);
+  }
+  .svc-ico svg{width:22px;height:22px;}
+  .svc-top{display:flex;align-items:center;gap:12px;}
+  .svc-top .n{font-family:Consolas,monospace;font-size:10px;color:var(--muted);font-weight:700;margin-left:auto;}
+
+  /* ---------- barra de valor ---------- */
+  .valuebar{background:var(--surface);border-bottom:1px solid var(--line);}
+  .valuebar .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+  .valuebar .v{display:flex;align-items:center;gap:13px;padding:18px 22px 18px 0;}
+  .valuebar .v > svg{width:22px;height:22px;color:var(--red);flex:none;}
+  .valuebar .v b{display:block;font-size:13px;font-weight:700;line-height:1.3;}
+  .valuebar .v span{display:block;font-size:11.5px;color:var(--muted);line-height:1.35;margin-top:2px;}
+  @media(max-width:900px){.valuebar .wrap{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:520px){.valuebar .wrap{grid-template-columns:1fr;}}
+
+  /* ---------- familias de producto ---------- */
+  .cats{padding:56px 0 60px;border-bottom:1px solid var(--line);}
+  /* minmax(0,1fr) y no 1fr: con 1fr el track toma el min-content de la tarjeta
+     (el texto largo no encoge) y la tercera columna se sale del contenedor. */
+  .cat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+  @media(max-width:900px){.cat-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+  @media(max-width:560px){.cat-grid{grid-template-columns:minmax(0,1fr);}}
+  .cat{
+    display:flex;align-items:center;gap:16px;
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    padding:18px 20px;text-decoration:none;color:inherit;
+    transition:border-color .16s,box-shadow .16s,transform .16s;
+  }
+  .cat:hover{border-color:var(--red);box-shadow:0 6px 20px rgba(0,0,0,.09);transform:translateY(-2px);}
+  .cat-ico{
+    width:58px;height:58px;flex:none;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--surface-2);border:1px solid var(--line-soft);color:var(--red);
+  }
+  .cat-ico svg{width:30px;height:30px;}
+  .cat-txt{min-width:0;}
+  .cat h3{margin:0 0 3px;font-size:15.5px;font-weight:700;}
+  .cat p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.45;}
+  .cat .go{margin-left:auto;color:var(--muted);flex:none;transition:transform .16s,color .16s;}
+  .cat:hover .go{color:var(--red);transform:translateX(3px);}
+
+  /* ---------- franja de marcas y normas ---------- */
+  .brandbar{padding:38px 0;border-bottom:1px solid var(--line);background:var(--surface-2);}
+  .brandbar-t{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700;margin:0 0 16px;text-align:center;}
+  .brandbar-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+  .brandbar-row .bt{
+    border:1px solid var(--line);background:var(--surface);border-radius:6px;
+    padding:10px 18px;font-size:13.5px;font-weight:600;color:var(--steel);
+  }
+  .brandbar-row .bt em{font-style:normal;color:var(--muted);font-weight:400;font-size:11.5px;margin-left:6px;}
+  .brandbar-more{text-align:center;margin:20px 0 0;font-size:13px;}
+  .brandbar-more a{color:var(--red);text-decoration:none;font-weight:600;}
+  .brandbar-more a:hover{text-decoration:underline;}
+
+  /* ---------- footer ---------- */
+  footer.site{border-top:1px solid var(--line);background:var(--surface);padding:44px 0 0;}
+  .foot-cols{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.1fr;gap:36px;padding-bottom:36px;}
+  @media(max-width:860px){.foot-cols{grid-template-columns:1fr 1fr;gap:30px;}}
+  @media(max-width:520px){.foot-cols{grid-template-columns:1fr;}}
+  .foot-col h4{margin:0 0 13px;font-size:11px;text-transform:uppercase;letter-spacing:.11em;color:var(--muted);font-weight:700;}
+  .foot-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;}
+  .foot-col a{color:var(--ink);text-decoration:none;font-size:13px;opacity:.85;transition:color .15s,opacity .15s;}
+  .foot-col a:hover{color:var(--red);opacity:1;}
+  .foot-about .brand{margin-bottom:12px;}
+  .foot-about p{margin:0;font-size:13px;color:var(--muted);max-width:36ch;line-height:1.65;}
+  .foot-contact p{margin:0 0 9px;font-size:13px;color:var(--muted);line-height:1.6;}
+  .foot-contact a{border-bottom:1px solid var(--line);}
+  .foot-bottom{border-top:1px solid var(--line);padding:18px 0;}
+  .foot-bottom .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);}
+  .foot-bottom a{color:var(--muted);}
 
   .wa{
     position:fixed;right:20px;bottom:20px;z-index:60;
@@ -504,7 +597,7 @@
 </div>
 
 <header class="site">
-  <div class="wrap">
+  <div class="wrap header-top">
     <a class="brand" href="/">
       <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
         <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="2.2"/>
@@ -519,15 +612,12 @@
       </svg>
       <span class="name cond">VACON<em>SA</em></span>
     </a>
-    <nav class="main">
-      <a href="/catalogo/" data-nav="catalogo">Catálogo</a>
-      <a href="/fichas-tecnicas/" data-nav="fichas-tecnicas">Fichas técnicas</a>
-      <a href="/servicios/" data-nav="servicios">Servicios</a>
-      <a href="/desarrolladores/" data-nav="desarrolladores">Desarrolladores</a>
-      <a href="/nosotros/" data-nav="nosotros">Nosotros</a>
-      <a href="/responsabilidad/" data-nav="responsabilidad">Responsabilidad</a>
-      <a href="/donde-estamos/" data-nav="donde-estamos">Contacto</a>
-    </nav>
+    <form class="header-search search-field" action="/catalogo/" role="search">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+        <circle cx="7" cy="7" r="5"/><line x1="11" y1="11" x2="15" y2="15"/>
+      </svg>
+      <input type="search" name="q" placeholder="Buscar tubería, válvula, norma…" aria-label="Buscar material">
+    </form>
     <a class="portal" href="/portal-clientes/" title="Portal de clientes" data-nav="portal-clientes">
       <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
         <circle cx="8" cy="5.2" r="2.8"/><path d="M2.6 14c0-2.8 2.4-4.6 5.4-4.6s5.4 1.8 5.4 4.6"/>
@@ -536,14 +626,81 @@
     </a>
     <a class="btn" href="/cotizar/" data-nav="cotizar">Solicitar cotización</a>
   </div>
+  <div class="nav-row">
+    <nav class="main wrap">
+      <a href="/catalogo/" data-nav="catalogo">Catálogo</a>
+      <a href="/fichas-tecnicas/" data-nav="fichas-tecnicas">Fichas técnicas</a>
+      <a href="/servicios/" data-nav="servicios">Servicios</a>
+      <a href="/desarrolladores/" data-nav="desarrolladores">Desarrolladores</a>
+      <a href="/nosotros/" data-nav="nosotros">Nosotros</a>
+      <a href="/responsabilidad/" data-nav="responsabilidad">Responsabilidad</a>
+      <a href="/donde-estamos/" data-nav="donde-estamos">Contacto</a>
+    </nav>
+  </div>
 </header>
+
+{{BREADCRUMB}}
 
 {{CONTENT}}
 
 <footer class="site">
-  <div class="wrap">
-    <span>© <span id="year"></span> Vaconsa Productos Industriales · Válvulas y Conexiones del Norte, S.A. de C.V. · <a href="https://www.vaconsa.com.mx/wp-content/uploads/2019/02/avisodeprivacidad.pdf" target="_blank" rel="noopener">Aviso de privacidad</a></span>
-    <span>Propuesta visual sin afiliación oficial · <strong>Nexo Web</strong></span>
+  <div class="wrap foot-cols">
+    <div class="foot-col foot-about">
+      <a class="brand" href="/">
+        <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+          <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="2.2"/>
+          <circle cx="20" cy="20" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <g fill="currentColor">
+            <circle cx="20" cy="5.5" r="2"/><circle cx="20" cy="34.5" r="2"/>
+            <circle cx="5.5" cy="20" r="2"/><circle cx="34.5" cy="20" r="2"/>
+            <circle cx="10.2" cy="10.2" r="2"/><circle cx="29.8" cy="29.8" r="2"/>
+            <circle cx="29.8" cy="10.2" r="2"/><circle cx="10.2" cy="29.8" r="2"/>
+          </g>
+          <path d="M14.5 14.5 L20 26 L25.5 14.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/>
+        </svg>
+        <span class="name cond">VACON<em>SA</em></span>
+      </a>
+      <p>Distribuidora de tubería, válvulas y conexiones industriales en Monterrey desde 1978. Material certificado bajo norma ASTM, ASME, API y NACE.</p>
+    </div>
+    <div class="foot-col">
+      <h4>Productos</h4>
+      <ul>
+        <li><a href="/catalogo/?fam=Tuber%C3%ADa">Tubería</a></li>
+        <li><a href="/catalogo/?fam=Conexiones">Conexiones</a></li>
+        <li><a href="/catalogo/?fam=Bridas">Bridas</a></li>
+        <li><a href="/catalogo/?fam=V%C3%A1lvulas">Válvulas</a></li>
+        <li><a href="/catalogo/?fam=Inoxidable">Inoxidable</a></li>
+        <li><a href="/catalogo/">Ver catálogo completo</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Servicios</h4>
+      <ul>
+        <li><a href="/servicios/">Servicios en planta</a></li>
+        <li><a href="/fichas-tecnicas/">Catálogos y fichas técnicas</a></li>
+        <li><a href="/desarrolladores/">Desarrolladores y constructores</a></li>
+        <li><a href="/respaldo-tecnico/">Respaldo técnico</a></li>
+        <li><a href="/portal-clientes/">Portal de clientes</a></li>
+      </ul>
+    </div>
+    <div class="foot-col foot-contact">
+      <h4>Contacto</h4>
+      <p>Hernán Santos Cantú #231<br>Desarrollo Industrial Monterrey<br>Santa Catarina, N.L. CP 66390</p>
+      <p><a href="tel:+528181006500">+52 (81) 81 00 65 00</a><br>
+      <a href="mailto:ventas@vaconsa.com.mx">ventas@vaconsa.com.mx</a><br>
+      Lun–Vie, 8:00–18:00 h</p>
+      <ul style="margin-top:12px;">
+        <li><a href="/nosotros/">Nosotros</a></li>
+        <li><a href="/responsabilidad/">Responsabilidad social</a></li>
+        <li><a href="/donde-estamos/#empleo">Bolsa de trabajo</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div class="wrap">
+      <span>© <span id="year"></span> Vaconsa Productos Industriales · Válvulas y Conexiones del Norte, S.A. de C.V. · <a href="https://www.vaconsa.com.mx/wp-content/uploads/2019/02/avisodeprivacidad.pdf" target="_blank" rel="noopener">Aviso de privacidad</a></span>
+      <span>Propuesta visual sin afiliación oficial · <strong>Nexo Web</strong></span>
+    </div>
   </div>
 </footer>
 

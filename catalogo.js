@@ -184,5 +184,18 @@ function prefill(prod, norma){
 }
 
 qEl.addEventListener('input', render);
+
+// Entradas desde fuera del catálogo:
+//   ?q=...   buscador del header
+//   ?fam=... tarjetas de "familia de producto" del inicio y links del footer
+// Ambos se aplican antes de dibujar los chips para que el chip correcto quede
+// marcado desde el primer render, sin un parpadeo de "Todo" primero.
+const params = new URLSearchParams(window.location.search);
+const initialQ = params.get('q');
+if (initialQ) qEl.value = initialQ;
+
+const initialFam = params.get('fam');
+if (initialFam && FAMS.includes(initialFam)) activeFam = initialFam;
+
 buildChips();
 render();

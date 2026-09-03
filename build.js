@@ -77,6 +77,11 @@ function markActiveNav(layoutHtml, navId) {
   return layoutHtml.replace(pattern, (_match, p1, p2) => `${p1} aria-current="page" tabindex="-1"${p2}`);
 }
 
+function breadcrumbFor(fm) {
+  if (!fm.crumb) return "";
+  return `<nav class="breadcrumb" aria-label="Ruta"><div class="wrap"><a href="/">Inicio</a><span aria-hidden="true">/</span><span aria-current="page">${fm.crumb}</span></div></nav>`;
+}
+
 function buildPage(layoutHtml, name) {
   const { fm, content } = parsePage(path.join(PAGES_DIR, `${name}.html`));
   let pageHtml = markActiveNav(layoutHtml, fm.nav);
@@ -84,6 +89,7 @@ function buildPage(layoutHtml, name) {
     .split("{{TITLE}}").join(fm.title)
     .split("{{DESCRIPTION}}").join(fm.description)
     .split("{{CANONICAL}}").join(canonicalFor(name))
+    .split("{{BREADCRUMB}}").join(breadcrumbFor(fm))
     .split("{{CONTENT}}").join(content)
     .split("{{PAGE_SCRIPT}}").join(fm.script || "");
   const dest = outputPath(name);
