@@ -184,6 +184,9 @@ function prefill(prod, norma){
 }
 
 qEl.addEventListener('input', render);
+// El buscador del encabezado es el mismo campo: aquí filtra en vivo, así que
+// Enter no debe recargar la página.
+if (qEl.form) qEl.form.addEventListener('submit', (e) => { e.preventDefault(); render(); });
 
 // Entradas desde fuera del catálogo:
 //   ?q=...   buscador del header

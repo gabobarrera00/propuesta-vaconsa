@@ -56,6 +56,7 @@ Current direction (2026-11-19, branch `rediseno-profesional`): **manufacturer na
 - **Structure through hairlines, not cards.** Families, services, documents, catalog results and social-responsibility items sit in 1px-gap grids. Radius is 2px everywhere; no drop shadows.
 - **The one bold element** is the home hero: full-bleed industrial photo in grayscale under a graphite gradient, with a three-cell data plate (48 años, ½"–60", 2 líneas).
 - **Photos are stock** (Vaconsa buys them; they never photograph their own work), so they are only ever presented as product lines or atmosphere, never as projects delivered.
+- **Kept deliberately light at the top.** One search box only: the header input (`id="q"`) is also the catalog page live filter (`catalogo.js` binds to it and stops Enter from reloading). The disclosure ribbon is a single thin line. No breadcrumbs on pages reachable from the header or main nav; only `respaldo-tecnico` keeps one. The home page is hero, product families and one quote CTA; everything else lives on its own page (norms and brands in respaldo técnico, services in servicios).
 - On phones the main nav becomes a horizontally scrolling bar instead of disappearing, and the search moves to its own row under the brand.
 
 ## CSS gotcha that already bit once
