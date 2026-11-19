@@ -48,7 +48,15 @@ Every norm, class and diameter in the `CATALOG` array in `catalogo.js` was taken
 
 ## Design intent
 
-The concept is *engineering datasheet*, not corporate brochure: hairline rules, zero border-radius, monospaced tabular figures for every spec, and a hero that is an SVG sectional drawing of a weld-neck flange with dimension lines. Vaconsa's brand red (`#C8102E`) is the single accent over steel-biased neutrals. Deliberately no stock photography — the visual language comes from their own trade.
+Current direction (2026-11-19, branch `rediseno-profesional`): **manufacturer nameplate**, serious and editorial, built on top of the distributor structure the owners asked for (ferguson.com style, their red/black/gray palette).
+
+- **One accent.** Vaconsa red `#C20E23` (`#F0364F` in dark mode) is reserved for actions and states: buttons, active nav, focus, hover. Never used to color part of a headline.
+- **Neutrals:** white, zinc `#F3F4F5` for alternating bands, graphite `#1F2226` for the nav bar, the home hero and the footer.
+- **One typeface, Archivo** (Google Fonts, variable width axis). Headlines are condensed (`font-stretch:75%`) in sentence case; body text is normal width; every spec figure uses tabular numerals. No monospace, no tracked all-caps labels.
+- **Structure through hairlines, not cards.** Families, services, documents, catalog results and social-responsibility items sit in 1px-gap grids. Radius is 2px everywhere; no drop shadows.
+- **The one bold element** is the home hero: full-bleed industrial photo in grayscale under a graphite gradient, with a three-cell data plate (48 años, ½"–60", 2 líneas).
+- **Photos are stock** (Vaconsa buys them; they never photograph their own work), so they are only ever presented as product lines or atmosphere, never as projects delivered.
+- On phones the main nav becomes a horizontally scrolling bar instead of disappearing, and the search moves to its own row under the brand.
 
 ## CSS gotcha that already bit once
 
