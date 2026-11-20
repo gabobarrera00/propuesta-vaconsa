@@ -8,12 +8,11 @@ document.getElementById('jobsForm').addEventListener('submit', function(e){
   const area = form.querySelector('#j-area').value;
   const done = document.createElement('div');
   done.className = 'sent';
-  done.innerHTML =
-    '<div class="big">Solicitud recibida</div>' +
-    '<p>Gracias, <span class="r-nom"></span>. Guardamos su currículum para el área de <span class="r-area"></span> y le avisaremos cuando haya una vacante que corresponda.</p>' +
-    '<p style="font-size:11.5px;">(Demostración — no se envió información real.)</p>';
-  done.querySelector('.r-nom').textContent = nombre;
-  done.querySelector('.r-area').textContent = area;
+  // Textos en el idioma de la página (T de /i18n.js).
+  done.innerHTML = '<div class="big"></div><p class="r-msg"></p><p class="r-demo" style="font-size:12.5px;"></p>';
+  done.querySelector('.big').textContent = T('sentTitle');
+  done.querySelector('.r-msg').textContent = T('jobsThanks', nombre, area);
+  done.querySelector('.r-demo').textContent = T('demoNote');
   form.replaceWith(done);
   done.scrollIntoView({behavior:'smooth', block:'center'});
 });

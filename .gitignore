@@ -27,3 +27,5 @@ server.log
 
 # generado por build.js
 /sitemap.xml
+/productos/
+/en/

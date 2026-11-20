@@ -1,0 +1,36 @@
+<!--
+title: Customer portal — Vaconsa | Nexo Web
+description: Prototype of a portal where Vaconsa customers could see their invoices directly, without calling for an account statement.
+nav: portal-clientes
+script: <script src="/portal-clientes.js"></script>
+-->
+
+<section class="portal-demo" id="portal-clientes">
+  <div class="wrap">
+    <div class="sec-head"><h2>Customer portal</h2></div>
+    <p class="sec-sub">This is how a portal would look where your customers sign in to see their invoices directly, without calling for an account statement. <strong>Prototype</strong> — sample data, not real Vaconsa customers.</p>
+
+    <div id="portalLogin" class="portal-card">
+      <form id="portalLoginForm" class="portal-login">
+        <div class="portal-field">
+          <label for="p-user">Username</label>
+          <input type="text" id="p-user" placeholder="customer@company.com">
+        </div>
+        <div class="portal-field">
+          <label for="p-pass">Password</label>
+          <input type="password" id="p-pass" placeholder="••••••••">
+        </div>
+        <button class="btn" type="submit">Sign in</button>
+        <p class="form-note">Prototype — any username and password will let you in. There is no real access.</p>
+      </form>
+    </div>
+
+    <div id="portalApp" class="portal-app" hidden>
+      <div class="portal-toolbar">
+        <span class="portal-demo-tag">Sample data — this is how it would look with your real information</span>
+        <button class="btn ghost sm" id="portalLogout" type="button">Sign out</button>
+      </div>
+      <div id="clientList" class="client-list"></div>
+    </div>
+  </div>
+</section>

@@ -59,7 +59,10 @@
   var notas = panel && $('#cart-notas', panel);
   var lastFocus = null;
 
-  function plural(n) { return n === 1 ? '1 producto' : n + ' productos'; }
+  function plural(n) { return T('products', n); }
+  // Nombre y norma en el idioma de la página; la lista se guarda con el
+  // nombre en español (la clave estable de CATALOG).
+  function shown(name) { var p = product(name); return p ? locItem(p) : { name: name, norma: '' }; }
 
   function updateBadge(bump) {
     if (!btn) return;
@@ -67,7 +70,7 @@
     var badge = $('.cart-n', btn);
     badge.textContent = String(n);
     badge.hidden = n === 0;
-    btn.setAttribute('aria-label', 'Mi cotización, ' + plural(n));
+    btn.setAttribute('aria-label', T('cartLabel', n));
     if (bump && !reduced) {
       badge.classList.remove('bump');
       void badge.offsetWidth;
@@ -76,14 +79,14 @@
   }
 
   function message() {
-    var lines = ['Hola, quiero solicitar cotización de:', ''];
+    var lines = [T('msgHello'), ''];
     state.items.forEach(function (it, i) {
-      var p = product(it.name);
-      lines.push((i + 1) + '. ' + it.name + (p && p.norma ? ' (' + p.norma + ')' : '') + ' — Cantidad: ' + it.qty);
+      var p = shown(it.name);
+      lines.push((i + 1) + '. ' + p.name + (p.norma ? ' (' + p.norma + ')' : '') + ' — ' + T('msgQty') + ': ' + it.qty);
     });
-    if (state.notas.trim()) { lines.push(''); lines.push('Notas: ' + state.notas.trim()); }
+    if (state.notas.trim()) { lines.push(''); lines.push(T('msgNotes') + ': ' + state.notas.trim()); }
     lines.push('');
-    lines.push('Enviado desde la propuesta de sitio de Nexo Web.');
+    lines.push(T('msgFooter'));
     return lines.join('\n');
   }
 
@@ -94,24 +97,24 @@
     $('.cart-empty', panel).hidden = !empty;
     $('.cart-foot', panel).hidden = empty;
     state.items.forEach(function (it, idx) {
-      var p = product(it.name);
+      var p = shown(it.name);
       var li = el('li', 'cart-item');
       var txt = el('div', 'ci-txt');
-      txt.appendChild(el('span', 'ci-name', it.name));
-      txt.appendChild(el('span', 'ci-norma', (p && p.norma) || 'Consultar'));
+      txt.appendChild(el('span', 'ci-name', p.name));
+      txt.appendChild(el('span', 'ci-norma', p.norma || T('consult')));
       var qtyWrap = el('div', 'ci-qty');
       var qid = 'ci-q-' + idx;
-      var lab = el('label', 'sr-only', 'Cantidad de ' + it.name);
+      var lab = el('label', 'sr-only', T('qtyOf', p.name));
       lab.setAttribute('for', qid);
       var minus = el('button', 'ci-step', '−');
       minus.type = 'button';
-      minus.setAttribute('aria-label', 'Restar uno a ' + it.name);
+      minus.setAttribute('aria-label', T('minusOne', p.name));
       var input = el('input');
       input.type = 'number'; input.id = qid; input.min = '1'; input.max = '99999'; input.inputMode = 'numeric';
       input.value = String(it.qty);
       var plus = el('button', 'ci-step', '+');
       plus.type = 'button';
-      plus.setAttribute('aria-label', 'Sumar uno a ' + it.name);
+      plus.setAttribute('aria-label', T('plusOne', p.name));
       function setQty(v) {
         it.qty = Math.max(1, Math.min(99999, parseInt(v, 10) || 1));
         input.value = String(it.qty);
@@ -121,9 +124,9 @@
       plus.addEventListener('click', function () { setQty(it.qty + 1); });
       input.addEventListener('change', function () { setQty(input.value); });
       qtyWrap.appendChild(lab); qtyWrap.appendChild(minus); qtyWrap.appendChild(input); qtyWrap.appendChild(plus);
-      var rm = el('button', 'ci-rm', 'Quitar');
+      var rm = el('button', 'ci-rm', T('remove'));
       rm.type = 'button';
-      rm.setAttribute('aria-label', 'Quitar ' + it.name + ' de la cotización');
+      rm.setAttribute('aria-label', T('removeFrom', p.name));
       rm.addEventListener('click', function () {
         remove(it.name);
         var next = list.querySelector('.ci-rm') || $('.cart-close', panel);
@@ -141,7 +144,7 @@
     if (!panel) return;
     var msg = message();
     $('.cart-wa', panel).href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg);
-    $('.cart-mail', panel).href = 'mailto:' + CORREO + '?subject=' + encodeURIComponent('Solicitud de cotización') + '&body=' + encodeURIComponent(msg);
+    $('.cart-mail', panel).href = 'mailto:' + CORREO + '?subject=' + encodeURIComponent(T('mailSubject')) + '&body=' + encodeURIComponent(msg);
   }
 
   function add(name) {
@@ -150,12 +153,12 @@
     var it = state.items.filter(function (i) { return i.name === name; })[0];
     if (it) it.qty += 1; else state.items.push({ name: name, qty: 1 });
     save(); renderCart(); updateBadge(true);
-    announce('Agregado a la cotización: ' + name + '. ' + plural(count()) + ' en la lista.');
+    announce(T('added', shown(name).name, count()));
   }
   function remove(name) {
     state.items = state.items.filter(function (i) { return i.name !== name; });
     save(); renderCart(); updateBadge(false);
-    announce(name + ' se quitó de la cotización. ' + plural(count()) + ' en la lista.');
+    announce(T('removed', shown(name).name, count()));
   }
 
   function focusables() {
@@ -189,7 +192,7 @@
     $('.cart-close', panel).addEventListener('click', closeCart);
     $('.cart-clear', panel).addEventListener('click', function () {
       state.items = []; save(); renderCart(); updateBadge(false);
-      announce('La lista de cotización quedó vacía.');
+      announce(T('cleared'));
       $('.cart-close', panel).focus();
     });
     notas.addEventListener('input', function () { state.notas = notas.value.slice(0, 1000); save(); syncLinks(); });
@@ -206,6 +209,26 @@
   }
 
   window.Cotizacion = { add: add, has: function (n) { return state.items.some(function (i) { return i.name === n; }); }, open: openCart };
+
+  // Botones "Agregar a cotización" de las páginas de familia (marcado estático
+  // con data-add="<nombre en español de CATALOG>").
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-add]');
+    if (!b) return;
+    add(b.getAttribute('data-add'));
+    b.textContent = T('addedShort');
+    b.classList.add('added');
+    clearTimeout(b._t);
+    b._t = setTimeout(function () { b.textContent = T('addAnother'); b.classList.remove('added'); }, 1600);
+  });
+
+  // Selector ES | EN: lleva a la misma página en el otro idioma y conserva la
+  // búsqueda o el filtro actual (?q=, ?fam=) y el ancla.
+  document.querySelectorAll('.lang-switch a[hreflang]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (location.search || location.hash) a.href = a.getAttribute('href').split(/[?#]/)[0] + location.search + location.hash;
+    });
+  });
 
   /* ================= 2. Sugerencias del buscador ================= */
   var q = $('#q');
@@ -229,12 +252,12 @@
       close();
       if (o.dataset.all) {
         if (onCatalog) { suppress = true; q.dispatchEvent(new Event('input')); }
-        else location.href = '/catalogo/?q=' + encodeURIComponent(q.value.trim());
+        else location.href = BASE + '/catalogo/?q=' + encodeURIComponent(q.value.trim());
         return;
       }
-      q.value = name;
+      q.value = locItem(product(name)).name;
       if (onCatalog) { suppress = true; q.dispatchEvent(new Event('input')); }
-      else location.href = '/catalogo/?q=' + encodeURIComponent(name);
+      else location.href = BASE + '/catalogo/?q=' + encodeURIComponent(q.value);
     }
     function update() {
       if (suppress) { suppress = false; close(); return; }
@@ -243,20 +266,21 @@
       if (text.length < 2) { close(); return; }
       var toks = norm(text).split(/\s+/);
       var hits = CATALOG.map(function (it) {
-        var hay = norm(it.name + ' ' + it.norma + ' ' + it.mat + ' ' + it.diam + ' ' + it.tags + ' ' + it.fam);
+        var hay = norm(hayFor(it));
         if (!toks.every(function (t) { return hay.indexOf(t) >= 0; })) return null;
-        var score = norm(it.name).indexOf(toks[0]) >= 0 ? 0 : 1;
+        var score = norm(locItem(it).name).indexOf(toks[0]) >= 0 ? 0 : 1;
         return { it: it, score: score };
       }).filter(Boolean).sort(function (a, b) { return a.score - b.score; }).slice(0, 6);
       hits.forEach(function (h, i) {
         var li = el('li', 'sug-opt');
         li.id = 'q-sug-' + i; li.setAttribute('role', 'option'); li.setAttribute('aria-selected', 'false');
         li.dataset.name = h.it.name;
-        li.appendChild(el('span', 'sug-name', h.it.name));
-        li.appendChild(el('span', 'sug-meta', h.it.fam + ' · ' + h.it.norma));
+        var L = locItem(h.it);
+        li.appendChild(el('span', 'sug-name', L.name));
+        li.appendChild(el('span', 'sug-meta', L.famLabel + ' · ' + (L.norma || T('consult'))));
         sug.appendChild(li); opts.push(li);
       });
-      var all = el('li', 'sug-opt sug-all', hits.length ? 'Ver todos los resultados de “' + text + '”' : 'Sin sugerencias para “' + text + '” — buscar en el catálogo');
+      var all = el('li', 'sug-opt sug-all', hits.length ? T('seeAll', text) : T('noSug', text));
       all.id = 'q-sug-all'; all.setAttribute('role', 'option'); all.setAttribute('aria-selected', 'false'); all.dataset.all = '1';
       sug.appendChild(all); opts.push(all);
       sug.hidden = false; q.setAttribute('aria-expanded', 'true');

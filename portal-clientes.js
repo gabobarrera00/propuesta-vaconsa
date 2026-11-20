@@ -26,7 +26,7 @@ const PORTAL_CLIENTS = [
 ];
 
 function mxn(n){
-  return '$' + n.toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2});
+  return T('money', n);
 }
 
 function renderClients(){
@@ -47,8 +47,7 @@ function renderClients(){
       '<svg class="chev" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>';
     head.querySelector('h3').textContent = c.name;
     head.querySelector('.meta').textContent =
-      c.invoices.length + (c.invoices.length === 1 ? ' factura' : ' facturas') +
-      (pend ? ' · ' + pend + (pend === 1 ? ' pendiente' : ' pendientes') : ' · al corriente');
+      T('invoices', c.invoices.length) + ' · ' + (pend ? T('pending', pend) : T('upToDate'));
     head.addEventListener('click', () => {
       row.dataset.open = row.dataset.open === 'true' ? 'false' : 'true';
     });
@@ -57,7 +56,7 @@ function renderClients(){
     body.className = 'client-body';
     const table = document.createElement('table');
     table.className = 'invoices';
-    table.innerHTML = '<thead><tr><th>Folio</th><th>Fecha</th><th>Monto</th><th>Estatus</th></tr></thead>';
+    table.innerHTML = '<thead><tr>' + T('invHead').map(h => '<th>' + h + '</th>').join('') + '</tr></thead>';
     const tbody = document.createElement('tbody');
     c.invoices.forEach(f => {
       const tr = document.createElement('tr');
@@ -65,7 +64,7 @@ function renderClients(){
         '<td>' + f.folio + '</td>' +
         '<td>' + f.fecha + '</td>' +
         '<td>' + mxn(f.monto) + '</td>' +
-        '<td><span class="inv-status ' + f.estatus.toLowerCase() + '">' + f.estatus + '</span></td>';
+        '<td><span class="inv-status ' + f.estatus.toLowerCase() + '">' + UI[LANG].status[f.estatus] + '</span></td>';
       tbody.appendChild(tr);
     });
     table.appendChild(tbody);

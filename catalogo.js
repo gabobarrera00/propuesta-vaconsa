@@ -1,22 +1,25 @@
-// CATALOG y FAM_IMG viven en /catalogo-datos.js (lo cargan todas las páginas:
-// el buscador con sugerencias y el cotizador los usan fuera del catálogo).
-
+// Página del catálogo (/catalogo/ y /en/catalogo/).
+// CATALOG, FAMILIAS e imgFor viven en /catalogo-datos.js; los textos de
+// interfaz (T, LANG, BASE, locItem, hayFor) en /i18n.js. Todos se cargan antes.
 
 const FAMS = [...new Set(CATALOG.map(i => i.fam))];
 let activeFam = null;
 let shownNames = new Set();
-
 
 const chipsEl = document.getElementById('chips');
 const resultsEl = document.getElementById('results');
 const qEl = document.getElementById('q');
 const countEl = document.getElementById('resultsCount');
 
+function famLabel(fam){
+  const f = FAMILIAS.find(x => x.fam === fam);
+  return f ? (LANG === 'en' ? f.en : f.es) : fam;
+}
+
 function buildChips(){
   chipsEl.innerHTML = '';
-  const all = mkChip('Todo', null);
-  chipsEl.appendChild(all);
-  FAMS.forEach(f => chipsEl.appendChild(mkChip(f, f)));
+  chipsEl.appendChild(mkChip(T('all'), null));
+  FAMS.forEach(f => chipsEl.appendChild(mkChip(famLabel(f), f)));
 }
 function mkChip(label, fam){
   const b = document.createElement('button');
@@ -33,28 +36,32 @@ function mkChip(label, fam){
 }
 
 function render(){
-  const q = qEl.value.trim().toLowerCase();
+  // Busca en español e inglés a la vez y sin importar acentos.
+  const toks = normTxt(qEl.value.trim()).split(/\s+/).filter(Boolean);
   const hits = CATALOG.filter(item => {
     if (activeFam && item.fam !== activeFam) return false;
-    if (!q) return true;
-    const hay = (item.name + ' ' + item.norma + ' ' + item.mat + ' ' + item.diam + ' ' + item.tags + ' ' + item.fam).toLowerCase();
-    return q.split(/\s+/).every(t => hay.includes(t));
+    if (!toks.length) return true;
+    const hay = normTxt(hayFor(item));
+    return toks.every(t => hay.includes(t));
   });
 
   resultsEl.innerHTML = '';
 
   // Anuncia el conteo en la región aria-live para quien no ve la pantalla.
-  countEl.textContent = hits.length === 1 ? '1 resultado' : hits.length + ' resultados';
+  countEl.textContent = T('results', hits.length);
 
   if (!hits.length){
     const d = document.createElement('div');
     d.className = 'empty';
-    d.innerHTML = '<b>Sin coincidencias para “' + escapeHtml(qEl.value.trim()) + '”</b>Manejamos material fuera de catálogo por pedido especial. Pregúntenos directamente y le confirmamos disponibilidad.';
+    const b = document.createElement('b');
+    b.textContent = T('noMatchTitle', qEl.value.trim());
+    d.appendChild(b);
+    d.appendChild(document.createTextNode(T('noMatchText')));
     const btn = document.createElement('button');
     btn.className = 'btn sm';
     btn.type = 'button';
     btn.style.marginTop = '16px';
-    btn.textContent = 'Preguntar por este material';
+    btn.textContent = T('askThis');
     btn.addEventListener('click', () => prefill(qEl.value.trim(), ''));
     d.appendChild(document.createElement('br'));
     d.appendChild(btn);
@@ -69,7 +76,8 @@ function render(){
   const prevShown = shownNames;
   shownNames = new Set();
   let fresh = 0;
-  hits.forEach((item, idx) => {
+  hits.forEach((item) => {
+    const L = locItem(item);
     const id = 'specs-' + CATALOG.indexOf(item);
     const card = document.createElement('article');
     card.className = 'pcard';
@@ -83,66 +91,69 @@ function render(){
       '<div class="pcard-media"><img alt="" width="800" height="600" loading="lazy" decoding="async"></div>' +
       '<div class="pcard-bar"><span class="pcard-fam"></span>' +
         '<h3 class="pcard-name"><button type="button" class="pcard-toggle" aria-expanded="false"></button></h3>' +
-        '<button type="button" class="btn sm pcard-add">Agregar a cotización</button></div>' +
+        '<button type="button" class="btn sm pcard-add"></button></div>' +
       '<div class="pcard-specs" role="region">' +
         '<p class="pcard-specs-t"></p>' +
         '<dl class="specs">' +
-          '<div class="spec"><dt>Norma</dt><dd class="v-norma"></dd></div>' +
-          '<div class="spec"><dt>Medida</dt><dd class="v-diam"></dd></div>' +
-          '<div class="spec"><dt>Material</dt><dd class="v-mat"></dd></div>' +
+          '<div class="spec"><dt class="l-norma"></dt><dd class="v-norma"></dd></div>' +
+          '<div class="spec"><dt class="l-diam"></dt><dd class="v-diam"></dd></div>' +
+          '<div class="spec"><dt class="l-mat"></dt><dd class="v-mat"></dd></div>' +
         '</dl>' +
         '<div class="foot"><span class="norm"></span></div>' +
       '</div>';
     card.querySelector('img').src = imgFor(item);
-    card.querySelector('.pcard-fam').textContent = item.fam;
+    card.querySelector('.pcard-fam').textContent = L.famLabel;
     const toggle = card.querySelector('.pcard-toggle');
-    toggle.textContent = item.name;
+    toggle.textContent = L.name;
     toggle.setAttribute('aria-controls', id);
     const specs = card.querySelector('.pcard-specs');
     specs.id = id;
-    specs.setAttribute('aria-label', 'Especificaciones de ' + item.name);
-    card.querySelector('.pcard-specs-t').textContent = item.name;
+    specs.setAttribute('aria-label', T('specsOf', L.name));
+    card.querySelector('.pcard-specs-t').textContent = L.name;
+    card.querySelector('.l-norma').textContent = T('norma');
+    card.querySelector('.l-diam').textContent = T('size');
+    card.querySelector('.l-mat').textContent = T('material');
     // Sin dato, "Consultar": nunca se inventa una norma ni una clase.
-    card.querySelector('.v-norma').textContent = item.norma || 'Consultar';
-    card.querySelector('.v-diam').textContent = item.diam || 'Consultar';
-    card.querySelector('.v-mat').textContent = item.mat || 'Consultar';
+    card.querySelector('.v-norma').textContent = L.norma || T('consult');
+    card.querySelector('.v-diam').textContent = L.diam || T('consult');
+    card.querySelector('.v-mat').textContent = L.mat || T('consult');
 
     const norm = card.querySelector('.norm');
-    if (item.docUrl){
+    if (L.docUrl){
       const a = document.createElement('a');
-      a.href = item.docUrl;
+      a.href = L.docUrl;
       a.target = '_blank';
       a.rel = 'noopener';
       a.className = 'doc-link';
-      a.textContent = '↓ ' + item.docLabel;
+      a.textContent = '↓ ' + L.docLabel + (LANG === 'en' ? ' (PDF, Spanish)' : '');
       norm.appendChild(a);
     } else {
-      norm.textContent = 'Certificado incluido';
+      norm.textContent = T('certIncluded');
     }
 
     const b = document.createElement('button');
     b.className = 'btn sm';
     b.type = 'button';
-    b.textContent = 'Cotizar';
-    b.addEventListener('click', (e) => { e.stopPropagation(); prefill(item.name, item.norma); });
+    b.textContent = T('quote');
+    b.addEventListener('click', (e) => { e.stopPropagation(); prefill(L.name, L.norma); });
     card.querySelector('.foot').appendChild(b);
 
     // Agregar a la lista de cotización (cotizador de /sitio.js).
     const addBtn = card.querySelector('.pcard-add');
-    addBtn.setAttribute('aria-label', 'Agregar ' + item.name + ' a la cotización');
+    addBtn.textContent = (window.Cotizacion && window.Cotizacion.has(item.name)) ? T('addAnother') : T('addToQuote');
+    addBtn.setAttribute('aria-label', T('addNamed', L.name));
     addBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       if (!window.Cotizacion) return;
       window.Cotizacion.add(item.name);
-      addBtn.textContent = 'Agregado ✓';
+      addBtn.textContent = T('addedShort');
       addBtn.classList.add('added');
       clearTimeout(addBtn._t);
-      addBtn._t = setTimeout(() => { addBtn.textContent = 'Agregar otra'; addBtn.classList.remove('added'); }, 1600);
+      addBtn._t = setTimeout(() => { addBtn.textContent = T('addAnother'); addBtn.classList.remove('added'); }, 1600);
     });
-    if (window.Cotizacion && window.Cotizacion.has(item.name)) addBtn.textContent = 'Agregar otra';
 
     // Un toque (o clic) en cualquier parte de la tarjeta abre; otro cierra.
-    // Los enlaces y el botón Cotizar de adentro siguen funcionando normal.
+    // Los enlaces y los botones de adentro siguen funcionando normal.
     card.addEventListener('click', (e) => {
       if (e.target.closest('a, .btn')) return;
       setOpen(card, card.dataset.open !== 'true');
@@ -161,13 +172,8 @@ function setOpen(card, open){
   card.querySelector('.pcard-toggle').setAttribute('aria-expanded', String(open));
 }
 
-function escapeHtml(s){
-  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
 function prefill(prod, norma){
-  const url = '/cotizar/?prod=' + encodeURIComponent(prod) + '&norma=' + encodeURIComponent(norma);
-  window.location.href = url;
+  window.location.href = BASE + '/cotizar/?prod=' + encodeURIComponent(prod) + '&norma=' + encodeURIComponent(norma);
 }
 
 qEl.addEventListener('input', render);
@@ -177,7 +183,7 @@ if (qEl.form) qEl.form.addEventListener('submit', (e) => { e.preventDefault(); r
 
 // Entradas desde fuera del catálogo:
 //   ?q=...   buscador del header
-//   ?fam=... tarjetas de "familia de producto" del inicio y links del footer
+//   ?fam=... clave en español de la familia (menú, inicio, pie, páginas de familia)
 // Ambos se aplican antes de dibujar los chips para que el chip correcto quede
 // marcado desde el primer render, sin un parpadeo de "Todo" primero.
 const params = new URLSearchParams(window.location.search);

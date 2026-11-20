@@ -1,0 +1,64 @@
+<!--
+title: Request a quote — Vaconsa | Nexo Web
+description: Request a quote for pipe, valves or fittings — same-business-day reply.
+nav: cotizar
+script: <script src="/cotizar.js"></script>
+-->
+
+<section class="quote" id="cotizar">
+  <div class="wrap">
+    <div class="sec-head"><h2>Request a quote</h2></div>
+    <p class="sec-sub">Tell us what you need and to which standard. The more specific you are, the faster we can reply.</p>
+    <div class="quote-grid">
+      <aside>
+        <p>Our sales team checks every request against actual inventory before replying — we do not send generic price lists.</p>
+        <ul>
+          <li><span class="tick" aria-hidden="true"></span><span>Same-business-day reply for requests received before 3:00 p.m.</span></li>
+          <li><span class="tick" aria-hidden="true"></span><span>If it is not in stock, we tell you the actual lead time.</span></li>
+          <li><span class="tick" aria-hidden="true"></span><span>Prefer to talk? <strong>+52 (81) 81 00 65 00</strong></span></li>
+        </ul>
+      </aside>
+
+      <div id="formSlot">
+        <form class="quote-form" id="quoteForm">
+          <div class="fields">
+            <div class="full">
+              <label for="f-prod">Material you need <span class="req">*</span></label>
+              <input type="text" id="f-prod" name="prod" required placeholder="e.g. A106 Gr.B seamless pipe, 6&quot;">
+            </div>
+            <div>
+              <label for="f-norma">Standard or specification</label>
+              <input type="text" id="f-norma" name="norma" placeholder="ASTM A106 / API 5L">
+            </div>
+            <div>
+              <label for="f-cant">Quantity</label>
+              <input type="text" id="f-cant" name="cant" placeholder="e.g. 120 m / 40 pcs">
+            </div>
+            <div>
+              <label for="f-emp">Company <span class="req">*</span></label>
+              <input type="text" id="f-emp" name="empresa" required placeholder="Company name">
+            </div>
+            <div>
+              <label for="f-nom">Name <span class="req">*</span></label>
+              <input type="text" id="f-nom" name="nombre" required placeholder="Who is requesting">
+            </div>
+            <div>
+              <label for="f-mail">Email <span class="req">*</span></label>
+              <input type="email" id="f-mail" name="correo" required placeholder="purchasing@company.com">
+            </div>
+            <div>
+              <label for="f-tel">Phone</label>
+              <input type="tel" id="f-tel" name="tel" placeholder="Including area code">
+            </div>
+            <div class="full">
+              <label for="f-msg">Project details</label>
+              <textarea id="f-msg" name="msg" rows="3" placeholder="Service, working pressure, required on-site date…"></textarea>
+            </div>
+          </div>
+          <button class="btn" type="submit">Send request</button>
+          <p class="form-note">Demo — this form does not send any real information.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

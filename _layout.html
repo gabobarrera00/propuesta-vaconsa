@@ -15,6 +15,7 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <link rel="canonical" href="{{CANONICAL}}">
+{{ALTERNATES}}
 <meta property="og:url" content="{{CANONICAL}}">
 <meta property="og:site_name" content="Propuesta de rediseño para Vaconsa · Nexo Web">
 <meta name="theme-color" content="#1F2226">
@@ -892,6 +893,66 @@
     .cart-btn:active,.ci-step:active,.cart-close:active{transform:scale(.94);}
     .cart-item{animation:fade-up .25s var(--ease-out) both;}
   }
+  /* ======== Páginas por familia y selector de idioma (2026-11-20) ======== */
+  .lang-switch{display:flex;align-items:center;gap:6px;flex:none;margin-left:18px;font-size:13px;font-weight:600;}
+  .lang-switch a{color:var(--on-graphite-muted);text-decoration:none;padding:2px 4px;border-radius:4px;}
+  .lang-switch a:hover{color:#fff;text-decoration:underline;}
+  .lang-switch a[aria-current="true"]{color:#fff;box-shadow:inset 0 -2px 0 var(--accent);}
+  .lang-switch a:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+  .lang-switch span{color:var(--on-graphite-muted);}
+  .util-bar .wrap{flex-wrap:nowrap;}
+  .util-links{margin-left:auto;}
+  @media(max-width:460px){.lang-switch{margin-left:10px;}}
+
+  .breadcrumb + .fam-hero{padding-top:20px;}
+  .fam-hero{padding:32px 0 8px;}
+  .fam-hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:48px;align-items:center;}
+  @media(max-width:860px){.fam-hero-grid{grid-template-columns:minmax(0,1fr);gap:24px;}.fam-hero-img{order:-1;}}
+  .fam-count{margin:0 0 8px;font-size:14.5px;font-weight:600;color:var(--muted);}
+  .fam-hero h1{margin:0 0 14px;font-size:clamp(32px,4vw,46px);line-height:1.1;}
+  .fam-desc{margin:0 0 24px;font-size:17.5px;line-height:1.6;color:var(--steel);max-width:58ch;}
+  .fam-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;}
+  .fam-stock{margin:0;font-size:14.5px;color:var(--muted);max-width:58ch;}
+  .fam-hero-img img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r-lg);box-shadow:var(--shadow-2);}
+  @media(max-width:860px){.fam-hero-img img{aspect-ratio:16/9;}}
+  @media(max-width:560px){.fam-actions .btn{flex:1 1 100%;}}
+
+  .fam-body{padding:24px 0 72px;}
+  .fam-h{font-size:24px;line-height:1.25;margin:48px 0 16px;}
+  .fam-body .fam-h:first-child{margin-top:24px;}
+
+  /* tabla de especificaciones: tabla en escritorio, tarjetas apiladas en celular */
+  .spec-table-wrap{border:1px solid var(--panel-line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-1);}
+  .spec-table{width:100%;border-collapse:collapse;font-size:15px;font-variant-numeric:tabular-nums;}
+  .spec-table thead th{background:var(--graphite);color:#fff;text-align:left;font-size:13.5px;font-weight:600;padding:12px 14px;}
+  .spec-table tbody th,.spec-table td{padding:14px;border-top:1px solid var(--line);text-align:left;vertical-align:middle;}
+  .spec-table tbody tr:nth-child(even){background:#F7F8F9;}
+  .st-prod{display:flex;align-items:center;gap:12px;font-weight:700;color:var(--title);}
+  .st-prod img{flex:none;width:64px;height:48px;object-fit:cover;border-radius:6px;}
+  .st-muted{color:var(--muted);font-size:14px;}
+  .st-act{text-align:right;white-space:nowrap;}
+  .spec-table .btn.added{background:#fff;color:var(--accent);}
+  @media(max-width:860px){
+    .spec-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);}
+    .spec-table,.spec-table tbody,.spec-table tr,.spec-table th,.spec-table td{display:block;width:100%;}
+    .spec-table tbody tr{padding:14px 16px;border-top:1px solid var(--line);}
+    .spec-table tbody tr:first-child{border-top:0;}
+    .spec-table tbody th,.spec-table td{border:0;padding:4px 0;}
+    .spec-table tbody th{padding-bottom:8px;}
+    .spec-table td[data-label]{display:grid;grid-template-columns:minmax(0,9.5em) minmax(0,1fr);gap:10px;font-size:14.5px;}
+    .spec-table td[data-label]::before{content:attr(data-label);color:var(--muted);font-weight:600;font-size:13.5px;}
+    .st-act{text-align:left;padding-top:10px !important;}
+    .st-act .btn{width:100%;}
+  }
+
+  .fam-others{display:flex;flex-wrap:wrap;gap:8px;}
+  .fam-chip{display:inline-block;padding:8px 16px;border:1px solid var(--field-line);border-radius:999px;color:var(--ink);text-decoration:none;font-size:14.5px;font-weight:500;}
+  .fam-chip:hover{border-color:var(--accent);color:var(--accent);}
+  @media (prefers-reduced-motion: no-preference){
+    .fam-chip{transition:transform .2s var(--ease-out);}
+    .fam-chip:hover{transform:translateY(-2px);}
+    .fam-hero-img img{animation:fade-up .45s var(--ease-out) both;}
+  }
 </style>
 </head>
 <body>
@@ -915,6 +976,7 @@
       <a class="u-opt" href="/donde-estamos/#empleo">Bolsa de trabajo</a>
       <a href="tel:+528181006500">Ayuda</a>
     </nav>
+    {{LANG_SWITCH}}
   </div>
 </div>
 
@@ -960,15 +1022,15 @@
     <div class="nav-item">
       <a href="/catalogo/" data-nav="catalogo">Todos los productos</a>
       <div class="submenu">
-        <a href="/catalogo/?fam=Tuber%C3%ADa">Tubería de acero</a>
-        <a href="/catalogo/?fam=Inoxidable">Acero inoxidable</a>
-        <a href="/catalogo/?fam=Conexiones">Conexiones</a>
-        <a href="/catalogo/?fam=Vapor">Vapor</a>
-        <a href="/catalogo/?fam=Bridas">Bridas</a>
-        <a href="/catalogo/?fam=Petrolero">Equipo petrolero</a>
-        <a href="/catalogo/?fam=V%C3%A1lvulas">Válvulas</a>
-        <a href="/catalogo/?fam=Instrumentaci%C3%B3n">Instrumentación</a>
-        <a href="/catalogo/?fam=PVC">PVC y plásticos</a>
+        <a href="/productos/tuberia/">Tubería de acero</a>
+        <a href="/productos/inoxidable/">Acero inoxidable</a>
+        <a href="/productos/conexiones/">Conexiones</a>
+        <a href="/productos/vapor/">Vapor</a>
+        <a href="/productos/bridas/">Bridas</a>
+        <a href="/productos/petrolero/">Equipo petrolero</a>
+        <a href="/productos/valvulas/">Válvulas</a>
+        <a href="/productos/instrumentacion/">Instrumentación</a>
+        <a href="/productos/pvc/">PVC y plásticos</a>
         <a href="/desarrolladores/">Urbanización y edificación</a>
         <div class="sub-all"><a href="/catalogo/">Ver todo el catálogo</a></div>
       </div>
@@ -1010,15 +1072,15 @@
     <nav class="foot-col" aria-label="Productos">
       <h2 class="foot-h">Productos</h2>
       <ul>
-        <li><a href="/catalogo/?fam=Tuber%C3%ADa">Tubería de acero</a></li>
-        <li><a href="/catalogo/?fam=Conexiones">Conexiones</a></li>
-        <li><a href="/catalogo/?fam=Bridas">Bridas</a></li>
-        <li><a href="/catalogo/?fam=V%C3%A1lvulas">Válvulas</a></li>
-        <li><a href="/catalogo/?fam=Inoxidable">Acero inoxidable</a></li>
-        <li><a href="/catalogo/?fam=Vapor">Vapor</a></li>
-        <li><a href="/catalogo/?fam=Petrolero">Equipo petrolero</a></li>
-        <li><a href="/catalogo/?fam=Instrumentaci%C3%B3n">Instrumentación</a></li>
-        <li><a href="/catalogo/?fam=PVC">PVC y plásticos</a></li>
+        <li><a href="/productos/tuberia/">Tubería de acero</a></li>
+        <li><a href="/productos/conexiones/">Conexiones</a></li>
+        <li><a href="/productos/bridas/">Bridas</a></li>
+        <li><a href="/productos/valvulas/">Válvulas</a></li>
+        <li><a href="/productos/inoxidable/">Acero inoxidable</a></li>
+        <li><a href="/productos/vapor/">Vapor</a></li>
+        <li><a href="/productos/petrolero/">Equipo petrolero</a></li>
+        <li><a href="/productos/instrumentacion/">Instrumentación</a></li>
+        <li><a href="/productos/pvc/">PVC y plásticos</a></li>
         <li><a href="/catalogo/">Ver catálogo completo</a></li>
       </ul>
     </nav>
@@ -1101,6 +1163,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
 </aside>
 <p class="sr-only" id="cart-live" role="status" aria-live="polite"></p>
 <script src="/catalogo-datos.js"></script>
+<script src="/i18n.js"></script>
 <script src="/sitio.js"></script>
 {{PAGE_SCRIPT}}
 </body>
