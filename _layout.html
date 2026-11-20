@@ -18,6 +18,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..800&display=swap">
+<script>
+  // Aparición al hacer scroll: solo si el navegador puede observarla y la
+  // persona no pidió menos movimiento. Sin esta clase todo se ve desde el
+  // inicio, así que nunca queda contenido escondido.
+  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion');
+</script>
 <style>
   /* =====================================================================
      Estilo "distribuidor" (2026-11-20, rama estilo-ferguson).
@@ -54,7 +60,7 @@
     --red:#C20E23;
     --brand-red:#FF6473;
     --sans:"Archivo","Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;
-    --radius:4px;
+    --radius:8px;
   }
   /* Sin modo oscuro: Gabo pidió fondo blanco y alto contraste siempre (2026-11-20). */
 
@@ -603,6 +609,172 @@
   .help-row{color:var(--ink);}
   .doc-list li{border-bottom-color:var(--line);}
   .timeline li{border-bottom-color:var(--line);}
+  /* ======== Forma y movimiento (2026-11-20) ========
+     Menos cuadrado: esquinas suaves, sombras ligeras, banner y franjas con
+     formas redondeadas. Movimiento: solo transform y opacity, 150–400 ms,
+     y todo dentro de prefers-reduced-motion: no-preference — si la persona
+     pide menos movimiento, nada se mueve (los estados cambian al instante). */
+  :root{
+    --r-sm:8px; --r-md:12px; --r-lg:18px; --r-xl:28px;
+    --shadow-1:0 1px 2px rgba(20,22,25,.06),0 2px 8px rgba(20,22,25,.06);
+    --shadow-2:0 2px 6px rgba(20,22,25,.08),0 12px 28px rgba(20,22,25,.12);
+    --ease-out:cubic-bezier(.2,.7,.2,1);
+  }
+
+  /* --- forma --- */
+  .btn{border-radius:var(--r-sm);}
+  .btn.sm{border-radius:7px;}
+  input[type=search],input[type=text],input[type=email],input[type=tel],input[type=password],select,textarea,input[type=file]{border-radius:var(--r-sm);}
+  .header-search{border-radius:var(--r-md);box-shadow:0 2px 10px rgba(0,0,0,.25);}
+  .header-search input[type=search]{border-radius:var(--r-md) 0 0 var(--r-md);}
+  .header-search button{border-radius:0 var(--r-md) var(--r-md) 0;}
+  .banner{border-radius:var(--r-xl);box-shadow:var(--shadow-2);}
+  .account-strip{
+    border:1px solid var(--panel-line);border-radius:var(--r-lg);
+    padding:22px 28px;box-shadow:var(--shadow-1);background:#fff;
+  }
+  @media(max-width:860px){.account-strip{padding:20px 18px;}}
+  .help-row{border:1px solid var(--panel-line);border-radius:999px;padding:16px 28px;box-shadow:var(--shadow-1);}
+  @media(max-width:720px){.help-row{border-radius:var(--r-lg);padding:18px;}}
+  .cat-img{border-radius:var(--r-md);box-shadow:var(--shadow-1);}
+  .card,.dev-item,.empty,form.quote-form,.sent,.jobs,.portal-login,.client{border-radius:var(--r-lg);box-shadow:var(--shadow-1);}
+  .client-head{border-radius:var(--r-lg);}
+  .badge,.brandtag{border-radius:999px;}
+  .dev-item .photo,.lines-strip img{border-radius:var(--r-md);}
+  .dl-ico{border-radius:6px;}
+  footer.site{border-radius:var(--r-xl) var(--r-xl) 0 0;margin-top:24px;}
+  .foot-bottom{border-radius:0;}
+
+  /* --- menú desplegable de "Todos los productos" (escritorio) --- */
+  .nav-item{position:relative;display:flex;align-items:stretch;}
+  .submenu{
+    position:absolute;left:-18px;top:100%;z-index:60;min-width:520px;
+    display:grid;grid-template-columns:1fr 1fr;gap:2px 24px;padding:16px 18px 18px;
+    background:#fff;border:1px solid var(--panel-line);border-radius:0 0 var(--r-lg) var(--r-lg);
+    box-shadow:var(--shadow-2);
+    opacity:0;visibility:hidden;transform:translateY(-6px);pointer-events:none;
+  }
+  .nav-item:hover > .submenu,.nav-item:focus-within > .submenu{opacity:1;visibility:visible;transform:none;pointer-events:auto;}
+  nav.main .submenu a{
+    display:block;border:0;padding:8px 10px;border-radius:var(--r-sm);
+    color:var(--ink);font-weight:500;font-size:15px;white-space:nowrap;
+  }
+  nav.main .submenu a:hover{background:var(--surface-3);color:var(--accent);}
+  nav.main .submenu a:focus-visible{outline-color:var(--accent);}
+  .submenu .sub-all{grid-column:1 / -1;margin-top:6px;padding-top:12px;border-top:1px solid var(--line);}
+  nav.main .submenu .sub-all a{color:var(--accent);font-weight:700;}
+  @media(max-width:900px){.submenu{display:none;}}
+
+  /* --- catálogo: tarjetas con foto y especificaciones encima --- */
+  .results{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;}
+  @media(max-width:980px){.results{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;}}
+  @media(max-width:600px){.results{grid-template-columns:minmax(0,1fr);gap:18px;}}
+  .pcard{
+    position:relative;isolation:isolate;overflow:hidden;cursor:pointer;
+    background:#fff;border:1px solid var(--panel-line);border-radius:var(--r-lg);
+    box-shadow:var(--shadow-1);min-width:0;display:flex;flex-direction:column;
+  }
+  .pcard-media{aspect-ratio:4/3;overflow:hidden;background:var(--surface-3);}
+  .pcard-media img{display:block;width:100%;height:100%;object-fit:cover;}
+  .pcard-bar{padding:14px 18px 18px;flex:1;}
+  .pcard-fam{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:3px;}
+  .pcard-name{margin:0;font-size:18px;line-height:1.3;}
+  .pcard-toggle{
+    all:unset;cursor:pointer;color:var(--title);font:inherit;font-weight:700;
+  }
+  .pcard-toggle::after{content:"";position:absolute;inset:0;z-index:0;}
+  .pcard-toggle:focus-visible{outline:none;}
+  .pcard:has(.pcard-toggle:focus-visible){outline:3px solid var(--accent);outline-offset:2px;}
+  .pcard-specs{
+    position:absolute;inset:0;z-index:2;overflow-y:auto;
+    display:flex;flex-direction:column;gap:10px;padding:18px 18px 16px;
+    background:#fff;cursor:auto;
+    opacity:0;visibility:hidden;transform:translateY(12px);
+  }
+  .pcard[data-open="true"] .pcard-specs,
+  .pcard:has(:focus-visible) .pcard-specs{opacity:1;visibility:visible;transform:none;}
+  @media(hover:hover){.pcard:hover .pcard-specs{opacity:1;visibility:visible;transform:none;}}
+  .pcard-specs-t{margin:0;font-weight:700;font-size:16.5px;line-height:1.3;color:var(--title);padding-right:4px;}
+  .pcard-specs .specs{border-top:1px solid var(--line);padding-top:4px;}
+  .pcard-specs .spec{grid-template-columns:72px minmax(0,1fr);padding:5px 0;font-size:14px;}
+  .pcard-specs .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:auto;}
+  .pcard-specs .norm{font-size:13.5px;color:var(--muted);}
+  .pcard-specs a,.pcard-specs .btn{position:relative;z-index:3;}
+
+  /* --- movimiento: solo si la persona no pidió menos movimiento --- */
+  @media (prefers-reduced-motion: no-preference){
+    .btn,.chip,.header-search button,.portal,.pcard,.cat-img,.cat-img img,.pcard-media img,.client-head .chev,.wa,.util-links a,.foot-col a{
+      transition:transform .2s var(--ease-out),opacity .2s ease;
+    }
+    .btn:hover{transform:translateY(-2px);}
+    .btn:active{transform:translateY(0) scale(.97);transition-duration:.12s;}
+    .chip:hover{transform:translateY(-1px);}
+    .chip:active{transform:scale(.96);}
+    .wa:hover{transform:scale(1.06);}
+
+    /* subrayado que crece en enlaces de texto y del menú */
+    nav.main > a,.nav-item > a{position:relative;}
+    nav.main > a::after,.nav-item > a::after{
+      content:"";position:absolute;left:0;right:0;bottom:-3px;height:3px;background:var(--accent);
+      transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease-out);
+    }
+    nav.main > a:hover::after,.nav-item > a:hover::after,.nav-item:focus-within > a::after{transform:scaleX(1);}
+    nav.main > a:hover,.nav-item > a:hover{border-bottom-color:transparent;}
+
+    /* menú desplegable: aparece suave */
+    .submenu{transition:opacity .2s ease,transform .25s var(--ease-out),visibility 0s linear .25s;}
+    .nav-item:hover > .submenu,.nav-item:focus-within > .submenu{transition:opacity .2s ease,transform .25s var(--ease-out),visibility 0s;}
+
+    /* buscador: el botón se hunde al pulsar y la lupa se inclina */
+    .header-search{transition:transform .2s var(--ease-out);}
+    .header-search:focus-within{transform:translateY(-1px);}
+    .header-search button svg{transition:transform .25s var(--ease-out);}
+    .header-search button:hover svg{transform:rotate(-12deg) scale(1.1);}
+    .header-search button:active{transform:scale(.94);}
+
+    /* cotizar en la cabecera: un leve pulso de luz al pasar */
+    header.site .head-actions .btn{position:relative;overflow:hidden;}
+    header.site .head-actions .btn::after{
+      content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);
+      transform:translateX(-120%);transition:transform .4s var(--ease-out);
+    }
+    header.site .head-actions .btn:hover::after{transform:translateX(120%);}
+
+    /* categorías del inicio */
+    .cat-img img{transition:transform .35s var(--ease-out);}
+    .cat-img:hover img,.cat:focus-within .cat-img img{transform:scale(1.05);}
+    .cat-img{position:relative;}
+    .cat-img{transition:transform .25s var(--ease-out);}
+    .cat:hover .cat-img{transform:translateY(-3px);}
+
+    /* tarjetas del catálogo */
+    .pcard:hover{transform:translateY(-3px);}
+    .pcard-media img{transition:transform .35s var(--ease-out);}
+    .pcard:hover .pcard-media img{transform:scale(1.05);}
+    .pcard-specs{transition:opacity .25s ease,transform .3s var(--ease-out),visibility 0s linear .3s;}
+    .pcard[data-open="true"] .pcard-specs,.pcard:has(:focus-visible) .pcard-specs{transition:opacity .25s ease,transform .3s var(--ease-out),visibility 0s;}
+    @media(hover:hover){.pcard:hover .pcard-specs{transition:opacity .25s ease,transform .3s var(--ease-out),visibility 0s;}}
+    .pcard-new{animation:pcard-in .35s var(--ease-out) both;animation-delay:calc(var(--i,0) * 40ms);}
+    @keyframes pcard-in{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+    /* portal: el detalle de facturas se despliega suave; la flecha gira */
+    .client[data-open="true"] .client-body{animation:fade-down .3s var(--ease-out) both;}
+    .client-head .chev{transition:transform .25s var(--ease-out);}
+    /* confirmación del formulario */
+    .sent{animation:fade-up .35s var(--ease-out) both;}
+    @keyframes fade-down{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
+    @keyframes fade-up{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+    /* aparición progresiva al hacer scroll (la clase .motion la pone el
+       script del <head> solo si hay IntersectionObserver y no se pidió
+       menos movimiento; sin ella todo se ve desde el inicio) */
+    .motion .reveal{opacity:0;transform:translateY(18px);}
+    .motion .reveal.is-in{
+      opacity:1;transform:none;
+      transition:opacity .4s ease,transform .4s var(--ease-out);
+      transition-delay:calc(var(--i,0) * 60ms);
+    }
+  }
 </style>
 </head>
 <body>
@@ -661,7 +833,22 @@
     </div>
   </div>
   <nav class="main wrap" aria-label="Principal">
-    <a href="/catalogo/" data-nav="catalogo">Todos los productos</a>
+    <div class="nav-item">
+      <a href="/catalogo/" data-nav="catalogo">Todos los productos</a>
+      <div class="submenu">
+        <a href="/catalogo/?fam=Tuber%C3%ADa">Tubería de acero</a>
+        <a href="/catalogo/?fam=Inoxidable">Acero inoxidable</a>
+        <a href="/catalogo/?fam=Conexiones">Conexiones</a>
+        <a href="/catalogo/?fam=Vapor">Vapor</a>
+        <a href="/catalogo/?fam=Bridas">Bridas</a>
+        <a href="/catalogo/?fam=Petrolero">Equipo petrolero</a>
+        <a href="/catalogo/?fam=V%C3%A1lvulas">Válvulas</a>
+        <a href="/catalogo/?fam=Instrumentaci%C3%B3n">Instrumentación</a>
+        <a href="/catalogo/?fam=PVC">PVC y plásticos</a>
+        <a href="/desarrolladores/">Urbanización y edificación</a>
+        <div class="sub-all"><a href="/catalogo/">Ver todo el catálogo</a></div>
+      </div>
+    </div>
     <a href="/fichas-tecnicas/" data-nav="fichas-tecnicas">Fichas técnicas</a>
     <a href="/servicios/" data-nav="servicios">Servicios</a>
     <a href="/desarrolladores/" data-nav="desarrolladores">Desarrolladores</a>
@@ -746,6 +933,24 @@
 
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+<script>
+(function(){
+  if (!document.documentElement.classList.contains('motion')) return;
+  var groups = ['.account-strip','.cats-head','.cats-sub','.cat','.help-row','.sec-head','.sec-sub','.svc','.rse','.dev-group-t','.dev-item','.doc-group','.loc','.jobs','.about-copy','.timeline li','.trust-grid > *','.lines-strip figure','.quote-grid > *','.portal-card'];
+  var els = document.querySelectorAll(groups.join(','));
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('is-in'); io.unobserve(en.target); } });
+  }, { rootMargin: '0px 0px -40px 0px', threshold: 0.08 });
+  els.forEach(function(el){
+    // Escalonado entre hermanos (máx. 6 pasos para que nada tarde de más).
+    var i = 0, s = el.previousElementSibling;
+    while (s && i < 6){ if (s.classList.contains('reveal')) i++; s = s.previousElementSibling; }
+    el.style.setProperty('--i', i % 4);
+    el.classList.add('reveal');
+    io.observe(el);
+  });
+})();
 </script>
 {{PAGE_SCRIPT}}
 </body>

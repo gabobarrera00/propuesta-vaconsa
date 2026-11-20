@@ -78,6 +78,21 @@ const CATALOG = [
 
 const FAMS = [...new Set(CATALOG.map(i => i.fam))];
 let activeFam = null;
+let shownNames = new Set();
+
+// Foto de cada familia para las tarjetas del catálogo (las mismas de la
+// rejilla de inicio; los créditos de las de Wikimedia están en el inicio).
+const FAM_IMG = {
+  "Tubería": "/img/lineas-tuberia-valvulas.jpg",
+  "Conexiones": "/img/lineas-conexiones-sistemas.jpg",
+  "Bridas": "/img/cat-bridas.jpg",
+  "Válvulas": "/img/lineas-valvulas-industriales.jpg",
+  "Inoxidable": "/img/cat-inoxidable.jpg",
+  "Vapor": "/img/cat-vapor.jpg",
+  "Petrolero": "/img/lineas-infraestructura-industrial.jpg",
+  "Instrumentación": "/img/cat-instrumentacion.jpg",
+  "PVC": "/img/cat-pvc.jpg"
+};
 
 const chipsEl = document.getElementById('chips');
 const resultsEl = document.getElementById('results');
@@ -134,22 +149,49 @@ function render(){
     return;
   }
 
-  hits.forEach(item => {
+  // Tarjetas: foto + solo el nombre. Las especificaciones aparecen encima al
+  // pasar el cursor, con foco de teclado o con un toque (otro toque cierra).
+  // Solo animan las tarjetas que no estaban en el render anterior: así, al
+  // escribir en el buscador, las que se quedan no parpadean.
+  const prevShown = shownNames;
+  shownNames = new Set();
+  let fresh = 0;
+  hits.forEach((item, idx) => {
+    const id = 'specs-' + CATALOG.indexOf(item);
     const card = document.createElement('article');
-    card.className = 'card';
+    card.className = 'pcard';
+    card.dataset.open = 'false';
+    if (!prevShown.has(item.name)) {
+      card.classList.add('pcard-new');
+      card.style.setProperty('--i', String(Math.min(fresh++, 8)));
+    }
+    shownNames.add(item.name);
     card.innerHTML =
-      '<div class="top"><h3></h3><span class="cat"></span></div>' +
-      '<dl class="specs">' +
-        '<div class="spec"><dt>Norma</dt><dd class="v-norma"></dd></div>' +
-        '<div class="spec"><dt>Medida</dt><dd class="v-diam"></dd></div>' +
-        '<div class="spec"><dt>Material</dt><dd class="v-mat"></dd></div>' +
-      '</dl>' +
-      '<div class="foot"><span class="norm"></span></div>';
-    card.querySelector('h3').textContent = item.name;
-    card.querySelector('.cat').textContent = item.fam;
-    card.querySelector('.v-norma').textContent = item.norma;
-    card.querySelector('.v-diam').textContent = item.diam;
-    card.querySelector('.v-mat').textContent = item.mat;
+      '<div class="pcard-media"><img alt="" loading="lazy" decoding="async"></div>' +
+      '<div class="pcard-bar"><span class="pcard-fam"></span>' +
+        '<h3 class="pcard-name"><button type="button" class="pcard-toggle" aria-expanded="false"></button></h3></div>' +
+      '<div class="pcard-specs" role="region">' +
+        '<p class="pcard-specs-t"></p>' +
+        '<dl class="specs">' +
+          '<div class="spec"><dt>Norma</dt><dd class="v-norma"></dd></div>' +
+          '<div class="spec"><dt>Medida</dt><dd class="v-diam"></dd></div>' +
+          '<div class="spec"><dt>Material</dt><dd class="v-mat"></dd></div>' +
+        '</dl>' +
+        '<div class="foot"><span class="norm"></span></div>' +
+      '</div>';
+    card.querySelector('img').src = FAM_IMG[item.fam] || '/img/lineas-tuberia-valvulas.jpg';
+    card.querySelector('.pcard-fam').textContent = item.fam;
+    const toggle = card.querySelector('.pcard-toggle');
+    toggle.textContent = item.name;
+    toggle.setAttribute('aria-controls', id);
+    const specs = card.querySelector('.pcard-specs');
+    specs.id = id;
+    specs.setAttribute('aria-label', 'Especificaciones de ' + item.name);
+    card.querySelector('.pcard-specs-t').textContent = item.name;
+    // Sin dato, "Consultar": nunca se inventa una norma ni una clase.
+    card.querySelector('.v-norma').textContent = item.norma || 'Consultar';
+    card.querySelector('.v-diam').textContent = item.diam || 'Consultar';
+    card.querySelector('.v-mat').textContent = item.mat || 'Consultar';
 
     const norm = card.querySelector('.norm');
     if (item.docUrl){
@@ -168,10 +210,27 @@ function render(){
     b.className = 'btn sm';
     b.type = 'button';
     b.textContent = 'Cotizar';
-    b.addEventListener('click', () => prefill(item.name, item.norma));
+    b.addEventListener('click', (e) => { e.stopPropagation(); prefill(item.name, item.norma); });
     card.querySelector('.foot').appendChild(b);
+
+    // Un toque (o clic) en cualquier parte de la tarjeta abre; otro cierra.
+    // Los enlaces y el botón Cotizar de adentro siguen funcionando normal.
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a, .btn')) return;
+      setOpen(card, card.dataset.open !== 'true');
+    });
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && card.dataset.open === 'true') { setOpen(card, false); toggle.focus(); }
+    });
     resultsEl.appendChild(card);
   });
+}
+
+function setOpen(card, open){
+  // Solo una abierta a la vez: en celular abrir otra cierra la anterior.
+  if (open) resultsEl.querySelectorAll('.pcard[data-open="true"]').forEach(c => { if (c !== card) setOpen(c, false); });
+  card.dataset.open = String(open);
+  card.querySelector('.pcard-toggle').setAttribute('aria-expanded', String(open));
 }
 
 function escapeHtml(s){
