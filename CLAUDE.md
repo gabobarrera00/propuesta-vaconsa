@@ -48,16 +48,15 @@ Every norm, class and diameter in the `CATALOG` array in `catalogo.js` was taken
 
 ## Design intent
 
-Current direction (2026-11-19, branch `rediseno-profesional`): **manufacturer nameplate**, serious and editorial, built on top of the distributor structure the owners asked for (ferguson.com style, their red/black/gray palette).
+Current direction (2026-11-20, branch `estilo-ferguson`): **distributor storefront**, the layout pattern of large industrial distributors (ferguson.com was the reference; nothing of theirs is copied: no logo, text, photos or code). It replaced the condensed "nameplate" look because the owners found it too boxy and hard to scan.
 
-- **One accent.** Vaconsa red `#C20E23` (`#F0364F` in dark mode) is reserved for actions and states: buttons, active nav, focus, hover. Never used to color part of a headline.
-- **Neutrals:** white, zinc `#F3F4F5` for alternating bands, graphite `#1F2226` for the nav bar, the home hero and the footer.
-- **One typeface, Archivo** (Google Fonts, variable width axis). Headlines are condensed (`font-stretch:75%`) in sentence case; body text is normal width; every spec figure uses tabular numerals. No monospace, no tracked all-caps labels.
-- **Structure through hairlines, not cards.** Families, services, documents, catalog results and social-responsibility items sit in 1px-gap grids. Radius is 2px everywhere; no drop shadows.
-- **The one bold element** is the home hero: full-bleed industrial photo in grayscale under a graphite gradient, with a three-cell data plate (48 años, ½"–60", 2 líneas).
-- **Photos are stock** (Vaconsa buys them; they never photograph their own work), so they are only ever presented as product lines or atmosphere, never as projects delivered.
-- **Kept deliberately light at the top.** One search box only: the header input (`id="q"`) is also the catalog page live filter (`catalogo.js` binds to it and stops Enter from reloading). The disclosure ribbon is a single thin line. No breadcrumbs on pages reachable from the header or main nav; only `respaldo-tecnico` keeps one. The home page is hero, product families and one quote CTA; everything else lives on its own page (norms and brands in respaldo técnico, services in servicios).
-- On phones the main nav becomes a horizontally scrolling bar instead of disappearing, and the search moves to its own row under the brand.
+- **Header stack:** thin disclosure ribbon, then a dark navy utility bar (location, hours, Sucursales, Fichas técnicas, Bolsa de trabajo, Ayuda), then the navy header with logo, a large search box centred (`id="q"`, blue square submit button), Portal de clientes and a blue Cotizar button, then the main menu in the same navy band ("Todos los productos" = /catalogo/).
+- **Colour:** navy `#0F2D4A` for header and footer, one flat action blue `#1664B0` for buttons, links and category titles. Vaconsa red survives only in the logo (SA), the PDF tag and error states.
+- **Type:** Archivo at normal width, clear sizes, no condensed headings, sentence case.
+- **No hard boxes.** Category grid has no cards or borders: big 4:3 photo, blue title, up to four sublinks (deep links to `/catalogo/?fam=…&q=…`, PDF catalogs, or `/desarrolladores/#urbanizacion|#agua-potable|#edificacion`). Inner-page panels are soft grey fills with a 6px radius; lists use whitespace or a single hairline.
+- **Home page:** banner (Monterrey photo, short text, one button), account strip (portal de clientes), "Todos los productos" grid of 12 (9 industrial families + 3 developer systems), help row, photo credits.
+- **Photos:** the original stock photos plus five Wikimedia Commons product photos (`img/cat-*.jpg`, cropped). Every Commons photo is credited with author and licence in the home page `.credits` paragraph — keep that in sync if any image changes. The Monterrey photo keeps its Rick González CC BY 2.0 credit wherever it appears.
+- Single search box, thin ribbon and breadcrumbs only on respaldo-tecnico still apply. On phones the menu scrolls horizontally and the search drops to its own row.
 
 ## CSS gotcha that already bit once
 
