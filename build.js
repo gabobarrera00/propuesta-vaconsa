@@ -110,6 +110,13 @@ function main() {
   }
 
   const built = names.map((name) => buildPage(layoutHtml, name));
+
+  // sitemap.xml: lista de páginas para quien rastree el sitio. Las páginas
+  // siguen llevando noindex (ver CLAUDE.md), así que no compiten con el
+  // sitio oficial de Vaconsa.
+  const urls = names.map((name) => `  <url><loc>${canonicalFor(name)}</loc></url>`).join("\n");
+  writeNormalized(path.join(HERE, "sitemap.xml"),
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
   console.log(`Construidas ${built.length} paginas:`);
   for (const p of built) {
     console.log(" -", path.relative(HERE, p));

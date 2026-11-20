@@ -24,3 +24,6 @@ node_modules/
 
 # leftover from local `python -m http.server` verification runs
 server.log
+
+# generado por build.js
+/sitemap.xml

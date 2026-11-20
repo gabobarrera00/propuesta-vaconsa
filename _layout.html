@@ -15,9 +15,14 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <link rel="canonical" href="{{CANONICAL}}">
+<meta property="og:url" content="{{CANONICAL}}">
+<meta property="og:site_name" content="Propuesta de rediseño para Vaconsa · Nexo Web">
+<meta name="theme-color" content="#1F2226">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..800&display=swap">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..800&display=swap"></noscript>
 <script>
   // Aparición al hacer scroll: solo si el navegador puede observarla y la
   // persona no pidió menos movimiento. Sin esta clase todo se ve desde el
@@ -89,7 +94,7 @@
   ::selection{background:var(--accent);color:var(--accent-ink);}
   a{color:inherit;}
   :focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
-  img{max-width:100%;}
+  img{max-width:100%;height:auto;}
 
   .mono{font-variant-numeric:tabular-nums;font-weight:600;}
   .wrap{max-width:1240px;margin:0 auto;padding:0 32px;}
@@ -546,7 +551,7 @@
   .foot-cols{display:grid;grid-template-columns:1.5fr 1fr 1.1fr 1.2fr;gap:44px;padding-bottom:52px;}
   @media(max-width:900px){.foot-cols{grid-template-columns:1fr 1fr;gap:40px;}}
   @media(max-width:520px){.foot-cols{grid-template-columns:1fr;gap:32px;}}
-  .foot-col h4{margin:0 0 14px;font-size:16px;color:var(--on-graphite);}
+  .foot-h{margin:0 0 14px;font-size:16px;color:var(--on-graphite);}
   .foot-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;}
   .foot-col a{color:var(--on-graphite-muted);text-decoration:none;font-size:15px;}
   .foot-col a:hover{color:#fff;text-decoration:underline;}
@@ -775,9 +780,122 @@
       transition-delay:calc(var(--i,0) * 60ms);
     }
   }
+  /* ======== Cotizador, sugerencias, pie completo, accesibilidad (2026-11-20) ======== */
+  .skip-link{
+    position:absolute;left:16px;top:-60px;z-index:200;
+    background:var(--accent);color:#fff;font-weight:700;padding:10px 16px;border-radius:var(--r-sm);text-decoration:none;
+  }
+  .skip-link:focus{top:12px;outline:3px solid #fff;outline-offset:2px;}
+  main:focus{outline:none;}
+
+  /* botón "Mi cotización" en la cabecera */
+  .cart-btn{
+    position:relative;display:flex;align-items:center;gap:8px;
+    background:transparent;border:1px solid rgba(255,255,255,.55);border-radius:var(--r-sm);
+    color:#fff;font:inherit;font-size:14.5px;font-weight:600;padding:9px 12px;cursor:pointer;
+  }
+  .cart-btn:hover{border-color:#fff;background:rgba(255,255,255,.08);}
+  .cart-btn:focus-visible{outline:2px solid #fff;outline-offset:3px;}
+  .cart-n{
+    min-width:22px;height:22px;padding:0 6px;border-radius:999px;
+    background:var(--accent);color:#fff;font-size:12.5px;font-weight:700;line-height:22px;text-align:center;
+    font-variant-numeric:tabular-nums;
+  }
+  .cart-n[hidden]{display:none;}
+  @media(max-width:1060px){.cart-l{display:none;}}
+  @media(max-width:760px){.cart-btn{padding:8px 9px;}}
+
+  /* panel lateral */
+  .cart-backdrop{position:fixed;inset:0;z-index:90;background:rgba(10,11,13,.5);opacity:0;}
+  .cart-backdrop.open{opacity:1;}
+  .cart{
+    position:fixed;top:0;right:0;bottom:0;z-index:100;width:min(440px,100%);
+    background:#fff;color:var(--ink);display:flex;flex-direction:column;
+    box-shadow:-12px 0 40px rgba(10,11,13,.25);border-radius:var(--r-lg) 0 0 var(--r-lg);
+    transform:translateX(104%);
+  }
+  .cart.open{transform:none;}
+  @media(max-width:480px){.cart{border-radius:0;}}
+  html.cart-lock{overflow:hidden;}
+  .cart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:22px 22px 14px;border-bottom:1px solid var(--line);}
+  .cart-head h2{margin:0;font-size:22px;}
+  .cart-count{margin:2px 0 0;font-size:14px;color:var(--muted);}
+  .cart-count:empty{display:none;}
+  .cart-close{
+    flex:none;width:40px;height:40px;border-radius:999px;border:1px solid var(--field-line);background:#fff;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+  }
+  .cart-close:hover{background:var(--surface-3);}
+  .cart-body{flex:1;overflow-y:auto;padding:8px 22px;}
+  .cart-empty{margin:24px 0;font-size:15.5px;color:var(--steel);}
+  .cart-empty a{color:var(--link);font-weight:600;}
+  .cart-list{list-style:none;margin:0;padding:0;}
+  .cart-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;padding:14px 0;border-bottom:1px solid var(--line);}
+  .ci-txt{grid-column:1 / -1;display:flex;flex-direction:column;gap:2px;}
+  .ci-name{font-weight:700;font-size:15.5px;line-height:1.3;}
+  .ci-norma{font-size:13.5px;color:var(--muted);}
+  .ci-qty{display:flex;align-items:center;gap:6px;}
+  .ci-qty input{width:76px;padding:8px 10px;text-align:center;font-variant-numeric:tabular-nums;}
+  .ci-step{
+    width:36px;height:36px;border-radius:999px;border:1px solid var(--field-line);background:#fff;color:var(--ink);
+    font:inherit;font-size:18px;line-height:1;cursor:pointer;
+  }
+  .ci-step:hover{background:var(--surface-3);}
+  .ci-rm{align-self:center;background:none;border:0;color:var(--link);font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;padding:8px 4px;text-decoration:underline;text-underline-offset:3px;}
+  .cart-foot{border-top:1px solid var(--line);padding:16px 22px 20px;display:flex;flex-direction:column;gap:10px;background:#fff;}
+  .cart-foot[hidden]{display:none;}
+  .cart-foot label{margin:0;}
+  .cart-foot textarea{min-height:58px;resize:vertical;}
+  .cart-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media(max-width:380px){.cart-actions{grid-template-columns:1fr;}}
+  .cart-actions .btn{padding:12px 10px;}
+  .cart-clear{align-self:flex-start;background:none;border:0;padding:4px 0;color:var(--steel);font:inherit;font-size:14px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
+  .cart-note{margin:0;font-size:12.5px;line-height:1.5;color:var(--muted);}
+
+  /* botón de agregar en las tarjetas del catálogo */
+  .pcard-add{position:relative;z-index:1;margin-top:12px;}
+  /* Mientras catalogo.js dibuja las tarjetas, la lista vacía reserva espacio:
+     sin esto los créditos de abajo saltan al llegar las tarjetas (CLS 0.3). */
+  #results:empty{min-height:100vh;}
+  .pcard-add.added{background:#fff;color:var(--accent);}
+
+  /* sugerencias del buscador */
+  .header-search{position:relative;}
+  .sug{
+    position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:80;margin:0;padding:6px;list-style:none;
+    background:#fff;color:var(--ink);border:1px solid var(--panel-line);border-radius:var(--r-md);box-shadow:var(--shadow-2);
+    max-height:min(420px,70vh);overflow-y:auto;
+  }
+  .sug[hidden]{display:none;}
+  .sug-opt{display:flex;flex-direction:column;gap:1px;padding:9px 12px;border-radius:var(--r-sm);cursor:pointer;}
+  .sug-opt[aria-selected="true"],.sug-opt:hover{background:var(--surface-3);}
+  .sug-opt[aria-selected="true"]{box-shadow:inset 3px 0 0 var(--accent);}
+  .sug-name{font-weight:600;font-size:15px;line-height:1.3;}
+  .sug-meta{font-size:13px;color:var(--muted);}
+  .sug-all{color:var(--link);font-weight:600;font-size:14.5px;border-top:1px solid var(--line);border-radius:0 0 var(--r-sm) var(--r-sm);margin-top:4px;}
+
+  /* pie completo */
+  .foot-cols{grid-template-columns:1.4fr 1fr 1.15fr .9fr 1.15fr 1.15fr;gap:36px;}
+  @media(max-width:1100px){.foot-cols{grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;}}
+  @media(max-width:700px){.foot-cols{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 20px;}.foot-about{grid-column:1 / -1;}}
+  @media(max-width:420px){.foot-cols{grid-template-columns:minmax(0,1fr);}}
+  .foot-contact ul{margin-bottom:0;}
+  .foot-contact p a{color:var(--on-graphite);}
+
+  @media (prefers-reduced-motion: no-preference){
+    .cart{transition:transform .3s var(--ease-out);}
+    .cart-backdrop{transition:opacity .3s ease;}
+    .cart-n.bump{animation:bump .35s var(--ease-out);}
+    @keyframes bump{0%{transform:scale(1);}40%{transform:scale(1.35);}100%{transform:scale(1);}}
+    .sug:not([hidden]){animation:fade-down .18s var(--ease-out) both;}
+    .cart-btn,.ci-step,.cart-close{transition:transform .18s var(--ease-out);}
+    .cart-btn:active,.ci-step:active,.cart-close:active{transform:scale(.94);}
+    .cart-item{animation:fade-up .25s var(--ease-out) both;}
+  }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
 <div class="demo-bar">
   <div class="wrap">
     <p><b>Propuesta de rediseño</b> elaborada por <strong>Nexo Web</strong><span class="demo-long">. No es la página oficial de Vaconsa.</span><span class="demo-short">. No es el sitio oficial.</span></p>
@@ -817,7 +935,8 @@
       <span class="name">VACON<em>SA</em></span>
     </a>
     <form class="header-search" action="/catalogo/" role="search">
-      <input type="search" id="q" name="q" placeholder="Buscar tubería, válvula, norma…" aria-label="Buscar material">
+      <input type="search" id="q" name="q" placeholder="Buscar tubería, válvula, norma…" aria-label="Buscar material" autocomplete="off">
+      <ul id="q-sug" class="sug" role="listbox" aria-label="Sugerencias" hidden></ul>
       <button type="submit" aria-label="Buscar">
         <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="7" cy="7" r="5"/><line x1="11" y1="11" x2="15" y2="15"/></svg>
       </button>
@@ -829,6 +948,11 @@
         </svg>
         <span>Portal de clientes</span>
       </a>
+      <button class="cart-btn" type="button" aria-haspopup="dialog" aria-controls="cart" aria-expanded="false" aria-label="Mi cotización, 0 productos">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M9 10h6M9 14h6M9 18h3"/></svg>
+        <span class="cart-l">Mi cotización</span>
+        <span class="cart-n" aria-hidden="true" hidden>0</span>
+      </button>
       <a class="btn" href="/cotizar/" data-nav="cotizar">Cotizar</a>
     </div>
   </div>
@@ -858,7 +982,7 @@
   </nav>
 </header>
 
-<main id="contenido">
+<main id="contenido" tabindex="-1">
 {{BREADCRUMB}}
 
 {{CONTENT}}
@@ -883,49 +1007,68 @@
       </a>
       <p>Distribuidora de tubería, válvulas y conexiones industriales en Monterrey desde 1978. Material certificado bajo norma ASTM, ASME, API y NACE.</p>
     </div>
-    <div class="foot-col">
-      <h4>Productos</h4>
+    <nav class="foot-col" aria-label="Productos">
+      <h2 class="foot-h">Productos</h2>
       <ul>
-        <li><a href="/catalogo/?fam=Tuber%C3%ADa">Tubería</a></li>
+        <li><a href="/catalogo/?fam=Tuber%C3%ADa">Tubería de acero</a></li>
         <li><a href="/catalogo/?fam=Conexiones">Conexiones</a></li>
         <li><a href="/catalogo/?fam=Bridas">Bridas</a></li>
         <li><a href="/catalogo/?fam=V%C3%A1lvulas">Válvulas</a></li>
-        <li><a href="/catalogo/?fam=Inoxidable">Inoxidable</a></li>
+        <li><a href="/catalogo/?fam=Inoxidable">Acero inoxidable</a></li>
+        <li><a href="/catalogo/?fam=Vapor">Vapor</a></li>
+        <li><a href="/catalogo/?fam=Petrolero">Equipo petrolero</a></li>
+        <li><a href="/catalogo/?fam=Instrumentaci%C3%B3n">Instrumentación</a></li>
+        <li><a href="/catalogo/?fam=PVC">PVC y plásticos</a></li>
         <li><a href="/catalogo/">Ver catálogo completo</a></li>
       </ul>
-    </div>
-    <div class="foot-col">
-      <h4>Servicios</h4>
+    </nav>
+    <nav class="foot-col" aria-label="Servicios">
+      <h2 class="foot-h">Servicios</h2>
       <ul>
         <li><a href="/servicios/">Servicios en planta</a></li>
         <li><a href="/fichas-tecnicas/">Catálogos y fichas técnicas</a></li>
         <li><a href="/desarrolladores/">Desarrolladores y constructores</a></li>
         <li><a href="/respaldo-tecnico/">Respaldo técnico</a></li>
+        <li><a href="/cotizar/">Solicitar cotización</a></li>
         <li><a href="/portal-clientes/">Portal de clientes</a></li>
       </ul>
-    </div>
-    <div class="foot-col foot-contact">
-      <h4>Contacto</h4>
-      <p>Hernán Santos Cantú #231<br>Desarrollo Industrial Monterrey<br>Santa Catarina, N.L. CP 66390</p>
-      <p><a href="tel:+528181006500">+52 (81) 81 00 65 00</a><br>
-      <a href="mailto:ventas@vaconsa.com.mx">ventas@vaconsa.com.mx</a><br>
-      Lun–Vie, 8:00–18:00 h</p>
-      <ul style="margin-top:12px;">
+    </nav>
+    <nav class="foot-col" aria-label="Empresa">
+      <h2 class="foot-h">Empresa</h2>
+      <ul>
         <li><a href="/nosotros/">Nosotros</a></li>
         <li><a href="/responsabilidad/">Responsabilidad social</a></li>
         <li><a href="/donde-estamos/#empleo">Bolsa de trabajo</a></li>
+        <li><a href="https://www.vaconsa.com.mx/wp-content/uploads/2019/02/avisodeprivacidad.pdf" target="_blank" rel="noopener">Aviso de privacidad</a></li>
+      </ul>
+    </nav>
+    <div class="foot-col foot-contact">
+      <h2 class="foot-h">Contacto</h2>
+      <ul>
+        <li><a href="tel:+528181006500">Tel. +52 (81) 81 00 65 00</a></li>
+        <li><a href="https://wa.me/528120106106" target="_blank" rel="noopener">WhatsApp +52 (81) 20 10 61 06</a></li>
+        <li><a href="mailto:ventas@vaconsa.com.mx">ventas@vaconsa.com.mx</a></li>
       </ul>
     </div>
+    <div class="foot-col foot-contact">
+      <h2 class="foot-h">Sucursal y horario</h2>
+      <p>Oficinas y centro de distribución<br>Hernán Santos Cantú #231<br>Desarrollo Industrial Monterrey<br>Santa Catarina, N.L. CP 66390</p>
+      <p><a href="https://www.google.com/maps/search/?api=1&amp;query=Hernan+Santos+Cantu+231+Desarrollo+Industrial+Monterrey+Santa+Catarina" target="_blank" rel="noopener">Cómo llegar</a></p>
+      <p>Lun–Vie, 8:00–18:00 h</p>
+    </div>
+    <!-- Redes sociales: vaconsa.com.mx no tiene perfiles reales (sus íconos de
+         Facebook, Twitter y LinkedIn apuntan a "#"), así que no se muestra
+         columna de redes. Agregarla solo con URLs reales. -->
   </div>
   <div class="foot-bottom">
     <div class="wrap">
-      <span>© <span id="year"></span> Vaconsa Productos Industriales · Válvulas y Conexiones del Norte, S.A. de C.V. · <a href="https://www.vaconsa.com.mx/wp-content/uploads/2019/02/avisodeprivacidad.pdf" target="_blank" rel="noopener">Aviso de privacidad</a></span>
+      <span>© <span id="year"></span> Vaconsa Productos Industriales · Válvulas y Conexiones del Norte, S.A. de C.V.</span>
       <span>Propuesta visual sin afiliación oficial · <strong>Nexo Web</strong></span>
     </div>
   </div>
 </footer>
 
-<a class="wa" href="/cotizar/" aria-label="Contactar por WhatsApp">
+<a class="wa" href="https://wa.me/528120106106" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp a Vaconsa (se abre en una pestaña nueva)">
   <svg width="27" height="27" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
     <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.18c-.24.68-1.4 1.3-1.94 1.35-.5.05-.97.23-3.27-.68-2.75-1.08-4.5-3.87-4.64-4.05-.13-.18-1.11-1.48-1.11-2.82s.7-2 .95-2.27c.25-.27.54-.34.72-.34.18 0 .36 0 .52.01.17.01.39-.06.61.47.23.54.77 1.88.84 2.02.07.13.11.29.02.47-.09.18-.13.29-.27.45-.13.16-.28.35-.4.47-.13.13-.27.28-.12.54.16.27.7 1.15 1.5 1.86 1.03.92 1.9 1.2 2.17 1.34.27.13.42.11.58-.07.16-.18.67-.78.85-1.05.18-.27.36-.22.6-.13.25.09 1.57.74 1.84.87.27.13.45.2.52.31.06.11.06.65-.18 1.33z"/>
   </svg>
@@ -934,24 +1077,32 @@
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 </script>
-<script>
-(function(){
-  if (!document.documentElement.classList.contains('motion')) return;
-  var groups = ['.account-strip','.cats-head','.cats-sub','.cat','.help-row','.sec-head','.sec-sub','.svc','.rse','.dev-group-t','.dev-item','.doc-group','.loc','.jobs','.about-copy','.timeline li','.trust-grid > *','.lines-strip figure','.quote-grid > *','.portal-card'];
-  var els = document.querySelectorAll(groups.join(','));
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('is-in'); io.unobserve(en.target); } });
-  }, { rootMargin: '0px 0px -40px 0px', threshold: 0.08 });
-  els.forEach(function(el){
-    // Escalonado entre hermanos (máx. 6 pasos para que nada tarde de más).
-    var i = 0, s = el.previousElementSibling;
-    while (s && i < 6){ if (s.classList.contains('reveal')) i++; s = s.previousElementSibling; }
-    el.style.setProperty('--i', i % 4);
-    el.classList.add('reveal');
-    io.observe(el);
-  });
-})();
-</script>
+<div class="cart-backdrop" hidden></div>
+<aside id="cart" class="cart" role="dialog" aria-modal="true" aria-labelledby="cart-t" hidden>
+  <div class="cart-head">
+    <div><h2 id="cart-t">Mi cotización</h2><p class="cart-count"></p></div>
+    <button class="cart-close" type="button" aria-label="Cerrar mi cotización">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="cart-body">
+    <p class="cart-empty">Su lista está vacía. Agregue productos desde el <a href="/catalogo/">catálogo</a> con el botón “Agregar a cotización”.</p>
+    <ul class="cart-list"></ul>
+  </div>
+  <div class="cart-foot" hidden>
+    <label for="cart-notas">Notas para el vendedor (opcional)</label>
+    <textarea id="cart-notas" rows="2" placeholder="Diámetro, cédula, obra, fecha requerida…"></textarea>
+    <div class="cart-actions">
+      <a class="btn cart-wa" href="https://wa.me/528120106106" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+      <a class="btn ghost cart-mail" href="mailto:ventas@vaconsa.com.mx">Enviar por correo</a>
+    </div>
+    <button class="cart-clear" type="button">Vaciar lista</button>
+    <p class="cart-note">Se abre su WhatsApp o su correo con la lista ya escrita; usted decide si la envía. Esta página no envía nada por su cuenta.</p>
+  </div>
+</aside>
+<p class="sr-only" id="cart-live" role="status" aria-live="polite"></p>
+<script src="/catalogo-datos.js"></script>
+<script src="/sitio.js"></script>
 {{PAGE_SCRIPT}}
 </body>
 </html>

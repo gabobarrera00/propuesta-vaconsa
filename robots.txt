@@ -1,0 +1,8 @@
+# Propuesta de rediseño de Nexo Web: NO es el sitio oficial de Vaconsa.
+# Se permite el rastreo a propósito: así los buscadores leen la etiqueta
+# <meta name="robots" content="noindex, nofollow"> de cada página y la dejan
+# fuera de sus resultados. Un "Disallow: /" les impediría leerla.
+User-agent: *
+Allow: /
+
+Sitemap: https://vaconsa.up.railway.app/sitemap.xml
